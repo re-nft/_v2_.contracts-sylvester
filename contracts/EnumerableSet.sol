@@ -1,142 +1,100 @@
 // SPDX-License-Identifier: MIT
 pragma solidity =0.8.7;
 
-/**
- * @dev Library for managing
- * https://en.wikipedia.org/wiki/Set_(abstract_data_type)[sets] of primitive
- * types.
- *
- * Sets have the following properties:
- *
- * - Elements are added, removed, and checked for existence in constant time
- * (O(1)).
- * - Elements are enumerated in O(n). No guarantees are made on the ordering.
- *
- * ```
- * contract Example {
- *     // Add the library methods
- *     using EnumerableSet for EnumerableSet.AddressSet;
- *
- *     // Declare a set state variable
- *     EnumerableSet.AddressSet private mySet;
- * }
- * ```
- *
- */
-library EnumerableSet {
-    // To implement this library for multiple types with as little code
-    // repetition as possible, we write it in terms of a generic Set type with
-    // bytes32 values.
-    // The Set implementation uses private functions, and user-facing
-    // implementations (such as AddressSet) are just wrappers around the
-    // underlying Set.
-    // This means that we can only create new EnumerableSets for types that fit
-    // in bytes32.
+import "./interfaces/IRegistry.sol";
 
-    struct Set {
-        // Storage of set values
-        bytes32[] _values;
-        // Position of the value in the `values` array, plus 1 because index 0
-        // means a value is not in the set.
-        mapping(bytes32 => uint256) _indexes;
+contract EnumerableSet {
+    struct LendingSet {
+        IRegistry.Lending[] _values;
+        mapping(uint256 => uint256) _indexes;
     }
 
-    /**
-     * @dev Add a value to a set. O(1).
-     *
-     * Returns true if the value was added to the set, that is if it was not
-     * already present.
-     */
-    function _add(Set storage set, bytes32 value) private returns (bool) {
-        if (!_contains(set, value)) {
-            set._values.push(value);
-            // The value is stored at length-1, but we add 1 to all indexes
-            // and use 0 as a sentinel value
-            set._indexes[value] = set._values.length;
+    struct RentingSet {
+        IRegistry.Renting[] _values;
+        mapping(uint256 => uint256) _indexes;
+    }
+
+    // ! public not allowed for structs
+    LendingSet private lendingSet;
+    RentingSet private rentingSet;
+
+    function add(IRegistry.Lending memory value, uint256 lendingID)
+        internal
+        returns (bool)
+    {
+        if (!lendingSetContains(lendingID)) {
+            lendingSet._values.push(value);
+            lendingSet._indexes[lendingID] = lendingSet._values.length;
             return true;
         } else {
             return false;
         }
     }
 
-    /**
-     * @dev Removes a value from a set. O(1).
-     *
-     * Returns true if the value was removed from the set, that is if it was
-     * present.
-     */
-    function _remove(Set storage set, bytes32 value) private returns (bool) {
-        // We read and store the value's index to prevent multiple reads from the same storage slot
-        uint256 valueIndex = set._indexes[value];
-
+    function remove(IRegistry.Lending memory value, uint256 lendingID)
+        internal
+        returns (bool)
+    {
+        uint256 valueIndex = lendingSet._indexes[lendingID];
         if (valueIndex != 0) {
-            // Equivalent to contains(set, value)
-            // To delete an element from the _values array in O(1), we swap the element to delete with the last one in
-            // the array, and then remove the last element (sometimes called as 'swap and pop').
-            // This modifies the order of the array, as noted in {at}.
-
             uint256 toDeleteIndex = valueIndex - 1;
-            uint256 lastIndex = set._values.length - 1;
-
-            // When the value to delete is the last one, the swap operation is unnecessary. However, since this occurs
-            // so rarely, we still do the swap anyway to avoid the gas cost of adding an 'if' statement.
-
-            bytes32 lastvalue = set._values[lastIndex];
-
-            // Move the last value to the index where the value to delete is
-            set._values[toDeleteIndex] = lastvalue;
-            // Update the index for the moved value
-            set._indexes[lastvalue] = toDeleteIndex + 1; // All indexes are 1-based
-
-            // Delete the slot where the moved value was stored
-            set._values.pop();
-
-            // Delete the index for the deleted slot
-            delete set._indexes[value];
-
+            uint256 lastIndex = lendingSet._values.length - 1;
+            IRegistry.Lending memory lastvalue = lendingSet._values[lastIndex];
+            lendingSet._values[toDeleteIndex] = lastvalue;
+            lendingSet._indexes[lendingID] = toDeleteIndex + 1; // All indexes are 1-based
+            lendingSet._values.pop();
+            delete lendingSet._indexes[lendingID];
             return true;
         } else {
             return false;
         }
     }
 
-    /**
-     * @dev Returns true if the value is in the set. O(1).
-     */
-    function _contains(Set storage set, bytes32 value)
-        private
+    function lendingSetContains(uint256 lendingID)
+        internal
         view
         returns (bool)
     {
-        return set._indexes[value] != 0;
+        return lendingSet._indexes[lendingID] != 0;
     }
 
-    /**
-     * @dev Returns the number of values on the set. O(1).
-     */
-    function _length(Set storage set) private view returns (uint256) {
-        return set._values.length;
-    }
-
-    /**
-     * @dev Returns the value stored at position `index` in the set. O(1).
-     *
-     * Note that there are no guarantees on the ordering of values inside the
-     * array, and it may change when more values are added or removed.
-     *
-     * Requirements:
-     *
-     * - `index` must be strictly less than {length}.
-     */
-    function _at(Set storage set, uint256 index)
-        private
-        view
-        returns (bytes32)
+    function add(IRegistry.Renting memory value, uint256 rentingID)
+        internal
+        returns (bool)
     {
-        require(
-            set._values.length > index,
-            "EnumerableSet: index out of bounds"
-        );
-        return set._values[index];
+        if (!rentingSetContains(rentingID)) {
+            rentingSet._values.push(value);
+            rentingSet._indexes[rentingID] = rentingSet._values.length;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function remove(IRegistry.Renting memory value, uint256 rentingID)
+        internal
+        returns (bool)
+    {
+        uint256 valueIndex = rentingSet._indexes[rentingID];
+        if (valueIndex != 0) {
+            uint256 toDeleteIndex = valueIndex - 1;
+            uint256 lastIndex = rentingSet._values.length - 1;
+            IRegistry.Renting memory lastvalue = rentingSet._values[lastIndex];
+            rentingSet._values[toDeleteIndex] = lastvalue;
+            rentingSet._indexes[rentingID] = toDeleteIndex + 1;
+            rentingSet._values.pop();
+            delete rentingSet._indexes[rentingID];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function rentingSetContains(uint256 rentingID)
+        internal
+        view
+        returns (bool)
+    {
+        return rentingSet._indexes[rentingID] != 0;
     }
 }
