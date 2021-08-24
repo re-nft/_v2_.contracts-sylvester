@@ -6,6 +6,7 @@ authors = ["nazariyv <nazariy@inbox.ru>"]
 
 [tool.poetry.dependencies]
 python = "3.9.6"
+eth-brownie = "^1.16.1"
 
 [tool.poetry.dev-dependencies]
 

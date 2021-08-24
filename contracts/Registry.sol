@@ -33,63 +33,92 @@ contract Registry is IRegistry, EnumerableSet {
 
     // in bps. so 1000 => 1%
     uint256 public rentFee = 0;
+    address public immutable admin;
+
+    bool public paused = false;
 
     IResolver public immutable resolverAddress;
 
-    constructor(IResolver _resolverAddress) {
-        resolverAddress = _resolverAddress;
+    struct CallData {
+        uint256 left;
+        uint256 right;
+        IRegistry.NFTStandard[] nftStandard;
+        address[] nftAddress;
+        uint256[] tokenID;
+        uint8[] maxRentDuration;
+        uint16[] dailyRentPrice;
+        uint256[] lendAmount;
+        IResolver.PaymentToken[] paymentToken;
+        uint16[] rentAmount;
     }
 
-    // function bundleArgs(
-    //     IRegistry.NFTStandard[] memory nftStandard,
-    //     address[] memory nftAddress,
-    //     uint256[] memory tokenID
-    // )
-    //     private
-    //     pure
-    //     returns (
-    //         IRegistry.NFTStandard[] calldata n,
-    //         address[] calldata a,
-    //         uint256[] calldata i
-    //     )
-    // {
-    //     require(nftAddress.length > 0, "ReNFT::no nfts");
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "ReNFT::not admin");
+        _;
+    }
 
-    //     uint256 left = 0;
-    //     uint256 right = 1;
+    modifier notPaused() {
+        require(!paused, "ReNFT::paused");
+        _;
+    }
 
-    //     while (right != nftAddress.length) {
-    //         if (
-    //             (nftAddress[left] == nftAddress[right]) &&
-    //             (nftStandard[right] == IRegistry.NFTStandard.E1155)
-    //         ) {
-    //             right++;
-    //         } else {
-    //             n.push(nftStandard[left]);
-    //             a.push(nftAddress[left]);
-    //             i.push(tokenID[left]);
+    constructor(IResolver _resolverAddress) {
+        resolverAddress = _resolverAddress;
+        admin = msg.sender;
+    }
 
-    //             left = right;
-    //             right++;
-    //         }
-    //     }
-
-    //     n.push(nftStandard[left]);
-    //     a.push(nftAddress[left]);
-    //     i.push(tokenID[left]);
-    // }
+    function bundleCall(function(CallData memory) handler, CallData memory cd)
+        private
+    {
+        require(cd.nftAddress.length > 0, "ReNFT::no nfts");
+        while (right != cd.nftAddress.length) {
+            if (
+                (cd.nftAddress[left] == cd.nftAddress[right]) &&
+                (cd.nftStandard[right] == IRegistry.NFTStandard.E1155)
+            ) {
+                cd.right++;
+            } else {
+                handler(cd);
+                cd.left = cd.right;
+                cd.right++;
+            }
+        }
+        handler(cd);
+    }
 
     function lend(
         // this is purely for transfers
         IRegistry.NFTStandard[] memory nftStandard,
         // the below is used for hashing
         address[] memory nftAddress,
-        uint256[] memory tokenID
+        uint256[] memory tokenID,
+        uint8[] memory maxRentDuration,
+        uint32[] memory dailyRentPrice,
+        uint16[] memory lendAmount,
+        IResolver.PaymentToken[] memory paymentToken
     ) external override {
         // batch them, like in og reNFT
         // ensure that the created lendings do not exist in the system
+        bundleCall(
+            handleLend,
+            CallData({
+                left: 0,
+                right: 1,
+                nftStandard: nftStandard,
+                nftAddress: nftAddress,
+                tokenID: tokenID,
+                maxRentDuration: maxRentDuration,
+                dailyRentPrice: dailyRentPrice,
+                lendAmount: lendAmount,
+                paymentToken: paymentToken,
+                rentAmount: new uint16[](0)
+            })
+        );
+    }
+
+    function handleLend(CallData memory cd) {
         IRegistry.Lending memory lending = IRegistry.Lending({
-            nftStandard: IRegistry.NFTStandard.E721,
+            nftStandard: cd.nftStandard[left],
             lenderAddress: payable(address(msg.sender)),
             maxRentDuration: 1,
             dailyRentPrice: 10000000,
@@ -97,9 +126,7 @@ contract Registry is IRegistry, EnumerableSet {
             availableAmount: 1,
             paymentToken: IResolver.PaymentToken.USDC
         });
-
         add(lending, lendingID);
-
         lendingID++;
     }
 
@@ -124,6 +151,25 @@ contract Registry is IRegistry, EnumerableSet {
     //     uint256 tokenID,
     //     uint256 lendingID
     // ) external view override {};
+
+    //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
+    // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
+
+    function setRentFee(uint256 _rentFee) external onlyAdmin {
+        require(_rentFee < 10000, "ReNFT::fee exceeds 100pct");
+        rentFee = _rentFee;
+    }
+
+    function setBeneficiary(address payable newBeneficiary)
+        external
+        onlyAdmin
+    {
+        beneficiary = newBeneficiary;
+    }
+
+    function setPaused(bool _paused) external onlyAdmin {
+        paused = _paused;
+    }
 }
 
 //              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@
