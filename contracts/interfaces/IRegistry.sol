@@ -49,11 +49,13 @@ interface IRegistry {
 
     // creates the lending structs and adds them to the enumerable set
     function lend(
-        // this is purely for transfers
-        NFTStandard[] memory nftStandard,
-        // the below is used for hashing
+        IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
-        uint256[] memory tokenID
+        uint256[] memory tokenID,
+        uint8[] memory maxRentDuration,
+        uint32[] memory dailyRentPrice,
+        uint16[] memory lendAmount,
+        IResolver.PaymentToken[] memory paymentToken
     ) external;
 
     // // creates the renting structs and adds them to the enumerable set

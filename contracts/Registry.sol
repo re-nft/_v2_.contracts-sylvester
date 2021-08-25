@@ -34,6 +34,7 @@ contract Registry is IRegistry, EnumerableSet {
     // in bps. so 1000 => 1%
     uint256 public rentFee = 0;
     address public immutable admin;
+    address payable public beneficiary;
 
     bool public paused = false;
 
@@ -46,8 +47,8 @@ contract Registry is IRegistry, EnumerableSet {
         address[] nftAddress;
         uint256[] tokenID;
         uint8[] maxRentDuration;
-        uint16[] dailyRentPrice;
-        uint256[] lendAmount;
+        uint32[] dailyRentPrice;
+        uint16[] lendAmount;
         IResolver.PaymentToken[] paymentToken;
         uint16[] rentAmount;
     }
@@ -71,10 +72,10 @@ contract Registry is IRegistry, EnumerableSet {
         private
     {
         require(cd.nftAddress.length > 0, "ReNFT::no nfts");
-        while (right != cd.nftAddress.length) {
+        while (cd.right != cd.nftAddress.length) {
             if (
-                (cd.nftAddress[left] == cd.nftAddress[right]) &&
-                (cd.nftStandard[right] == IRegistry.NFTStandard.E1155)
+                (cd.nftAddress[cd.left] == cd.nftAddress[cd.right]) &&
+                (cd.nftStandard[cd.right] == IRegistry.NFTStandard.E1155)
             ) {
                 cd.right++;
             } else {
@@ -87,9 +88,7 @@ contract Registry is IRegistry, EnumerableSet {
     }
 
     function lend(
-        // this is purely for transfers
         IRegistry.NFTStandard[] memory nftStandard,
-        // the below is used for hashing
         address[] memory nftAddress,
         uint256[] memory tokenID,
         uint8[] memory maxRentDuration,
@@ -116,9 +115,9 @@ contract Registry is IRegistry, EnumerableSet {
         );
     }
 
-    function handleLend(CallData memory cd) {
+    function handleLend(CallData memory cd) private {
         IRegistry.Lending memory lending = IRegistry.Lending({
-            nftStandard: cd.nftStandard[left],
+            nftStandard: cd.nftStandard[cd.left],
             lenderAddress: payable(address(msg.sender)),
             maxRentDuration: 1,
             dailyRentPrice: 10000000,
@@ -160,10 +159,7 @@ contract Registry is IRegistry, EnumerableSet {
         rentFee = _rentFee;
     }
 
-    function setBeneficiary(address payable newBeneficiary)
-        external
-        onlyAdmin
-    {
+    function setBeneficiary(address payable newBeneficiary) external onlyAdmin {
         beneficiary = newBeneficiary;
     }
 
