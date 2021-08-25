@@ -35,7 +35,7 @@ interface IRegistry {
         address payable lenderAddress;
         uint8 maxRentDuration;
         uint32 dailyRentPrice;
-        uint16 lentAmount;
+        uint16 lendAmount;
         uint16 availableAmount;
         IResolver.PaymentToken paymentToken;
     }
@@ -60,16 +60,14 @@ interface IRegistry {
 
     // // creates the renting structs and adds them to the enumerable set
     // function rent(
-    //     address[] nftAddress,
-    //     uint256[] tokenID,
     //     uint256[] lendingID
     // ) external payable;
 
     // function stopRent(
-    //     address[] nftAddress,
-    //     uint256[] tokenID,
-    //     uint256[] lendingID
+    //     uint256[] rentingID
     // ) external;
+
+    // function stopLend(uint256[] lendingID) external;
 
     // // get all the lending of an address
     // // loops through the lending enumerable set

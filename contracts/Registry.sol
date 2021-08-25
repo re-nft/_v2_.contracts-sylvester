@@ -116,29 +116,30 @@ contract Registry is IRegistry, EnumerableSet {
     }
 
     function handleLend(CallData memory cd) private {
-        IRegistry.Lending memory lending = IRegistry.Lending({
-            nftStandard: cd.nftStandard[cd.left],
-            lenderAddress: payable(address(msg.sender)),
-            maxRentDuration: 1,
-            dailyRentPrice: 10000000,
-            lentAmount: 1,
-            availableAmount: 1,
-            paymentToken: IResolver.PaymentToken.USDC
-        });
-        add(lending, lendingID);
-        lendingID++;
+        for (uint256 i = cd.left; i < cd.right; i++) {
+            IRegistry.Lending memory lending = IRegistry.Lending({
+                nftStandard: cd.nftStandard[i],
+                lenderAddress: payable(address(msg.sender)),
+                maxRentDuration: cd.maxRentDuration[i],
+                dailyRentPrice: cd.dailyRentPrice[i],
+                lendAmount: cd.lendAmount[i],
+                availableAmount: cd.lendAmount[i],
+                paymentToken: cd.paymentToken[i]
+            });
+            add(lending, lendingID);
+            lendingID++;
+        }
+        // finally, transfer the NFTs into this contract
     }
 
     // function rent(
-    //     address[] nftAddress,
-    //     uint256[] tokenID,
     //     uint256[] lendingID
     // ) external payable override {};
 
+    // function stopLend(uint256[] lendingID) external override {};
+
     // function stopRent(
-    //     address[] nftAddress,
-    //     uint256[] tokenID,
-    //     uint256[] lendingID
+    //     uint256[] rentingID
     // ) external override {};
 
     // function getLending(address lenderAddress) external view override {};
