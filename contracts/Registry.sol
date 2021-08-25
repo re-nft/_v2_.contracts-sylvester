@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity =0.8.7;
 
+import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/IERC721.sol";
+import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/IERC1155.sol";
+
 import "./interfaces/IRegistry.sol";
 import "./EnumerableSet.sol";
 
@@ -129,7 +132,13 @@ contract Registry is IRegistry, EnumerableSet {
             add(lending, lendingID);
             lendingID++;
         }
-        // finally, transfer the NFTs into this contract
+        safeTransfer(
+          cd,
+          msg.sender,
+          address(this),
+          sliceArr(cd.tokenID, cd.left, cd.right),
+          sliceArr(cd.lendAmount, cd.left, cd.right)
+        );
     }
 
     // function rent(
@@ -159,35 +168,46 @@ contract Registry is IRegistry, EnumerableSet {
         CallData memory cd,
         address from,
         address to,
-        uint256[] memory tokenIds,
-        uint256[] memory amounts
+        uint256[] memory tokenID,
+        uint256[] memory amount
     ) private {
-        if (cd.nftStandard[cd.left]) {
-            IERC721(cd.nfts[cd.left]).transferFrom(
+        if (cd.nftStandard[cd.left] == IRegistry.NFTStandard.E721) {
+            IERC721(cd.nftAddress[cd.left]).transferFrom(
                 from,
                 to,
-                cd.tokenIds[cd.left]
+                cd.tokenID[cd.left]
             );
         } else {
-            IERC1155(cd.nfts[cd.left]).safeBatchTransferFrom(
+            IERC1155(cd.nftAddress[cd.left]).safeBatchTransferFrom(
                 from,
                 to,
-                tokenIds,
-                amounts,
+                tokenID,
+                amount,
                 ""
             );
         }
     }
 
     function sliceArr(
-        uint256[] memory _arr,
-        uint256 _fromIx,
-        uint256 _toIx,
-        uint256 _arrOffset
+        uint256[] memory arr,
+        uint256 from,
+        uint256 to
     ) private pure returns (uint256[] memory r) {
-        r = new uint256[](_toIx - _fromIx);
-        for (uint256 i = _fromIx; i < _toIx; i++) {
-            r[i - _fromIx] = _arr[i - _arrOffset];
+        r = new uint256[](to - from);
+        for (uint256 i = from; i < to; i++) {
+            r[i - from] = arr[i];
+        }
+    }
+
+    // todo: remove
+    function sliceArr(
+        uint16[] memory arr,
+        uint256 from,
+        uint256 to
+    ) private pure returns (uint256[] memory r) {
+        r = new uint256[](to - from);
+        for (uint256 i = from; i < to; i++) {
+            r[i - from] = arr[i];
         }
     }
 
