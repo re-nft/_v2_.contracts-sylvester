@@ -155,6 +155,45 @@ contract Registry is IRegistry, EnumerableSet {
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
+    function safeTransfer(
+        CallData memory cd,
+        address from,
+        address to,
+        uint256[] memory tokenIds,
+        uint256[] memory amounts
+    ) private {
+        if (cd.nftStandard[cd.left]) {
+            IERC721(cd.nfts[cd.left]).transferFrom(
+                from,
+                to,
+                cd.tokenIds[cd.left]
+            );
+        } else {
+            IERC1155(cd.nfts[cd.left]).safeBatchTransferFrom(
+                from,
+                to,
+                tokenIds,
+                amounts,
+                ""
+            );
+        }
+    }
+
+    function sliceArr(
+        uint256[] memory _arr,
+        uint256 _fromIx,
+        uint256 _toIx,
+        uint256 _arrOffset
+    ) private pure returns (uint256[] memory r) {
+        r = new uint256[](_toIx - _fromIx);
+        for (uint256 i = _fromIx; i < _toIx; i++) {
+            r[i - _fromIx] = _arr[i - _arrOffset];
+        }
+    }
+
+    //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
+    // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
+
     function setRentFee(uint256 _rentFee) external onlyAdmin {
         require(_rentFee < 10000, "ReNFT::fee exceeds 100pct");
         rentFee = _rentFee;
