@@ -2,7 +2,10 @@
 pragma solidity =0.8.7;
 
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/IERC721.sol";
+import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/IERC1155.sol";
+import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/utils/ERC1155Holder.sol";
+import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/utils/ERC1155Receiver.sol";
 
 import "./interfaces/IRegistry.sol";
 import "./EnumerableSet.sol";
@@ -30,7 +33,13 @@ import "./EnumerableSet.sol";
 // ideally registry supports both
 // (i)  signatures
 // (ii) direct lending (for contract interaction)
-contract Registry is IRegistry, EnumerableSet {
+contract Registry is
+    IRegistry,
+    EnumerableSet,
+    ERC721Holder,
+    ERC1155Receiver,
+    ERC1155Holder
+{
     uint256 public lendingID = 1;
     uint256 public rentingID = 1;
 
@@ -133,11 +142,11 @@ contract Registry is IRegistry, EnumerableSet {
             lendingID++;
         }
         safeTransfer(
-          cd,
-          msg.sender,
-          address(this),
-          sliceArr(cd.tokenID, cd.left, cd.right),
-          sliceArr(cd.lendAmount, cd.left, cd.right)
+            cd,
+            msg.sender,
+            address(this),
+            sliceArr(cd.tokenID, cd.left, cd.right),
+            sliceArr(cd.lendAmount, cd.left, cd.right)
         );
     }
 
