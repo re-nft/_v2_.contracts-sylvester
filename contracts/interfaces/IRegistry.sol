@@ -67,11 +67,15 @@ interface IRegistry {
     //     uint256[] rentingID
     // ) external;
 
-    // function stopLend(uint256[] lendingID) external;
+    function stopLend(uint256[] memory lendingID) external;
 
     // // get all the lending of an address
     // // loops through the lending enumerable set
-    // function getLending(address lenderAddress) external view;
+    function getLending(
+        address lenderAddress,
+        uint256 qty,
+        uint256 offset
+    ) external view returns (uint256[] memory);
 
     // // get all the renting of an address
     // // loops through the renting enumerable set

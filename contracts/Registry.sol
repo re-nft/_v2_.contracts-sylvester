@@ -138,9 +138,11 @@ contract Registry is
                 availableAmount: cd.lendAmount[i],
                 paymentToken: cd.paymentToken[i]
             });
-            add(lending, lendingID);
+            bool added = add(lending, lendingID);
+            require(added, "ReNFT::lending not added");
             lendingID++;
         }
+        // todo: emit lend event
         safeTransfer(
             cd,
             msg.sender,
@@ -154,13 +156,53 @@ contract Registry is
     //     uint256[] lendingID
     // ) external payable override {};
 
-    // function stopLend(uint256[] lendingID) external override {};
+    // todo: should be batch stop lend
+    function stopLend(uint256[] memory lendingIDs) external override {
+        for (uint256 i = 0; i < lendingIDs.length; i++) {
+            // require that the lending exists
+            require(lendingSetContains(lendingIDs[i]), "ReNFT::does not exist");
+            // require that available amount equals the lent amount
+            IRegistry.Lending memory l = lendingSetAt(lendingIDs[i]);
+            require(
+                l.lendAmount == l.availableAmount,
+                "ReNFT::actively rented"
+            );
+            // require that the sender is the lenderAddress
+            require(l.lenderAddress == msg.sender, "ReNFT::caller not lender");
+        }
+    }
 
     // function stopRent(
     //     uint256[] rentingID
     // ) external override {};
 
-    // function getLending(address lenderAddress) external view override {};
+    // todo: requires a lot of storage slots, so it is probably better to write an SDK
+    // that queries subgraph for this
+    function getLending(
+        address lenderAddress,
+        uint256 qty,
+        uint256 offset
+    ) external view override returns (uint256[] memory) {
+        // 0 is a sentinel
+        uint256 numLendings = lendingSetLength();
+        uint256[] memory lendingIDs = new uint256[](qty);
+        while (numLendings > 0) {
+            if (offset > 0) {
+                offset--;
+                continue;
+            }
+            IRegistry.Lending memory lenderLending = lendingSetAtIndex(
+                numLendings - 1
+            );
+            if (lenderLending.lenderAddress == lenderAddress) {
+                lendingIDs[lendingIDs.length] = lendingReverseIndex(
+                    numLendings
+                );
+            }
+            numLendings--;
+        }
+        return lendingIDs;
+    }
 
     // function getRenting(address renterAddress) external view override {};
 

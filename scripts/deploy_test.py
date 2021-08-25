@@ -65,10 +65,4 @@ def main():
         from_a,
     )
 
-    # IRegistry.NFTStandard[] memory nftStandard,
-    # address[] memory nftAddress,
-    # uint256[] memory tokenID,
-    # uint8[] memory maxRentDuration,
-    # uint32[] memory dailyRentPrice,
-    # uint16[] memory lendAmount,
-    # IResolver.PaymentToken[] memory paymentToken
+    registry.stopLend([1])
