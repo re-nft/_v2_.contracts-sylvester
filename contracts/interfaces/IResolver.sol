@@ -24,12 +24,9 @@ pragma solidity =0.8.7;
 interface IResolver {
     enum PaymentToken {
         SENTINEL,
-        WETH,
         DAI,
         USDC,
-        USDT,
-        TUSD,
-        RENT
+        TUSD
     }
 
     function getPaymentToken(uint8 _pt) external view returns (address);
