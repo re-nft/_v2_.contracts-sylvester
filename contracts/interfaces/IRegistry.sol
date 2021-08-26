@@ -24,6 +24,32 @@ import "./IResolver.sol";
 //                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@
 
 interface IRegistry {
+    // todo: use bytes for the price, because different tokens have different scales
+    event Lend(
+        bool is721,
+        address indexed lenderAddress,
+        address indexed nftAddress,
+        uint256 indexed tokenID,
+        uint256 lendingID,
+        uint8 maxRentDuration,
+        uint32 dailyRentPrice,
+        uint16 lendAmount,
+        IResolver.PaymentToken paymentToken
+    );
+
+    event Rent(
+        address indexed renterAddress,
+        uint256 indexed lendingID,
+        uint256 indexed rentingID,
+        uint16 rentAmount,
+        uint8 rentDuration,
+        uint32 rentedAt
+    );
+
+    event StopLend(uint256 indexed lendingID, uint32 stoppedAt);
+
+    event StopRent(uint256 indexed rentingID, uint32 stoppedAt);
+
     enum NFTStandard {
         E721,
         E1155
@@ -68,26 +94,6 @@ interface IRegistry {
     // ) external;
 
     function stopLend(uint256[] memory lendingID) external;
-
-    // // get all the lending of an address
-    // // loops through the lending enumerable set
-    function getLending(
-        address lenderAddress,
-        uint256 qty,
-        uint256 offset
-    ) external view returns (uint256[] memory);
-
-    // // get all the renting of an address
-    // // loops through the renting enumerable set
-    // function getRenting(address renterAddress) external view;
-
-    // // returns the renter, given the nftAddress, tokenID and lendingID
-    // // given the nftAddress, tokenID and lendingID, will return the renter(s)
-    // function getRenter(
-    //     address nftAddress,
-    //     uint256 tokenID,
-    //     uint256 lendingID
-    // ) external view;
 }
 
 //              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@

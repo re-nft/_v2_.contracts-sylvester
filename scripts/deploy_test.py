@@ -66,3 +66,17 @@ def main():
     )
 
     registry.stopLend([1])
+
+    # test lending batch
+    registry.lend(
+        [NFTStandard.E721.value, NFTStandard.E721.value],
+        [e721.address, e721.address],
+        [1, 2],
+        [1, 1],
+        [100, 100],
+        [1, 1],
+        [PaymentToken.DAI.value, PaymentToken.USDC.value],
+        from_a,
+    )
+
+    # registry.stopLend([1, 2])
