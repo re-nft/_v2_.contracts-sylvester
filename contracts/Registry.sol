@@ -96,16 +96,16 @@ contract Registry is
     }
 
     constructor(
-        address _resolver,
-        address payable _beneficiary,
-        address _admin
+        address resolver,
+        address payable beneficiary,
+        address admin
     ) {
-        ensureIsNotZeroAddr(_resolver);
-        ensureIsNotZeroAddr(_beneficiary);
-        ensureIsNotZeroAddr(_admin);
-        resolver = IResolver(_resolver);
-        beneficiary = _beneficiary;
-        admin = _admin;
+        ensureIsNotZeroAddr(resolver);
+        ensureIsNotZeroAddr(beneficiary);
+        ensureIsNotZeroAddr(admin);
+        resolver = IResolver(resolver);
+        beneficiary = beneficiary;
+        admin = admin;
     }
 
     function bundleCall(function(CallData memory) handler, CallData memory cd)
@@ -238,23 +238,23 @@ contract Registry is
         );
     }
 
-    function handleRent(CallData memory _cd) private {
-        uint256[] memory lentAmounts = new uint256[](_cd.right - _cd.left);
+    function handleRent(CallData memory cd) private {
+        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
 
-        for (uint256 i = _cd.left; i < _cd.right; i++) {
+        for (uint256 i = cd.left; i < cd.right; i++) {
             LendingRenting storage item = lendingRenting[
                 keccak256(
                     abi.encodePacked(
-                        _cd.nfts[_cd.left],
-                        _cd.tokenIds[i],
-                        _cd.lendingIds[i]
+                        cd.nfts[cd.left],
+                        cd.tokenIds[i],
+                        cd.lendingIds[i]
                     )
                 )
             ];
 
             ensureIsNotNull(item.lending);
             ensureIsNull(item.renting);
-            ensureIsRentable(item.lending, _cd, i, msg.sender);
+            ensureIsRentable(item.lending, cd, i, msg.sender);
 
             uint8 paymentTokenIx = uint8(item.lending.paymentToken);
             ensureTokenNotSentinel(paymentTokenIx);
@@ -263,7 +263,7 @@ contract Registry is
 
             {
                 uint256 scale = 10**decimals;
-                uint256 rentPrice = _cd.rentDurations[i] *
+                uint256 rentPrice = cd.rentDurations[i] *
                     unpackPrice(item.lending.dailyRentPrice, scale);
                 uint256 nftPrice = item.lending.lentAmount *
                     unpackPrice(item.lending.nftPrice, scale);
@@ -278,29 +278,29 @@ contract Registry is
                 );
             }
 
-            lentAmounts[i - _cd.left] = item.lending.lentAmount;
+            lentAmounts[i - cd.left] = item.lending.lentAmount;
 
             item.renting.renterAddress = payable(msg.sender);
-            item.renting.rentDuration = _cd.rentDurations[i];
+            item.renting.rentDuration = cd.rentDurations[i];
             item.renting.rentedAt = uint32(block.timestamp);
 
             emit Rented(
-                _cd.lendingIds[i],
+                cd.lendingIds[i],
                 msg.sender,
-                _cd.rentDurations[i],
+                cd.rentDurations[i],
                 item.renting.rentedAt
             );
         }
     }
 
-    function handleStopRent(CallData memory _cd) private {
-        uint256[] memory lentAmounts = new uint256[](_cd.right - _cd.left);
-        for (uint256 i = _cd.left; i < _cd.right; i++) {
+    function handleStopRent(CallData memory cd) private {
+        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
+        for (uint256 i = cd.left; i < cd.right; i++) {
             bytes32 identifier = keccak256(
                 abi.encodePacked(
-                    _cd.nfts[_cd.left],
-                    _cd.tokenIds[i],
-                    _cd.lendingIds[i]
+                    cd.nfts[cd.left],
+                    cd.tokenIds[i],
+                    cd.lendingIds[i]
                 )
             );
             Renting storage item = rentings[identifier];
@@ -309,8 +309,8 @@ contract Registry is
             uint256 secondsSinceRentStart = block.timestamp -
                 item.renting.rentedAt;
             distributePayments(item, secondsSinceRentStart);
-            lentAmounts[i - _cd.left] = item.lending.lentAmount;
-            emit Returned(_cd.lendingIds[i], uint32(block.timestamp));
+            lentAmounts[i - cd.left] = item.lending.lentAmount;
+            emit Returned(cd.lendingIds[i], uint32(block.timestamp));
             delete item.renting;
 
             Lending storage item = lendings[identifier];
@@ -354,37 +354,32 @@ contract Registry is
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
-    function takeFee(uint256 _rent, IResolver.PaymentToken _paymentToken)
+    function takeFee(uint256 rent, IResolver.PaymentToken paymentToken)
         private
         returns (uint256 fee)
     {
-        fee = _rent * rentFee;
+        fee = rent * rentFee;
         fee /= 10000;
-        uint8 paymentTokenIx = uint8(_paymentToken);
+        uint8 paymentTokenIx = uint8(paymentToken);
         ensureTokenNotSentinel(paymentTokenIx);
         ERC20 paymentToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
         paymentToken.safeTransfer(beneficiary, fee);
     }
 
     function distributePayments(
-        LendingRenting storage _lendingRenting,
-        uint256 _secondsSinceRentStart
+        IRegistry.Lending memory lending,
+        IRegistry.Renting memory renting,
+        uint256 secondsSinceRentStart
     ) private {
-        uint8 paymentTokenIx = uint8(_lendingRenting.lending.paymentToken);
+        uint8 paymentTokenIx = uint8(lending.paymentToken);
         ensureTokenNotSentinel(paymentTokenIx);
         address paymentToken = resolver.getPaymentToken(paymentTokenIx);
         uint256 decimals = ERC20(paymentToken).decimals();
 
         uint256 scale = 10**decimals;
-        uint256 nftPrice = _lendingRenting.lending.lentAmount *
-            unpackPrice(_lendingRenting.lending.nftPrice, scale);
-        uint256 rentPrice = unpackPrice(
-            _lendingRenting.lending.dailyRentPrice,
-            scale
-        );
-        uint256 totalRenterPmtWoCollateral = rentPrice *
-            _lendingRenting.renting.rentDuration;
-        uint256 sendLenderAmt = (_secondsSinceRentStart * rentPrice) /
+        uint256 rentPrice = unpackPrice(lending.dailyRentPrice, scale);
+        uint256 totalRenterPmtWoCollateral = rentPrice * renting.rentDuration;
+        uint256 sendLenderAmt = (secondsSinceRentStart * rentPrice) /
             SECONDS_IN_DAY;
         require(
             totalRenterPmtWoCollateral > 0,
@@ -393,47 +388,35 @@ contract Registry is
         require(sendLenderAmt > 0, "ReNFT::lender payment is zero");
         uint256 sendRenterAmt = totalRenterPmtWoCollateral - sendLenderAmt;
 
-        uint256 takenFee = takeFee(
-            sendLenderAmt,
-            _lendingRenting.lending.paymentToken
-        );
+        uint256 takenFee = takeFee(sendLenderAmt, lending.paymentToken);
 
         sendLenderAmt -= takenFee;
-        sendRenterAmt += nftPrice;
 
-        ERC20(paymentToken).safeTransfer(
-            _lendingRenting.lending.lenderAddress,
-            sendLenderAmt
-        );
-        ERC20(paymentToken).safeTransfer(
-            _lendingRenting.renting.renterAddress,
-            sendRenterAmt
-        );
+        ERC20(paymentToken).safeTransfer(lending.lenderAddress, sendLenderAmt);
+        ERC20(paymentToken).safeTransfer(renting.renterAddress, sendRenterAmt);
     }
 
     function safeTransfer(
-        CallData memory _cd,
-        address _from,
-        address _to,
-        uint256[] memory _tokenIds,
-        uint256[] memory _lentAmounts
+        CallData memory cd,
+        address from,
+        address to,
+        uint256[] memory tokenIds,
+        uint256[] memory lentAmounts
     ) private {
-        if (is721(_cd.nfts[_cd.left])) {
-            IERC721(_cd.nfts[_cd.left]).transferFrom(
-                _from,
-                _to,
-                _cd.tokenIds[_cd.left]
-            );
-        } else if (is1155(_cd.nfts[_cd.left])) {
-            IERC1155(_cd.nfts[_cd.left]).safeBatchTransferFrom(
-                _from,
-                _to,
-                _tokenIds,
-                _lentAmounts,
-                ""
+        if (cd.nftStandard[cd.left] == IRegistry.NFTStandard.E721) {
+            IERC721(cd.nfts[cd.left]).transferFrom(
+                from,
+                to,
+                cd.tokenIds[cd.left]
             );
         } else {
-            revert("ReNFT::unsupported token type");
+            IERC1155(cd.nfts[cd.left]).safeBatchTransferFrom(
+                from,
+                to,
+                tokenIds,
+                lentAmounts,
+                ""
+            );
         }
     }
 
@@ -441,43 +424,43 @@ contract Registry is
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
     function createLendCallData(
-        address[] memory _nfts,
-        uint256[] memory _tokenIds,
-        uint256[] memory _lendAmounts,
-        uint8[] memory _maxRentDurations,
-        bytes4[] memory _dailyRentPrices,
-        bytes4[] memory _nftPrices,
-        IResolver.PaymentToken[] memory _paymentTokens
+        address[] memory nfts,
+        uint256[] memory tokenIds,
+        uint256[] memory lendAmounts,
+        uint8[] memory maxRentDurations,
+        bytes4[] memory dailyRentPrices,
+        bytes4[] memory nftPrices,
+        IResolver.PaymentToken[] memory paymentTokens
     ) private pure returns (CallData memory cd) {
         cd = CallData({
             left: 0,
             right: 1,
-            nfts: _nfts,
-            tokenIds: _tokenIds,
-            lentAmounts: _lendAmounts,
+            nfts: nfts,
+            tokenIds: tokenIds,
+            lentAmounts: lendAmounts,
             lendingIds: new uint256[](0),
             rentDurations: new uint8[](0),
-            maxRentDurations: _maxRentDurations,
-            dailyRentPrices: _dailyRentPrices,
-            nftPrices: _nftPrices,
-            paymentTokens: _paymentTokens
+            maxRentDurations: maxRentDurations,
+            dailyRentPrices: dailyRentPrices,
+            nftPrices: nftPrices,
+            paymentTokens: paymentTokens
         });
     }
 
     function createRentCallData(
-        address[] memory _nfts,
-        uint256[] memory _tokenIds,
-        uint256[] memory _lendingIds,
-        uint8[] memory _rentDurations
+        address[] memory nfts,
+        uint256[] memory tokenIds,
+        uint256[] memory lendingIds,
+        uint8[] memory rentDurations
     ) private pure returns (CallData memory cd) {
         cd = CallData({
             left: 0,
             right: 1,
-            nfts: _nfts,
-            tokenIds: _tokenIds,
+            nfts: nfts,
+            tokenIds: tokenIds,
             lentAmounts: new uint256[](0),
-            lendingIds: _lendingIds,
-            rentDurations: _rentDurations,
+            lendingIds: lendingIds,
+            rentDurations: rentDurations,
             maxRentDurations: new uint8[](0),
             dailyRentPrices: new bytes4[](0),
             nftPrices: new bytes4[](0),
@@ -486,17 +469,17 @@ contract Registry is
     }
 
     function createActionCallData(
-        address[] memory _nfts,
-        uint256[] memory _tokenIds,
-        uint256[] memory _lendingIds
+        address[] memory nfts,
+        uint256[] memory tokenIds,
+        uint256[] memory lendingIds
     ) private pure returns (CallData memory cd) {
         cd = CallData({
             left: 0,
             right: 1,
-            nfts: _nfts,
-            tokenIds: _tokenIds,
+            nfts: nfts,
+            tokenIds: tokenIds,
             lentAmounts: new uint256[](0),
-            lendingIds: _lendingIds,
+            lendingIds: lendingIds,
             rentDurations: new uint8[](0),
             maxRentDurations: new uint8[](0),
             dailyRentPrices: new bytes4[](0),
@@ -505,16 +488,16 @@ contract Registry is
         });
     }
 
-    function unpackPrice(bytes4 _price, uint256 _scale)
+    function unpackPrice(bytes4 price, uint256 scale)
         private
         pure
         returns (uint256)
     {
-        ensureIsUnpackablePrice(_price, _scale);
+        ensureIsUnpackablePrice(price, scale);
 
-        uint16 whole = uint16(bytes2(_price));
-        uint16 decimal = uint16(bytes2(_price << 16));
-        uint256 decimalScale = _scale / 10000;
+        uint16 whole = uint16(bytes2(price));
+        uint16 decimal = uint16(bytes2(price << 16));
+        uint256 decimalScale = scale / 10000;
 
         if (whole > 9999) {
             whole = 9999;
@@ -523,7 +506,7 @@ contract Registry is
             decimal = 9999;
         }
 
-        uint256 w = whole * _scale;
+        uint256 w = whole * scale;
         uint256 d = decimal * decimalScale;
         uint256 price = w + d;
 
@@ -531,145 +514,130 @@ contract Registry is
     }
 
     function sliceArr(
-        uint256[] memory _arr,
-        uint256 _fromIx,
-        uint256 _toIx,
-        uint256 _arrOffset
+        uint256[] memory arr,
+        uint256 fromIx,
+        uint256 toIx,
+        uint256 arrOffset
     ) private pure returns (uint256[] memory r) {
-        r = new uint256[](_toIx - _fromIx);
-        for (uint256 i = _fromIx; i < _toIx; i++) {
-            r[i - _fromIx] = _arr[i - _arrOffset];
+        r = new uint256[](toIx - fromIx);
+        for (uint256 i = fromIx; i < toIx; i++) {
+            r[i - fromIx] = arr[i - arrOffset];
         }
     }
 
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
-    function ensureIsNotZeroAddr(address _addr) private pure {
-        require(_addr != address(0), "ReNFT::zero address");
+    function ensureIsNotZeroAddr(address addr) private pure {
+        require(addr != address(0), "ReNFT::zero address");
     }
 
-    function ensureIsZeroAddr(address _addr) private pure {
-        require(_addr == address(0), "ReNFT::not a zero address");
+    function ensureIsZeroAddr(address addr) private pure {
+        require(addr == address(0), "ReNFT::not a zero address");
     }
 
-    function ensureIsNull(Lending memory _lending) private pure {
-        ensureIsZeroAddr(_lending.lenderAddress);
-        require(_lending.maxRentDuration == 0, "ReNFT::duration not zero");
-        require(_lending.dailyRentPrice == 0, "ReNFT::rent price not zero");
-        require(_lending.nftPrice == 0, "ReNFT::nft price not zero");
+    function ensureIsNull(Lending memory lending) private pure {
+        ensureIsZeroAddr(lending.lenderAddress);
+        require(lending.maxRentDuration == 0, "ReNFT::duration not zero");
+        require(lending.dailyRentPrice == 0, "ReNFT::rent price not zero");
+        require(lending.nftPrice == 0, "ReNFT::nft price not zero");
     }
 
-    function ensureIsNotNull(Lending memory _lending) private pure {
-        ensureIsNotZeroAddr(_lending.lenderAddress);
-        require(_lending.maxRentDuration != 0, "ReNFT::duration zero");
-        require(_lending.dailyRentPrice != 0, "ReNFT::rent price is zero");
-        require(_lending.nftPrice != 0, "ReNFT::nft price is zero");
+    function ensureIsNotNull(Lending memory lending) private pure {
+        ensureIsNotZeroAddr(lending.lenderAddress);
+        require(lending.maxRentDuration != 0, "ReNFT::duration zero");
+        require(lending.dailyRentPrice != 0, "ReNFT::rent price is zero");
+        require(lending.nftPrice != 0, "ReNFT::nft price is zero");
     }
 
-    function ensureIsNull(Renting memory _renting) private pure {
-        ensureIsZeroAddr(_renting.renterAddress);
-        require(_renting.rentDuration == 0, "ReNFT::duration not zero");
-        require(_renting.rentedAt == 0, "ReNFT::rented at not zero");
+    function ensureIsNull(Renting memory renting) private pure {
+        ensureIsZeroAddr(renting.renterAddress);
+        require(renting.rentDuration == 0, "ReNFT::duration not zero");
+        require(renting.rentedAt == 0, "ReNFT::rented at not zero");
     }
 
-    function ensureIsNotNull(Renting memory _renting) private pure {
-        ensureIsNotZeroAddr(_renting.renterAddress);
-        require(_renting.rentDuration != 0, "ReNFT::duration is zero");
-        require(_renting.rentedAt != 0, "ReNFT::rented at is zero");
+    function ensureIsNotNull(Renting memory renting) private pure {
+        ensureIsNotZeroAddr(renting.renterAddress);
+        require(renting.rentDuration != 0, "ReNFT::duration is zero");
+        require(renting.rentedAt != 0, "ReNFT::rented at is zero");
     }
 
-    function ensureIsLendable(CallData memory _cd, uint256 _i) private pure {
-        require(_cd.lentAmounts[_i] > 0, "ReNFT::lend amount is zero");
-        require(_cd.lentAmounts[_i] <= type(uint8).max, "ReNFT::not uint8");
-        require(_cd.maxRentDurations[_i] > 0, "ReNFT::duration is zero");
-        require(
-            _cd.maxRentDurations[_i] <= type(uint8).max,
-            "ReNFT::not uint8"
-        );
-        require(
-            uint32(_cd.dailyRentPrices[_i]) > 0,
-            "ReNFT::rent price is zero"
-        );
-        require(uint32(_cd.nftPrices[_i]) > 0, "ReNFT::nft price is zero");
+    function ensureIsLendable(CallData memory cd, uint256 i) private pure {
+        require(cd.lentAmounts[i] > 0, "ReNFT::lend amount is zero");
+        require(cd.lentAmounts[i] <= type(uint8).max, "ReNFT::not uint8");
+        require(cd.maxRentDurations[i] > 0, "ReNFT::duration is zero");
+        require(cd.maxRentDurations[i] <= type(uint8).max, "ReNFT::not uint8");
+        require(uint32(cd.dailyRentPrices[i]) > 0, "ReNFT::rent price is zero");
+        require(uint32(cd.nftPrices[i]) > 0, "ReNFT::nft price is zero");
     }
 
     function ensureIsRentable(
-        Lending memory _lending,
-        CallData memory _cd,
-        uint256 _i,
-        address _msgSender
+        Lending memory lending,
+        CallData memory cd,
+        uint256 i,
+        address msgSender
     ) private pure {
+        require(msgSender != lending.lenderAddress, "ReNFT::cant rent own nft");
+        require(cd.rentDurations[i] <= type(uint8).max, "ReNFT::not uint8");
+        require(cd.rentDurations[i] > 0, "ReNFT::duration is zero");
         require(
-            _msgSender != _lending.lenderAddress,
-            "ReNFT::cant rent own nft"
-        );
-        require(_cd.rentDurations[_i] <= type(uint8).max, "ReNFT::not uint8");
-        require(_cd.rentDurations[_i] > 0, "ReNFT::duration is zero");
-        require(
-            _cd.rentDurations[_i] <= _lending.maxRentDuration,
+            cd.rentDurations[i] <= lending.maxRentDuration,
             "ReNFT::rent duration exceeds allowed max"
         );
     }
 
     function ensureIsReturnable(
-        Renting memory _renting,
-        address _msgSender,
-        uint256 _blockTimestamp
+        Renting memory renting,
+        address msgSender,
+        uint256 blockTimestamp
     ) private pure {
-        require(_renting.renterAddress == _msgSender, "ReNFT::not renter");
+        require(renting.renterAddress == msgSender, "ReNFT::not renter");
         require(
-            !isPastReturnDate(_renting, _blockTimestamp),
+            !isPastReturnDate(renting, blockTimestamp),
             "ReNFT::past return date"
         );
     }
 
-    function ensureIsStoppable(Lending memory _lending, address _msgSender)
+    function ensureIsStoppable(Lending memory lending, address msgSender)
         private
         pure
     {
-        require(_lending.lenderAddress == _msgSender, "ReNFT::not lender");
+        require(lending.lenderAddress == msgSender, "ReNFT::not lender");
     }
 
-    function ensureIsUnpackablePrice(bytes4 _price, uint256 _scale)
-        private
-        pure
-    {
-        require(uint32(_price) > 0, "ReNFT::invalid price");
-        require(_scale >= 10000, "ReNFT::invalid scale");
+    function ensureIsUnpackablePrice(bytes4 price, uint256 scale) private pure {
+        require(uint32(price) > 0, "ReNFT::invalid price");
+        require(scale >= 10000, "ReNFT::invalid scale");
     }
 
-    function ensureTokenNotSentinel(uint8 _paymentIx) private pure {
-        require(_paymentIx > 0, "ReNFT::token is sentinel");
+    function ensureTokenNotSentinel(uint8 paymentIx) private pure {
+        require(paymentIx > 0, "ReNFT::token is sentinel");
     }
 
-    function isPastReturnDate(Renting memory _renting, uint256 _now)
+    function isPastReturnDate(Renting memory renting, uint256 nowTime)
         private
         pure
         returns (bool)
     {
-        require(_now > _renting.rentedAt, "ReNFT::now before rented");
+        require(nowTime > renting.rentedAt, "ReNFT::now before rented");
         return
-            _now - _renting.rentedAt > _renting.rentDuration * SECONDS_IN_DAY;
+            nowTime - renting.rentedAt > renting.rentDuration * SECONDS_IN_DAY;
     }
 
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
-    function setRentFee(uint256 _rentFee) external onlyAdmin {
-        require(_rentFee < 10000, "ReNFT::fee exceeds 100pct");
-        rentFee = _rentFee;
+    function setRentFee(uint256 rentFee) external onlyAdmin {
+        require(rentFee < 10000, "ReNFT::fee exceeds 100pct");
+        rentFee = rentFee;
     }
 
-    function setBeneficiary(address payable _newBeneficiary)
-        external
-        onlyAdmin
-    {
-        beneficiary = _newBeneficiary;
+    function setBeneficiary(address payable newBeneficiary) external onlyAdmin {
+        beneficiary = newBeneficiary;
     }
 
-    function setPaused(bool _paused) external onlyAdmin {
-        paused = _paused;
+    function setPaused(bool newPaused) external onlyAdmin {
+        paused = newPaused;
     }
 }
 
