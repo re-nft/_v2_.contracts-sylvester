@@ -46,44 +46,10 @@ contract Registry is
     address payable private beneficiary;
     uint256 private lendingId = 1;
     bool public paused = false;
-
     uint256 public rentFee = 0;
-
     uint256 private constant SECONDS_IN_DAY = 86400;
-
-    struct Lending {
-        address payable lenderAddress;
-        uint8 maxRentDuration;
-        bytes4 dailyRentPrice;
-        uint8 lentAmount;
-        uint8 availableAmount;
-        IResolver.PaymentToken paymentToken;
-    }
-
-    struct Renting {
-        address payable renterAddress;
-        uint8 rentDuration;
-        uint8 rentAmount;
-        uint32 rentedAt;
-    }
-
     mapping(bytes32 => Lending) private lendings;
     mapping(bytes32 => Renting) private rentings;
-
-    struct CallData {
-        uint256 left;
-        uint256 right;
-        IRegistry.NFTStandard[] nftStandard;
-        address[] nfts;
-        uint256[] tokenIds;
-        uint256[] lentAmounts;
-        uint8[] maxRentDurations;
-        bytes4[] dailyRentPrices;
-        bytes4[] nftPrices;
-        uint256[] lendingIds;
-        uint8[] rentDurations;
-        IResolver.PaymentToken[] paymentTokens;
-    }
 
     modifier onlyAdmin() {
         require(msg.sender == admin, "ReNFT::not admin");
@@ -108,13 +74,221 @@ contract Registry is
         admin = admin;
     }
 
-    function bundleCall(function(CallData memory) handler, CallData memory cd)
-        private
-    {
-        require(cd.nfts.length > 0, "ReNFT::no nfts");
+    function lend(
+        IRegistry.NFTStandrd[] memory nftStandard,
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory lendAmount,
+        uint8[] memory maxRentDuration,
+        bytes4[] memory dailyRentPrice,
+        IResolver.PaymentToken[] memory paymentToken
+    ) external override notPaused {
+        bundleCall(
+            handleLend,
+            createLendCallData(
+                nftStandard,
+                nftAddress,
+                tokenID,
+                lendAmount,
+                maxRentDuration,
+                dailyRentPrice,
+                paymentToken
+            )
+        );
+    }
+
+    function stopLend(
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory lendingID
+    ) external override notPaused {
+        bundleCall(
+            handleStopLend,
+            createActionCallData(nftAddress, tokenID, lendingID)
+        );
+    }
+
+    function rent(
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory lendingID,
+        uint8[] memory rentDuration
+    ) external override notPaused {
+        bundleCall(
+            handleRent,
+            createRentCallData(nftAddress, tokenID, lendingID, rentDuration)
+        );
+    }
+
+    function stopRent(
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory lendingID
+    ) external override notPaused {
+        bundleCall(
+            handleStopRent,
+            createActionCallData(nftAddress, tokenID, lendingID)
+        );
+    }
+
+    //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
+    // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
+
+    function handleLend(IRegistry.CallData memory cd) private {
+        for (uint256 i = cd.left; i < cd.right; i++) {
+            ensureIsLendable(cd, i);
+            IRegistry.Lending storage lending = lendings[
+                keccak256(
+                    abi.encodePacked(
+                        cd.nftAddress[cd.left],
+                        cd.tokenID[i],
+                        lendingID
+                    )
+                )
+            ];
+            ensureIsNull(lending);
+            bool is721 = cd.nftStandard[i];
+            item.lending = Lending({
+                lenderAddress: payable(msg.sender),
+                lentAmount: is721 ? 1 : uint8(cd.lendAmount[i]),
+                maxRentDuration: cd.maxRentDuration[i],
+                dailyRentPrice: cd.dailyRentPrice[i],
+                nftPrice: cd.nftPrice[i],
+                paymentToken: cd.paymentToken[i]
+            });
+            emit Lent(
+                cd.nftAddress[cd.left],
+                cd.tokenID[i],
+                is721 ? 1 : uint8(cd.lendAmount[i]),
+                lendingID,
+                msg.sender,
+                cd.maxRentDuration[i],
+                cd.dailyRentPrice[i],
+                cd.nftPrice[i],
+                is721,
+                cd.paymentToken[i]
+            );
+            lendingId++;
+        }
+        safeTransfer(
+            cd,
+            msg.sender,
+            address(this),
+            sliceArr(cd.tokenID, cd.left, cd.right, 0),
+            sliceArr(cd.lendAmount, cd.left, cd.right, 0)
+        );
+    }
+
+    function handleRent(IRegistry.CallData memory cd) private {
+        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
+        for (uint256 i = cd.left; i < cd.right; i++) {
+            bytes32 identifier = keccak256(
+                abi.encodePacked(
+                    cd.nftAddress[cd.left],
+                    cd.tokenID[i],
+                    cd.lendingID[i]
+                )
+            );
+            IRegistry.Lending storage lending = lendings[identifier];
+            IRegistry.Renting storage renting = rentings[identifier];
+            ensureIsNotNull(lending);
+            ensureIsNull(renting);
+            ensureIsRentable(lending, cd, i, msg.sender);
+            uint8 paymentTokenIx = uint8(lending.paymentToken);
+            ensureTokenNotSentinel(paymentTokenIx);
+            address paymentToken = resolver.getPaymentToken(paymentTokenIx);
+            uint256 decimals = ERC20(paymentToken).decimals();
+            {
+                uint256 scale = 10**decimals;
+                uint256 rentPrice = cd.rentDuration[i] *
+                    unpackPrice(lending.dailyRentPrice, scale);
+                require(rentPrice > 0, "ReNFT::rent price is zero");
+                ERC20(paymentToken).safeTransferFrom(
+                    msg.sender,
+                    address(this),
+                    rentPrice
+                );
+            }
+            lentAmounts[i - cd.left] = lending.lendAmount;
+            renting.renterAddress = payable(msg.sender);
+            renting.rentDuration = cd.rentDuration[i];
+            renting.rentedAt = uint32(block.timestamp);
+            emit IRegistry.Rented(
+                cd.lendingID[i],
+                msg.sender,
+                cd.rentDuration[i],
+                renting.rentedAt
+            );
+        }
+    }
+
+    function handleStopRent(IRegistry.CallData memory cd) private {
+        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
+        for (uint256 i = cd.left; i < cd.right; i++) {
+            bytes32 identifier = keccak256(
+                abi.encodePacked(
+                    cd.nftAddress[cd.left],
+                    cd.tokenID[i],
+                    cd.lendingID[i]
+                )
+            );
+            IRegistry.Lending storage lending = lendings[identifier];
+            IRegistry.Renting storage renting = rentings[identifier];
+            ensureIsNotNull(lending);
+            ensureIsReturnable(renting, msg.sender, block.timestamp);
+            uint256 secondsSinceRentStart = block.timestamp - renting.rentedAt;
+            distributePayments(item, secondsSinceRentStart);
+            lentAmounts[i - cd.left] = lending.lentAmount;
+            emit Returned(cd.lendingID[i], uint32(block.timestamp));
+            delete item.renting;
+            // todo: add to the available amount the amount that was stopped here.
+            // todo: the amount returned here, is in the renting struct
+        }
+    }
+
+    function handleStopLend(IRegistry.CallData memory cd) private {
+        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
+        for (uint256 i = cd.left; i < cd.right; i++) {
+            bytes32 identifier = keccak256(
+                abi.encodePacked(
+                    cd.nftAddress[cd.left],
+                    cd.tokenID[i],
+                    cd.lendingID[i]
+                )
+            );
+            Lending storage lending = lendings[identifier];
+            Renting storage renting = rentings[identifier];
+            require(
+                lending.lentAmount == lending.availableAmount,
+                "ReNFT::actively rented"
+            );
+            ensureIsNotNull(lending);
+            ensureIsNull(renting);
+            ensureIsStoppable(lending, msg.sender);
+            lentAmounts[i - cd.left] = lending.lentAmount;
+            emit LendingStopped(cd.lendingID[i], uint32(block.timestamp));
+            delete item.lending;
+        }
+        safeTransfer(
+            cd,
+            address(this),
+            msg.sender,
+            sliceArr(cd.tokenID, cd.left, cd.right, 0),
+            sliceArr(lentAmounts, cd.left, cd.right, cd.left)
+        );
+    }
+
+    //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
+    // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
+
+    function bundleCall(
+        function(IRegistry.CallData memory) handler,
+        IRegistry.CallData memory cd
+    ) private {
+        require(cd.nftAddress.length > 0, "ReNFT::no nfts");
         while (cd.right != cd.nfts.length) {
             if (
-                (cd.nfts[cd.left] == cd.nfts[cd.right]) &&
+                (cd.nftAddress[cd.left] == cd.nftAddress[cd.right]) &&
                 (cd.nftStandard[cd.right] == IRegistry.NFTStandard.E1155)
             ) {
                 cd.right++;
@@ -126,233 +300,6 @@ contract Registry is
         }
         handler(cd);
     }
-
-    function lend(
-        address[] memory nfts,
-        uint256[] memory tokenIds,
-        uint256[] memory lendAmounts,
-        uint8[] memory maxRentDurations,
-        bytes4[] memory dailyRentPrices,
-        bytes4[] memory nftPrices,
-        IResolver.PaymentToken[] memory paymentTokens
-    ) external override notPaused {
-        bundleCall(
-            handleLend,
-            createLendCallData(
-                nfts,
-                tokenIds,
-                lendAmounts,
-                maxRentDurations,
-                dailyRentPrices,
-                nftPrices,
-                paymentTokens
-            )
-        );
-    }
-
-    function rent(
-        address[] memory nfts,
-        uint256[] memory tokenIds,
-        uint256[] memory lendingIds,
-        uint8[] memory rentDurations
-    ) external override notPaused {
-        bundleCall(
-            handleRent,
-            createRentCallData(nfts, tokenIds, lendingIds, rentDurations)
-        );
-    }
-
-    function stopRent(
-        address[] memory nfts,
-        uint256[] memory tokenIds,
-        uint256[] memory lendingIds
-    ) external override notPaused {
-        bundleCall(
-            handleStopRent,
-            createActionCallData(nfts, tokenIds, lendingIds)
-        );
-    }
-
-    function stopLend(
-        address[] memory nfts,
-        uint256[] memory tokenIds,
-        uint256[] memory lendingIds
-    ) external override notPaused {
-        bundleCall(
-            handleStopLends,
-            createActionCallData(nfts, tokenIds, lendingIds)
-        );
-    }
-
-    //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
-    // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
-
-    function handleLend(CallData memory cd) private {
-        for (uint256 i = cd.left; i < cd.right; i++) {
-            ensureIsLendable(cd, i);
-
-            LendingRenting storage item = lendingRenting[
-                keccak256(
-                    abi.encodePacked(
-                        cd.nfts[cd.left],
-                        cd.tokenIds[i],
-                        lendingId
-                    )
-                )
-            ];
-
-            ensureIsNull(item.lending);
-
-            bool nftIs721 = is721(cd.nfts[i]);
-            item.lending = Lending({
-                lenderAddress: payable(msg.sender),
-                lentAmount: nftIs721 ? 1 : uint8(cd.lentAmounts[i]),
-                maxRentDuration: cd.maxRentDurations[i],
-                dailyRentPrice: cd.dailyRentPrices[i],
-                nftPrice: cd.nftPrices[i],
-                paymentToken: cd.paymentTokens[i]
-            });
-
-            emit Lent(
-                cd.nfts[cd.left],
-                cd.tokenIds[i],
-                nftIs721 ? 1 : uint8(cd.lentAmounts[i]),
-                lendingId,
-                msg.sender,
-                cd.maxRentDurations[i],
-                cd.dailyRentPrices[i],
-                cd.nftPrices[i],
-                nftIs721,
-                cd.paymentTokens[i]
-            );
-
-            lendingId++;
-        }
-
-        safeTransfer(
-            cd,
-            msg.sender,
-            address(this),
-            sliceArr(cd.tokenIds, cd.left, cd.right, 0),
-            sliceArr(cd.lentAmounts, cd.left, cd.right, 0)
-        );
-    }
-
-    function handleRent(CallData memory cd) private {
-        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
-
-        for (uint256 i = cd.left; i < cd.right; i++) {
-            LendingRenting storage item = lendingRenting[
-                keccak256(
-                    abi.encodePacked(
-                        cd.nfts[cd.left],
-                        cd.tokenIds[i],
-                        cd.lendingIds[i]
-                    )
-                )
-            ];
-
-            ensureIsNotNull(item.lending);
-            ensureIsNull(item.renting);
-            ensureIsRentable(item.lending, cd, i, msg.sender);
-
-            uint8 paymentTokenIx = uint8(item.lending.paymentToken);
-            ensureTokenNotSentinel(paymentTokenIx);
-            address paymentToken = resolver.getPaymentToken(paymentTokenIx);
-            uint256 decimals = ERC20(paymentToken).decimals();
-
-            {
-                uint256 scale = 10**decimals;
-                uint256 rentPrice = cd.rentDurations[i] *
-                    unpackPrice(item.lending.dailyRentPrice, scale);
-                uint256 nftPrice = item.lending.lentAmount *
-                    unpackPrice(item.lending.nftPrice, scale);
-
-                require(rentPrice > 0, "ReNFT::rent price is zero");
-                require(nftPrice > 0, "ReNFT::nft price is zero");
-
-                ERC20(paymentToken).safeTransferFrom(
-                    msg.sender,
-                    address(this),
-                    rentPrice + nftPrice
-                );
-            }
-
-            lentAmounts[i - cd.left] = item.lending.lentAmount;
-
-            item.renting.renterAddress = payable(msg.sender);
-            item.renting.rentDuration = cd.rentDurations[i];
-            item.renting.rentedAt = uint32(block.timestamp);
-
-            emit Rented(
-                cd.lendingIds[i],
-                msg.sender,
-                cd.rentDurations[i],
-                item.renting.rentedAt
-            );
-        }
-    }
-
-    function handleStopRent(CallData memory cd) private {
-        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
-        for (uint256 i = cd.left; i < cd.right; i++) {
-            bytes32 identifier = keccak256(
-                abi.encodePacked(
-                    cd.nfts[cd.left],
-                    cd.tokenIds[i],
-                    cd.lendingIds[i]
-                )
-            );
-            Renting storage item = rentings[identifier];
-            ensureIsNotNull(item.lending);
-            ensureIsReturnable(item.renting, msg.sender, block.timestamp);
-            uint256 secondsSinceRentStart = block.timestamp -
-                item.renting.rentedAt;
-            distributePayments(item, secondsSinceRentStart);
-            lentAmounts[i - cd.left] = item.lending.lentAmount;
-            emit Returned(cd.lendingIds[i], uint32(block.timestamp));
-            delete item.renting;
-
-            Lending storage item = lendings[identifier];
-            // todo: add to the available amount the amount that was stopped here.
-            // todo: the amount returned here, is in the renting struct
-        }
-    }
-
-    function handleStopLend(CallData memory cd) private {
-        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
-        for (uint256 i = cd.left; i < cd.right; i++) {
-            Lending storage item = lendingRenting[
-                keccak256(
-                    abi.encodePacked(
-                        cd.nfts[cd.left],
-                        cd.tokenIds[i],
-                        cd.lendingIds[i]
-                    )
-                )
-            ];
-            require(
-                item.lentAmount == item.availableAmount,
-                "ReNFT::actively rented"
-            );
-            ensureIsNotNull(item.lending);
-            ensureIsNull(item.renting);
-            ensureIsStoppable(item.lending, msg.sender);
-            lentAmounts[i - cd.left] = item.lending.lentAmount;
-            emit LendingStopped(cd.lendingIds[i], uint32(block.timestamp));
-            delete item.lending;
-        }
-        safeTransfer(
-            cd,
-            address(this),
-            msg.sender,
-            sliceArr(cd.tokenIds, cd.left, cd.right, 0),
-            sliceArr(lentAmounts, cd.left, cd.right, cd.left)
-        );
-    }
-
-    //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
-    // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
     function takeFee(uint256 rent, IResolver.PaymentToken paymentToken)
         private
@@ -375,7 +322,6 @@ contract Registry is
         ensureTokenNotSentinel(paymentTokenIx);
         address paymentToken = resolver.getPaymentToken(paymentTokenIx);
         uint256 decimals = ERC20(paymentToken).decimals();
-
         uint256 scale = 10**decimals;
         uint256 rentPrice = unpackPrice(lending.dailyRentPrice, scale);
         uint256 totalRenterPmtWoCollateral = rentPrice * renting.rentDuration;
@@ -387,11 +333,8 @@ contract Registry is
         );
         require(sendLenderAmt > 0, "ReNFT::lender payment is zero");
         uint256 sendRenterAmt = totalRenterPmtWoCollateral - sendLenderAmt;
-
         uint256 takenFee = takeFee(sendLenderAmt, lending.paymentToken);
-
         sendLenderAmt -= takenFee;
-
         ERC20(paymentToken).safeTransfer(lending.lenderAddress, sendLenderAmt);
         ERC20(paymentToken).safeTransfer(renting.renterAddress, sendRenterAmt);
     }
@@ -400,21 +343,21 @@ contract Registry is
         CallData memory cd,
         address from,
         address to,
-        uint256[] memory tokenIds,
-        uint256[] memory lentAmounts
+        uint256[] memory tokenID,
+        uint256[] memory lendAmount
     ) private {
         if (cd.nftStandard[cd.left] == IRegistry.NFTStandard.E721) {
-            IERC721(cd.nfts[cd.left]).transferFrom(
+            IERC721(cd.nftAddress[cd.left]).transferFrom(
                 from,
                 to,
-                cd.tokenIds[cd.left]
+                cd.tokenID[cd.left]
             );
         } else {
-            IERC1155(cd.nfts[cd.left]).safeBatchTransferFrom(
+            IERC1155(cd.nftAddress[cd.left]).safeBatchTransferFrom(
                 from,
                 to,
-                tokenIds,
-                lentAmounts,
+                tokenID,
+                lendAmount,
                 ""
             );
         }
@@ -424,67 +367,67 @@ contract Registry is
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
     function createLendCallData(
-        address[] memory nfts,
-        uint256[] memory tokenIds,
-        uint256[] memory lendAmounts,
-        uint8[] memory maxRentDurations,
-        bytes4[] memory dailyRentPrices,
-        bytes4[] memory nftPrices,
-        IResolver.PaymentToken[] memory paymentTokens
+        IRegistry.NFTStandard[] memory nftStandard,
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory lendAmount,
+        uint8[] memory maxRentDuration,
+        bytes4[] memory dailyRentPrice,
+        IResolver.PaymentToken[] memory paymentToken
     ) private pure returns (CallData memory cd) {
         cd = CallData({
             left: 0,
             right: 1,
-            nfts: nfts,
-            tokenIds: tokenIds,
-            lentAmounts: lendAmounts,
-            lendingIds: new uint256[](0),
-            rentDurations: new uint8[](0),
-            maxRentDurations: maxRentDurations,
-            dailyRentPrices: dailyRentPrices,
-            nftPrices: nftPrices,
-            paymentTokens: paymentTokens
+            nftStandard: nftStandard,
+            nftAddress: nftAddress,
+            tokenID: tokenID,
+            lendAmount: lendAmount,
+            lendingID: new uint256[](0),
+            rentDuration: new uint8[](0),
+            maxRentDuration: maxRentDuration,
+            dailyRentPrice: dailyRentPrice,
+            paymentToken: paymentToken
         });
     }
 
     function createRentCallData(
-        address[] memory nfts,
-        uint256[] memory tokenIds,
-        uint256[] memory lendingIds,
-        uint8[] memory rentDurations
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory lendingID,
+        uint8[] memory rentDuration
     ) private pure returns (CallData memory cd) {
         cd = CallData({
             left: 0,
             right: 1,
-            nfts: nfts,
-            tokenIds: tokenIds,
+            nftStandard: new IRegistry.NFTStandard[](0),
+            nftAddress: nftAddress,
+            tokenID: tokenID,
             lentAmounts: new uint256[](0),
-            lendingIds: lendingIds,
-            rentDurations: rentDurations,
-            maxRentDurations: new uint8[](0),
-            dailyRentPrices: new bytes4[](0),
-            nftPrices: new bytes4[](0),
-            paymentTokens: new IResolver.PaymentToken[](0)
+            lendingID: lendingID,
+            rentDuration: rentDuration,
+            maxRentDuration: new uint8[](0),
+            dailyRentPrice: new bytes4[](0),
+            paymentToken: new IResolver.PaymentToken[](0)
         });
     }
 
     function createActionCallData(
-        address[] memory nfts,
-        uint256[] memory tokenIds,
-        uint256[] memory lendingIds
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory lendingID
     ) private pure returns (CallData memory cd) {
         cd = CallData({
             left: 0,
             right: 1,
-            nfts: nfts,
-            tokenIds: tokenIds,
-            lentAmounts: new uint256[](0),
-            lendingIds: lendingIds,
-            rentDurations: new uint8[](0),
-            maxRentDurations: new uint8[](0),
-            dailyRentPrices: new bytes4[](0),
-            nftPrices: new bytes4[](0),
-            paymentTokens: new IResolver.PaymentToken[](0)
+            nftStandard: new IRegistry.NFTStandard[](0),
+            nftAddress: nftAddress,
+            tokenID: tokenID,
+            lendAmount: new uint256[](0),
+            lendingID: lendingID,
+            rentDuration: new uint8[](0),
+            maxRentDuration: new uint8[](0),
+            dailyRentPrice: new bytes4[](0),
+            paymentToken: new IResolver.PaymentToken[](0)
         });
     }
 
@@ -494,22 +437,18 @@ contract Registry is
         returns (uint256)
     {
         ensureIsUnpackablePrice(price, scale);
-
         uint16 whole = uint16(bytes2(price));
         uint16 decimal = uint16(bytes2(price << 16));
         uint256 decimalScale = scale / 10000;
-
         if (whole > 9999) {
             whole = 9999;
         }
         if (decimal > 9999) {
             decimal = 9999;
         }
-
         uint256 w = whole * scale;
         uint256 d = decimal * decimalScale;
         uint256 price = w + d;
-
         return price;
     }
 

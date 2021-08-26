@@ -55,6 +55,20 @@ interface IRegistry {
         E1155
     }
 
+    struct CallData {
+        uint256 left;
+        uint256 right;
+        IRegistry.NFTStandard[] nftStandard;
+        address[] nftAddress;
+        uint256[] tokenID;
+        uint256[] lendAmount;
+        uint8[] maxRentDuration;
+        bytes4[] dailyRentPrice;
+        uint256[] lendingID;
+        uint8[] rentDuration;
+        IResolver.PaymentToken[] paymentToken;
+    }
+
     // 2, 162, 170, 202, 218, 234, 242
     struct Lending {
         NFTStandard nftStandard;
@@ -69,6 +83,7 @@ interface IRegistry {
     // 180, 212
     struct Renting {
         address payable renterAddress;
+        uint8 rentDuration;
         uint32 rentedAt;
         uint16 rentAmount;
     }
