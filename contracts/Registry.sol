@@ -3,6 +3,7 @@ pragma solidity =0.8.7;
 
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/ERC20.sol";
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/IERC20.sol";
+import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/utils/SafeERC20.sol";
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/IERC721.sol";
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/IERC1155.sol";
@@ -10,7 +11,6 @@ import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/utils/
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/utils/ERC1155Receiver.sol";
 
 import "./interfaces/IRegistry.sol";
-import "./EnumerableSet.sol";
 
 //              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@
 //              @@@,,,,,,,,,,@@@        ,@@&,,,,,,,,,,@@@
@@ -32,13 +32,7 @@ import "./EnumerableSet.sol";
 //                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@
 //                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@
 
-contract Registry is
-    IRegistry,
-    EnumerableSet,
-    ERC721Holder,
-    ERC1155Receiver,
-    ERC1155Holder
-{
+contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     using SafeERC20 for ERC20;
 
     IResolver private resolver;
@@ -62,20 +56,20 @@ contract Registry is
     }
 
     constructor(
-        address resolver,
-        address payable beneficiary,
-        address admin
+        address newResolver,
+        address payable newBeneficiary,
+        address newAdmin
     ) {
-        ensureIsNotZeroAddr(resolver);
-        ensureIsNotZeroAddr(beneficiary);
-        ensureIsNotZeroAddr(admin);
-        resolver = IResolver(resolver);
-        beneficiary = beneficiary;
-        admin = admin;
+        ensureIsNotZeroAddr(newResolver);
+        ensureIsNotZeroAddr(newBeneficiary);
+        ensureIsNotZeroAddr(newAdmin);
+        resolver = IResolver(newResolver);
+        beneficiary = newBeneficiary;
+        admin = newAdmin;
     }
 
     function lend(
-        IRegistry.NFTStandrd[] memory nftStandard,
+        IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
         uint256[] memory tokenID,
         uint256[] memory lendAmount,
@@ -142,13 +136,13 @@ contract Registry is
                     abi.encodePacked(
                         cd.nftAddress[cd.left],
                         cd.tokenID[i],
-                        lendingID
+                        cd.lendingID[i]
                     )
                 )
             ];
             ensureIsNull(lending);
             bool is721 = cd.nftStandard[i];
-            item.lending = Lending({
+            lending = Lending({
                 lenderAddress: payable(msg.sender),
                 lentAmount: is721 ? 1 : uint8(cd.lendAmount[i]),
                 maxRentDuration: cd.maxRentDuration[i],
@@ -156,11 +150,11 @@ contract Registry is
                 nftPrice: cd.nftPrice[i],
                 paymentToken: cd.paymentToken[i]
             });
-            emit Lent(
+            emit IRegistry.Lent(
                 cd.nftAddress[cd.left],
                 cd.tokenID[i],
                 is721 ? 1 : uint8(cd.lendAmount[i]),
-                lendingID,
+                cd.lendingID[i],
                 msg.sender,
                 cd.maxRentDuration[i],
                 cd.dailyRentPrice[i],
@@ -237,10 +231,10 @@ contract Registry is
             ensureIsNotNull(lending);
             ensureIsReturnable(renting, msg.sender, block.timestamp);
             uint256 secondsSinceRentStart = block.timestamp - renting.rentedAt;
-            distributePayments(item, secondsSinceRentStart);
+            distributePayments(lending, renting, secondsSinceRentStart);
             lentAmounts[i - cd.left] = lending.lentAmount;
-            emit Returned(cd.lendingID[i], uint32(block.timestamp));
-            delete item.renting;
+            emit IRegistry.StopRent(cd.lendingID[i], uint32(block.timestamp));
+            delete renting;
             // todo: add to the available amount the amount that was stopped here.
             // todo: the amount returned here, is in the renting struct
         }
@@ -266,8 +260,8 @@ contract Registry is
             ensureIsNull(renting);
             ensureIsStoppable(lending, msg.sender);
             lentAmounts[i - cd.left] = lending.lentAmount;
-            emit LendingStopped(cd.lendingID[i], uint32(block.timestamp));
-            delete item.lending;
+            emit IRegistry.StopLend(cd.lendingID[i], uint32(block.timestamp));
+            delete lending;
         }
         safeTransfer(
             cd,
@@ -301,16 +295,16 @@ contract Registry is
         handler(cd);
     }
 
-    function takeFee(uint256 rent, IResolver.PaymentToken paymentToken)
+    function takeFee(uint256 rentAmt, IResolver.PaymentToken paymentToken)
         private
         returns (uint256 fee)
     {
-        fee = rent * rentFee;
+        fee = rentAmt * rentFee;
         fee /= 10000;
         uint8 paymentTokenIx = uint8(paymentToken);
         ensureTokenNotSentinel(paymentTokenIx);
-        ERC20 paymentToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
-        paymentToken.safeTransfer(beneficiary, fee);
+        ERC20 pmtToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
+        pmtToken.safeTransfer(beneficiary, fee);
     }
 
     function distributePayments(
@@ -320,8 +314,8 @@ contract Registry is
     ) private {
         uint8 paymentTokenIx = uint8(lending.paymentToken);
         ensureTokenNotSentinel(paymentTokenIx);
-        address paymentToken = resolver.getPaymentToken(paymentTokenIx);
-        uint256 decimals = ERC20(paymentToken).decimals();
+        address pmtToken = resolver.getPaymentToken(paymentTokenIx);
+        uint256 decimals = ERC20(pmtToken).decimals();
         uint256 scale = 10**decimals;
         uint256 rentPrice = unpackPrice(lending.dailyRentPrice, scale);
         uint256 totalRenterPmtWoCollateral = rentPrice * renting.rentDuration;
@@ -335,8 +329,8 @@ contract Registry is
         uint256 sendRenterAmt = totalRenterPmtWoCollateral - sendLenderAmt;
         uint256 takenFee = takeFee(sendLenderAmt, lending.paymentToken);
         sendLenderAmt -= takenFee;
-        ERC20(paymentToken).safeTransfer(lending.lenderAddress, sendLenderAmt);
-        ERC20(paymentToken).safeTransfer(renting.renterAddress, sendRenterAmt);
+        ERC20(pmtToken).safeTransfer(lending.lenderAddress, sendLenderAmt);
+        ERC20(pmtToken).safeTransfer(renting.renterAddress, sendRenterAmt);
     }
 
     function safeTransfer(
@@ -448,8 +442,8 @@ contract Registry is
         }
         uint256 w = whole * scale;
         uint256 d = decimal * decimalScale;
-        uint256 price = w + d;
-        return price;
+        uint256 fullPrice = w + d;
+        return fullPrice;
     }
 
     function sliceArr(
@@ -566,9 +560,9 @@ contract Registry is
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
-    function setRentFee(uint256 rentFee) external onlyAdmin {
-        require(rentFee < 10000, "ReNFT::fee exceeds 100pct");
-        rentFee = rentFee;
+    function setRentFee(uint256 newRentFee) external onlyAdmin {
+        require(newRentFee < 10000, "ReNFT::fee exceeds 100pct");
+        rentFee = newRentFee;
     }
 
     function setBeneficiary(address payable newBeneficiary) external onlyAdmin {

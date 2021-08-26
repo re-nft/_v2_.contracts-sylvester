@@ -99,16 +99,12 @@ interface IRegistry {
         IResolver.PaymentToken[] memory paymentToken
     ) external;
 
-    // // creates the renting structs and adds them to the enumerable set
-    // function rent(
-    //     uint256[] lendingID
-    // ) external payable;
-
-    // function stopRent(
-    //     uint256[] rentingID
-    // ) external;
-
     function stopLend(uint256[] memory lendingID) external;
+
+    // // creates the renting structs and adds them to the enumerable set
+    function rent(uint256[] lendingID) external payable;
+
+    function stopRent(uint256[] rentingID) external;
 }
 
 //              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@
