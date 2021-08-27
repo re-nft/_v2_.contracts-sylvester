@@ -32,7 +32,7 @@ interface IRegistry {
         uint256 indexed tokenID,
         uint256 lendingID,
         uint8 maxRentDuration,
-        uint32 dailyRentPrice,
+        bytes4 dailyRentPrice,
         uint16 lendAmount,
         IResolver.PaymentToken paymentToken
     );
@@ -65,7 +65,9 @@ interface IRegistry {
         uint8[] maxRentDuration;
         bytes4[] dailyRentPrice;
         uint256[] lendingID;
+        uint256[] rentingID;
         uint8[] rentDuration;
+        uint256[] rentAmount;
         IResolver.PaymentToken[] paymentToken;
     }
 
@@ -74,7 +76,7 @@ interface IRegistry {
         NFTStandard nftStandard;
         address payable lenderAddress;
         uint8 maxRentDuration;
-        uint32 dailyRentPrice;
+        bytes4 dailyRentPrice;
         uint16 lendAmount;
         uint16 availableAmount;
         IResolver.PaymentToken paymentToken;
@@ -93,18 +95,33 @@ interface IRegistry {
         IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
         uint256[] memory tokenID,
+        uint256[] memory lendAmount,
         uint8[] memory maxRentDuration,
-        uint32[] memory dailyRentPrice,
-        uint16[] memory lendAmount,
+        bytes4[] memory dailyRentPrice,
         IResolver.PaymentToken[] memory paymentToken
     ) external;
 
-    function stopLend(uint256[] memory lendingID) external;
+    function stopLend(
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory lendingID
+    ) external;
 
     // // creates the renting structs and adds them to the enumerable set
-    function rent(uint256[] lendingID) external payable;
+    function rent(
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory lendingID,
+        uint8[] memory rentDuration,
+        uint256[] memory rentAmount
+    ) external payable;
 
-    function stopRent(uint256[] rentingID) external;
+    function stopRent(
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory lendingID,
+        uint256[] memory rentingID
+    ) external;
 }
 
 //              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@
