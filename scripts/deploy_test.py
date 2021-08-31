@@ -29,6 +29,9 @@ class PaymentToken(Enum):
 def main():
 
     a = accounts[0]
+    beneficiary = accounts[1]
+    admin = accounts[0]
+
     from_a = {"from": a}
 
     resolver = Resolver.deploy(a, from_a)
@@ -41,7 +44,7 @@ def main():
     resolver.setPaymentToken(PaymentToken.USDC.value, usdc.address)
     resolver.setPaymentToken(PaymentToken.TUSD.value, tusd.address)
 
-    registry = Registry.deploy(resolver.address, from_a)
+    registry = Registry.deploy(resolver.address, beneficiary.address, admin.address, from_a)
 
     e721 = E721.deploy(from_a)
     e721b = E721B.deploy(from_a)
@@ -54,10 +57,13 @@ def main():
     e1155b.setApprovalForAll(registry.address, True)
 
     # test lending batch
+    token_id_e721 = 1
+    lending_id = 1
+
     registry.lend(
         [NFTStandard.E721.value],
         [e721.address],
-        [1],
+        [token_id_e721],
         [1],
         [100],
         [1],
@@ -65,18 +71,18 @@ def main():
         from_a,
     )
 
-    registry.stopLend([1])
+    registry.stopLend([e721.address], [token_id_e721], [lending_id])
 
-    # test lending batch
-    registry.lend(
-        [NFTStandard.E721.value, NFTStandard.E721.value],
-        [e721.address, e721.address],
-        [1, 2],
-        [1, 1],
-        [100, 100],
-        [1, 1],
-        [PaymentToken.DAI.value, PaymentToken.USDC.value],
-        from_a,
-    )
+    # # test lending batch
+    # registry.lend(
+    #     [NFTStandard.E721.value, NFTStandard.E721.value],
+    #     [e721.address, e721.address],
+    #     [1, 2],
+    #     [1, 1],
+    #     [100, 100],
+    #     [1, 1],
+    #     [PaymentToken.DAI.value, PaymentToken.USDC.value],
+    #     from_a,
+    # )
 
     # registry.stopLend([1, 2])

@@ -149,7 +149,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 abi.encodePacked(
                     cd.nftAddress[cd.left],
                     cd.tokenID[i],
-                    cd.lendingID[i]
+                    lendingID
                 )
             );
             IRegistry.Lending storage lending = lendings[identifier];
@@ -169,7 +169,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 msg.sender,
                 cd.nftAddress[cd.left],
                 cd.tokenID[i],
-                cd.lendingID[i],
+                lendingID,
                 cd.maxRentDuration[i],
                 cd.dailyRentPrice[i],
                 is721 ? 1 : uint8(cd.lendAmount[i]),
@@ -183,6 +183,41 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             address(this),
             sliceArr(cd.tokenID, cd.left, cd.right, 0),
             sliceArr(cd.lendAmount, cd.left, cd.right, 0)
+        );
+    }
+
+    function handleStopLend(IRegistry.CallData memory cd) private {
+        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
+        IRegistry.NFTStandard nftStandard = IRegistry.NFTStandard.E721;
+        for (uint256 i = cd.left; i < cd.right; i++) {
+            bytes32 lendingIdentifier = keccak256(
+                abi.encodePacked(
+                    cd.nftAddress[cd.left],
+                    cd.tokenID[i],
+                    cd.lendingID[i]
+                )
+            );
+            Lending storage lending = lendings[lendingIdentifier];
+            // the condition below ensures there are no rentings tied up to this lending
+            require(
+                lending.lendAmount == lending.availableAmount,
+                "ReNFT::actively rented"
+            );
+            ensureIsNotNull(lending);
+            ensureIsStoppable(lending, msg.sender);
+            lentAmounts[i - cd.left] = lending.lendAmount;
+            nftStandard = lending.nftStandard;
+            emit IRegistry.StopLend(cd.lendingID[i], uint32(block.timestamp));
+            delete lendings[lendingIdentifier];
+        }
+        cd.nftStandard = new IRegistry.NFTStandard[](cd.left + 1);
+        cd.nftStandard[cd.left] = nftStandard;
+        safeTransfer(
+            cd,
+            address(this),
+            msg.sender,
+            sliceArr(cd.tokenID, cd.left, cd.right, 0),
+            sliceArr(lentAmounts, cd.left, cd.right, cd.left)
         );
     }
 
@@ -269,37 +304,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             // todo: add to the available amount the amount that was stopped here.
             // todo: the amount returned here, is in the renting struct
         }
-    }
-
-    function handleStopLend(IRegistry.CallData memory cd) private {
-        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
-        for (uint256 i = cd.left; i < cd.right; i++) {
-            bytes32 lendingIdentifier = keccak256(
-                abi.encodePacked(
-                    cd.nftAddress[cd.left],
-                    cd.tokenID[i],
-                    cd.lendingID[i]
-                )
-            );
-            Lending storage lending = lendings[lendingIdentifier];
-            // the condition below ensures there are no rentings tied up to this lending
-            require(
-                lending.lendAmount == lending.availableAmount,
-                "ReNFT::actively rented"
-            );
-            ensureIsNotNull(lending);
-            ensureIsStoppable(lending, msg.sender);
-            lentAmounts[i - cd.left] = lending.lendAmount;
-            emit IRegistry.StopLend(cd.lendingID[i], uint32(block.timestamp));
-            delete lendings[lendingIdentifier];
-        }
-        safeTransfer(
-            cd,
-            address(this),
-            msg.sender,
-            sliceArr(cd.tokenID, cd.left, cd.right, 0),
-            sliceArr(lentAmounts, cd.left, cd.right, cd.left)
-        );
     }
 
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
