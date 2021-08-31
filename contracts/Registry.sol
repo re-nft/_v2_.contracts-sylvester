@@ -248,7 +248,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 abi.encodePacked(
                     cd.nftAddress[cd.left],
                     cd.tokenID[i],
-                    cd.rentingID[i]
+                    rentingID
                 )
             );
             IRegistry.Lending storage lending = lendings[lendingIdentifier];
@@ -283,7 +283,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             emit IRegistry.Rent(
                 msg.sender,
                 cd.lendingID[i],
-                cd.rentingID[i],
+                rentingID,
                 uint8(cd.rentAmount[i]),
                 cd.rentDuration[i],
                 renting.rentedAt

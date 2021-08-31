@@ -53,17 +53,26 @@ def main():
     e1155 = E1155.deploy(from_a)
     e1155b = E1155B.deploy(from_a)
 
-    e721.setApprovalForAll(registry.address, True)
-    e721b.setApprovalForAll(registry.address, True)
-    e1155.setApprovalForAll(registry.address, True)
-    e1155b.setApprovalForAll(registry.address, True)
+    e721.setApprovalForAll(registry.address, True, {"from": accounts[0]})
+    e721.setApprovalForAll(registry.address, True, {"from": accounts[1]})
+    e721b.setApprovalForAll(registry.address, True, {"from": accounts[0]})
+    e721.setApprovalForAll(registry.address, True, {"from": accounts[1]})
+    e1155.setApprovalForAll(registry.address, True, {"from": accounts[0]})
+    e721.setApprovalForAll(registry.address, True, {"from": accounts[1]})
+    e1155b.setApprovalForAll(registry.address, True, {"from": accounts[0]})
+    e721.setApprovalForAll(registry.address, True, {"from": accounts[1]})
 
-    # test lending batch
+    dai.approve(registry.address, 1_000_000e18, from_a)
+    usdc.approve(registry.address, 1_000_000e18, from_a)
+    tusd.approve(registry.address, 1_000_000e18, from_a)
+
+    # test lending
     token_id_e721_1 = 1
     token_id_e721_2 = 2
     lending_id_1 = 1
     lending_id_2 = 2
     lending_id_3 = 3
+    lending_id_4 = 4
 
     registry.lend(
         [NFTStandard.E721.value],
@@ -80,7 +89,7 @@ def main():
         [NFTStandard.E721.value], [e721.address], [token_id_e721_1], [lending_id_1]
     )
 
-    # # test lending batch
+    # test lending batch
     registry.lend(
         [NFTStandard.E721.value, NFTStandard.E721.value],
         [e721.address, e721.address],
@@ -97,4 +106,44 @@ def main():
         [e721.address, e721.address],
         [token_id_e721_1, token_id_e721_2],
         [lending_id_2, lending_id_3],
+    )
+
+    # test renting
+    e721.transferFrom(accounts[0], accounts[1], token_id_e721_1, {"from": accounts[0]})
+
+    registry.lend(
+        [NFTStandard.E721.value],
+        [e721.address],
+        [token_id_e721_1],
+        [1],
+        [100],
+        [1],
+        [PaymentToken.DAI.value],
+        {"from": accounts[1]},
+    )
+
+    # IRegistry.NFTStandard[] memory nftStandard,
+    # address[] memory nftAddress,
+    # uint256[] memory tokenID,
+    # uint256[] memory _lendingID,
+    # uint8[] memory rentDuration,
+    # uint256[] memory rentAmount
+    registry.rent(
+        [NFTStandard.E721.value],
+        [e721.address],
+        [token_id_e721_1],
+        [lending_id_4],
+        [1],
+        [1],
+        from_a,
+    )
+
+    registry.stopRent(
+        [NFTStandard.E721.value],
+        [e721.address],
+        [token_id_e721_1],
+        [lending_id_4],
+        [1],
+        [1],
+        from_a,
     )
