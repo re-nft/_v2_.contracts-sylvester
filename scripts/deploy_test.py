@@ -9,6 +9,7 @@ from brownie import (
     USDC,
     TUSD,
     accounts,
+    chain,
 )
 
 from enum import Enum
@@ -69,10 +70,13 @@ def main():
     # test lending
     token_id_e721_1 = 1
     token_id_e721_2 = 2
+
     lending_id_1 = 1
     lending_id_2 = 2
     lending_id_3 = 3
     lending_id_4 = 4
+
+    renting_id_1 = 1
 
     registry.lend(
         [NFTStandard.E721.value],
@@ -138,12 +142,19 @@ def main():
         from_a,
     )
 
+    chain.sleep(10)
+    chain.mine()
+
+    # IRegistry.NFTStandard[] memory nftStandard,
+    # address[] memory nftAddress,
+    # uint256[] memory tokenID,
+    # uint256[] memory _lendingID,
+    # uint256[] memory _rentingID
     registry.stopRent(
         [NFTStandard.E721.value],
         [e721.address],
         [token_id_e721_1],
         [lending_id_4],
-        [1],
-        [1],
+        [renting_id_1],
         from_a,
     )
