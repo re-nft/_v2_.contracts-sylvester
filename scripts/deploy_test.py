@@ -44,7 +44,9 @@ def main():
     resolver.setPaymentToken(PaymentToken.USDC.value, usdc.address)
     resolver.setPaymentToken(PaymentToken.TUSD.value, tusd.address)
 
-    registry = Registry.deploy(resolver.address, beneficiary.address, admin.address, from_a)
+    registry = Registry.deploy(
+        resolver.address, beneficiary.address, admin.address, from_a
+    )
 
     e721 = E721.deploy(from_a)
     e721b = E721B.deploy(from_a)
@@ -57,13 +59,16 @@ def main():
     e1155b.setApprovalForAll(registry.address, True)
 
     # test lending batch
-    token_id_e721 = 1
-    lending_id = 1
+    token_id_e721_1 = 1
+    token_id_e721_2 = 2
+    lending_id_1 = 1
+    lending_id_2 = 2
+    lending_id_3 = 3
 
     registry.lend(
         [NFTStandard.E721.value],
         [e721.address],
-        [token_id_e721],
+        [token_id_e721_1],
         [1],
         [100],
         [1],
@@ -71,18 +76,25 @@ def main():
         from_a,
     )
 
-    registry.stopLend([e721.address], [token_id_e721], [lending_id])
+    registry.stopLend(
+        [NFTStandard.E721.value], [e721.address], [token_id_e721_1], [lending_id_1]
+    )
 
     # # test lending batch
-    # registry.lend(
-    #     [NFTStandard.E721.value, NFTStandard.E721.value],
-    #     [e721.address, e721.address],
-    #     [1, 2],
-    #     [1, 1],
-    #     [100, 100],
-    #     [1, 1],
-    #     [PaymentToken.DAI.value, PaymentToken.USDC.value],
-    #     from_a,
-    # )
+    registry.lend(
+        [NFTStandard.E721.value, NFTStandard.E721.value],
+        [e721.address, e721.address],
+        [token_id_e721_1, token_id_e721_2],
+        [1, 1],
+        [100, 100],
+        [1, 1],
+        [PaymentToken.DAI.value, PaymentToken.USDC.value],
+        from_a,
+    )
 
-    # registry.stopLend([1, 2])
+    registry.stopLend(
+        [NFTStandard.E721.value, NFTStandard.E721.value],
+        [e721.address, e721.address],
+        [token_id_e721_1, token_id_e721_2],
+        [lending_id_2, lending_id_3],
+    )

@@ -93,6 +93,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     }
 
     function stopLend(
+        IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
         uint256[] memory tokenID,
         uint256[] memory _lendingID
@@ -100,6 +101,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         bundleCall(
             handleStopLend,
             createActionCallData(
+                nftStandard,
                 nftAddress,
                 tokenID,
                 _lendingID,
@@ -109,6 +111,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     }
 
     function rent(
+        IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
         uint256[] memory tokenID,
         uint256[] memory _lendingID,
@@ -118,6 +121,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         bundleCall(
             handleRent,
             createRentCallData(
+                nftStandard,
                 nftAddress,
                 tokenID,
                 _lendingID,
@@ -128,6 +132,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     }
 
     function stopRent(
+        IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
         uint256[] memory tokenID,
         uint256[] memory _lendingID,
@@ -135,7 +140,13 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     ) external override notPaused {
         bundleCall(
             handleStopRent,
-            createActionCallData(nftAddress, tokenID, _lendingID, _rentingID)
+            createActionCallData(
+                nftStandard,
+                nftAddress,
+                tokenID,
+                _lendingID,
+                _rentingID
+            )
         );
     }
 
@@ -198,6 +209,10 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 )
             );
             Lending storage lending = lendings[lendingIdentifier];
+            require(
+                cd.nftStandard[i] == lending.nftStandard,
+                "ReNFT::invalid nft standard"
+            );
             // the condition below ensures there are no rentings tied up to this lending
             require(
                 lending.lendAmount == lending.availableAmount,
@@ -210,8 +225,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             emit IRegistry.StopLend(cd.lendingID[i], uint32(block.timestamp));
             delete lendings[lendingIdentifier];
         }
-        cd.nftStandard = new IRegistry.NFTStandard[](cd.left + 1);
-        cd.nftStandard[cd.left] = nftStandard;
         safeTransfer(
             cd,
             address(this),
@@ -243,6 +256,10 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             ensureIsNotNull(lending);
             ensureIsNull(renting);
             ensureIsRentable(lending, cd, i, msg.sender);
+            require(
+                cd.nftStandard[i] == lending.nftStandard,
+                "ReNFT::invalid nft standard"
+            );
             uint8 paymentTokenIx = uint8(lending.paymentToken);
             ensureTokenNotSentinel(paymentTokenIx);
             address paymentToken = resolver.getPaymentToken(paymentTokenIx);
@@ -296,6 +313,10 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             IRegistry.Renting storage renting = rentings[rentingIdentifier];
             ensureIsNotNull(lending);
             ensureIsReturnable(renting, msg.sender, block.timestamp);
+            require(
+                cd.nftStandard[i] == lending.nftStandard,
+                "ReNFT::invalid nft standard"
+            );
             uint256 secondsSinceRentStart = block.timestamp - renting.rentedAt;
             distributePayments(lending, renting, secondsSinceRentStart);
             lentAmounts[i - cd.left] = lending.lendAmount;
@@ -421,6 +442,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     }
 
     function createRentCallData(
+        IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
         uint256[] memory tokenID,
         uint256[] memory _lendingID,
@@ -430,7 +452,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         cd = CallData({
             left: 0,
             right: 1,
-            nftStandard: new IRegistry.NFTStandard[](0),
+            nftStandard: nftStandard,
             nftAddress: nftAddress,
             tokenID: tokenID,
             lendAmount: new uint256[](0),
@@ -445,6 +467,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     }
 
     function createActionCallData(
+        IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
         uint256[] memory tokenID,
         uint256[] memory _lendingID,
@@ -453,7 +476,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         cd = CallData({
             left: 0,
             right: 1,
-            nftStandard: new IRegistry.NFTStandard[](0),
+            nftStandard: nftStandard,
             nftAddress: nftAddress,
             tokenID: tokenID,
             lendAmount: new uint256[](0),

@@ -102,6 +102,7 @@ interface IRegistry {
     ) external;
 
     function stopLend(
+        IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
         uint256[] memory tokenID,
         uint256[] memory lendingID
@@ -109,6 +110,7 @@ interface IRegistry {
 
     // // creates the renting structs and adds them to the enumerable set
     function rent(
+        IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
         uint256[] memory tokenID,
         uint256[] memory lendingID,
@@ -117,6 +119,7 @@ interface IRegistry {
     ) external payable;
 
     function stopRent(
+        IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
         uint256[] memory tokenID,
         uint256[] memory lendingID,
