@@ -32,6 +32,8 @@ import "./interfaces/IRegistry.sol";
 //                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@
 //                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@
 
+// TODO: if zero fee, do not invoke the send transaction
+
 contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     using SafeERC20 for ERC20;
 
@@ -235,7 +237,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     }
 
     function handleRent(IRegistry.CallData memory cd) private {
-        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
+        // uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
         for (uint256 i = cd.left; i < cd.right; i++) {
             bytes32 lendingIdentifier = keccak256(
                 abi.encodePacked(
@@ -260,6 +262,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 cd.nftStandard[i] == lending.nftStandard,
                 "ReNFT::invalid nft standard"
             );
+            require(cd.rentAmount[i] <= lending.availableAmount, "ReNFT::invalid rent amount");
             uint8 paymentTokenIx = uint8(lending.paymentToken);
             ensureTokenNotSentinel(paymentTokenIx);
             address paymentToken = resolver.getPaymentToken(paymentTokenIx);
@@ -275,11 +278,14 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                     rentPrice
                 );
             }
-            lentAmounts[i - cd.left] = lending.lendAmount;
-            renting.renterAddress = payable(msg.sender);
-            renting.rentAmount = uint8(cd.rentAmount[i]);
-            renting.rentDuration = cd.rentDuration[i];
-            renting.rentedAt = uint32(block.timestamp);
+            // lentAmounts[i - cd.left] = lending.lendAmount;
+            rentings[rentingIdentifier] = IRegistry.Renting({
+              renterAddress: payable(msg.sender),
+              rentAmount: uint8(cd.rentAmount[i]),
+              rentDuration: cd.rentDuration[i],
+              rentedAt: uint32(block.timestamp)
+            });
+            lendings[lendingIdentifier].availableAmount -= uint8(cd.rentAmount[i]);
             emit IRegistry.Rent(
                 msg.sender,
                 cd.lendingID[i],
@@ -293,7 +299,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     }
 
     function handleStopRent(IRegistry.CallData memory cd) private {
-        uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
         for (uint256 i = cd.left; i < cd.right; i++) {
             bytes32 lendingIdentifier = keccak256(
                 abi.encodePacked(
@@ -317,13 +322,12 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 cd.nftStandard[i] == lending.nftStandard,
                 "ReNFT::invalid nft standard"
             );
+            require(renting.rentAmount <= lending.lendAmount, "ReNFT::critical error");
             uint256 secondsSinceRentStart = block.timestamp - renting.rentedAt;
             distributePayments(lending, renting, secondsSinceRentStart);
-            lentAmounts[i - cd.left] = lending.lendAmount;
+            lendings[lendingIdentifier].availableAmount += renting.rentAmount;
             emit IRegistry.StopRent(cd.lendingID[i], uint32(block.timestamp));
             delete rentings[rentingIdentifier];
-            // todo: add to the available amount the amount that was stopped here.
-            // todo: the amount returned here, is in the renting struct
         }
     }
 
