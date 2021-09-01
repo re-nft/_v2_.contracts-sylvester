@@ -153,13 +153,110 @@ def test_e721(A, setup):
     )
 
 
-def test_e721_e721b(setup):
-    ...
+def test_e721_e721b(A, setup):
+    token_id = 1
+    lend_amount = 1
+    max_rent_duration = 1
+    daily_rent_price = 1
+
+    lending_id = 1
+
+    setup["registry"].lend(
+        [NFTStandard.E721.value, NFTStandard.E721.value],
+        [setup["e721"].address, setup["e721b"].address],
+        [token_id, token_id],
+        [lend_amount, lend_amount],
+        [max_rent_duration, max_rent_duration],
+        [daily_rent_price, daily_rent_price],
+        [PaymentToken.DAI.value, PaymentToken.DAI.value],
+        {"from": A.lender},
+    )
+
+    setup["registry"].stopLend(
+        [NFTStandard.E721.value, NFTStandard.E721.value],
+        [setup["e721"].address, setup["e721b"].address],
+        [token_id, token_id],
+        [lending_id, lending_id + 1],
+        {"from": A.lender},
+    )
 
 
-def test_e721_e721b_e1155(setup):
-    ...
+def test_e721_e721b_e1155(A, setup):
+    token_id = 1
+    lend_amount = 1
+    max_rent_duration = 1
+    daily_rent_price = 1
+
+    lending_id = 1
+
+    setup["registry"].lend(
+        [NFTStandard.E721.value, NFTStandard.E721.value, NFTStandard.E1155.value],
+        [setup["e721"].address, setup["e721b"].address, setup["e1155"].address],
+        [token_id, token_id, setup["e1155"].GOLD()],
+        [lend_amount, lend_amount, lend_amount],
+        [max_rent_duration, max_rent_duration, max_rent_duration],
+        [daily_rent_price, daily_rent_price, daily_rent_price],
+        [PaymentToken.DAI.value, PaymentToken.DAI.value, PaymentToken.DAI.value],
+        {"from": A.lender},
+    )
+
+    setup["registry"].stopLend(
+        [NFTStandard.E721.value, NFTStandard.E721.value, NFTStandard.E1155.value],
+        [setup["e721"].address, setup["e721b"].address, setup["e1155"].address],
+        [token_id, token_id, setup["e1155"].GOLD()],
+        [lending_id, lending_id + 1, lending_id + 2],
+        {"from": A.lender},
+    )
 
 
-def test_e721_e721b_e1155_e1155b(setup):
-    ...
+def test_e721_e721b_e1155_e1155b(A, setup):
+    token_id = 1
+    lend_amount = 1
+    max_rent_duration = 1
+    daily_rent_price = 1
+
+    lending_id = 1
+
+    setup["registry"].lend(
+        [
+            NFTStandard.E721.value,
+            NFTStandard.E721.value,
+            NFTStandard.E1155.value,
+            NFTStandard.E1155.value,
+        ],
+        [
+            setup["e721"].address,
+            setup["e721b"].address,
+            setup["e1155"].address,
+            setup["e1155b"].address,
+        ],
+        [token_id, token_id, setup["e1155"].GOLD(), setup["e1155b"].GOLD()],
+        [lend_amount, lend_amount, lend_amount, lend_amount],
+        [max_rent_duration, max_rent_duration, max_rent_duration, max_rent_duration],
+        [daily_rent_price, daily_rent_price, daily_rent_price, daily_rent_price],
+        [
+            PaymentToken.DAI.value,
+            PaymentToken.DAI.value,
+            PaymentToken.DAI.value,
+            PaymentToken.DAI.value,
+        ],
+        {"from": A.lender},
+    )
+
+    setup["registry"].stopLend(
+        [
+            NFTStandard.E721.value,
+            NFTStandard.E721.value,
+            NFTStandard.E1155.value,
+            NFTStandard.E1155.value,
+        ],
+        [
+            setup["e721"].address,
+            setup["e721b"].address,
+            setup["e1155"].address,
+            setup["e1155b"].address,
+        ],
+        [token_id, token_id, setup["e1155"].GOLD(), setup["e1155b"].GOLD()],
+        [lending_id, lending_id + 1, lending_id + 2, lending_id + 3],
+        {"from": A.lender},
+    )
