@@ -9,6 +9,8 @@ python = "3.9.6"
 eth-brownie = "^1.16.1"
 
 [tool.poetry.dev-dependencies]
+mypy = "^0.910"
+pylint = "^2.10.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1,3 +1,7 @@
+# pylint: disable=redefined-outer-name,invalid-name,no-name-in-module,unused-argument,too-few-public-methods,too-many-arguments,too-many-locals
+# type: ignore
+from enum import Enum
+
 from brownie import (
     Resolver,
     Registry,
@@ -11,8 +15,6 @@ from brownie import (
     accounts,
     chain,
 )
-
-from enum import Enum
 
 
 class NFTStandard(Enum):

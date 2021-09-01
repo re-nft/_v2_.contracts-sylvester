@@ -33,6 +33,7 @@ import "./interfaces/IRegistry.sol";
 //                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@
 
 // TODO: if zero fee, do not invoke the send transaction
+// TODO: test fee taking
 
 contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     using SafeERC20 for ERC20;
@@ -392,8 +393,10 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         );
         require(sendLenderAmt > 0, "ReNFT::lender payment is zero");
         uint256 sendRenterAmt = totalRenterPmtWoCollateral - sendLenderAmt;
-        uint256 takenFee = takeFee(sendLenderAmt, lending.paymentToken);
-        sendLenderAmt -= takenFee;
+        if (fee != 0) {
+          uint256 takenFee = takeFee(sendLenderAmt, lending.paymentToken);
+          sendLenderAmt -= takenFee;
+        }
         ERC20(pmtToken).safeTransfer(lending.lenderAddress, sendLenderAmt);
         ERC20(pmtToken).safeTransfer(renting.renterAddress, sendRenterAmt);
     }
