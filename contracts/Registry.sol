@@ -393,7 +393,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         );
         require(sendLenderAmt > 0, "ReNFT::lender payment is zero");
         uint256 sendRenterAmt = totalRenterPmtWoCollateral - sendLenderAmt;
-        if (fee != 0) {
+        if (rentFee != 0) {
           uint256 takenFee = takeFee(sendLenderAmt, lending.paymentToken);
           sendLenderAmt -= takenFee;
         }

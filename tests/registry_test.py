@@ -1,17 +1,39 @@
-#pylint: disable=redefined-outer-name,invalid-name,no-name-in-module,unused-argument,too-few-public-methods,too-many-arguments
-#type: ignore
+# pylint: disable=redefined-outer-name,invalid-name,no-name-in-module,unused-argument,too-few-public-methods,too-many-arguments
+# type: ignore
 from decimal import Decimal
+from enum import Enum
 
 import pytest
-from brownie import DAI, TUSD, USDC, E721, E721B, E1155, E1155B, Resolver, Registry, accounts
-from brownie.network.state import Chain
+from brownie import (
+    DAI,
+    TUSD,
+    USDC,
+    E721,
+    E721B,
+    E1155,
+    E1155B,
+    Resolver,
+    Registry,
+    accounts,
+    chain,
+)
 
-chain = Chain()
 
-THOUSAND = Decimal("1000e18")
-MAX = Decimal("5e76")
-ONE_WEEK = 24 * 60 * 60 * 7
 EPSILON = Decimal("0.0001")
+BILLION = Decimal("1_000_000_000e18")
+THOUSAND = Decimal("1_000e18")
+
+
+class NFTStandard(Enum):
+    E721 = 0
+    E1155 = 1
+
+
+class PaymentToken(Enum):
+    SENTINEL = 0
+    DAI = 1
+    USDC = 2
+    TUSD = 3
 
 
 class Accounts:
@@ -37,34 +59,107 @@ def A():
     A = Accounts(accounts)
     return A
 
+
 @pytest.fixture(scope="module")
 def payment_tokens(A):
-    dai = DAI.deploy({"from": A.deployer})
-    tusd = TUSD.deploy({"from": A.deployer})
-    usdc = USDC.deploy({"from": A.deployer})
+    dai = DAI.deploy({"from": A.renter})
+    tusd = TUSD.deploy({"from": A.renter})
+    usdc = USDC.deploy({"from": A.renter})
+
     return dai, tusd, usdc
 
-@pytest.fixture(scope="module")
-def registry(A):
-    return Registry.deploy({"from": A.deployer})
-
 
 @pytest.fixture(scope="module")
-def lp(A):
-    return E20.deploy({"from": A.DEPLOYER})
+def resolver(A):
+    resolver = Resolver.deploy(A.deployer, {"from": A.deployer})
+    return resolver
 
 
 @pytest.fixture(scope="module")
-def setup(lp, A, rent, liquidity_mining):
-    rent.sendToLiquidityMining(liquidity_mining.address, {"from": A.DEPLOYER})
+def nfts(A):
 
-    # lp tokens represent uni v2 lp erc20 tokens
-    lp.mint(A.NV, THOUSAND, {"from": A.DEPLOYER})
-    lp.mint(A.ER, THOUSAND, {"from": A.DEPLOYER})
-    lp.mint(A.EN, THOUSAND, {"from": A.DEPLOYER})
-    lp.mint(A.LU, THOUSAND, {"from": A.DEPLOYER})
+    e721 = E721.deploy({"from": A.lender})
+    e721b = E721B.deploy({"from": A.lender})
+    e1155 = E1155.deploy({"from": A.lender})
+    e1155b = E1155B.deploy({"from": A.lender})
 
-    lp.approve(liquidity_mining.address, MAX, {"from": A.NV})
-    lp.approve(liquidity_mining.address, MAX, {"from": A.ER})
-    lp.approve(liquidity_mining.address, MAX, {"from": A.EN})
-    lp.approve(liquidity_mining.address, MAX, {"from": A.LU})
+    return e721, e721b, e1155, e1155b
+
+
+@pytest.fixture(scope="module")
+def registry(A, resolver):
+    registry = Registry.deploy(
+        resolver.address, A.beneficiary, A.deployer, {"from": A.deployer}
+    )
+    return registry
+
+
+@pytest.fixture(scope="module")
+def setup(A, payment_tokens, nfts, resolver, registry):
+    dai, tusd, usdc = payment_tokens[0], payment_tokens[1], payment_tokens[2]
+    e721, e721b, e1155, e1155b = nfts[0], nfts[1], nfts[2], nfts[3]
+
+    resolver.setPaymentToken(PaymentToken.DAI.value, dai.address)
+    resolver.setPaymentToken(PaymentToken.USDC.value, usdc.address)
+    resolver.setPaymentToken(PaymentToken.TUSD.value, tusd.address)
+
+    e721.setApprovalForAll(registry.address, True, {"from": A.lender})
+    e721b.setApprovalForAll(registry.address, True, {"from": A.lender})
+    e1155.setApprovalForAll(registry.address, True, {"from": A.lender})
+    e1155b.setApprovalForAll(registry.address, True, {"from": A.lender})
+
+    dai.approve(registry.address, BILLION, {"from": A.renter})
+    usdc.approve(registry.address, BILLION, {"from": A.renter})
+    tusd.approve(registry.address, BILLION, {"from": A.renter})
+
+    return {
+        "dai": dai,
+        "tusd": tusd,
+        "usdc": usdc,
+        "e721": e721,
+        "e721b": e721b,
+        "e1155": e1155,
+        "e1155b": e1155b,
+        "resolver": resolver,
+        "registry": registry,
+    }
+
+
+def test_e721(A, setup):
+    token_id = 1
+    lend_amount = 1
+    max_rent_duration = 1
+    daily_rent_price = 1
+
+    lending_id = 1
+
+    setup["registry"].lend(
+        [NFTStandard.E721.value],
+        [setup["e721"].address],
+        [token_id],
+        [lend_amount],
+        [max_rent_duration],
+        [daily_rent_price],
+        [PaymentToken.DAI.value],
+        {"from": A.lender},
+    )
+
+    setup["registry"].stopLend(
+        [NFTStandard.E721.value],
+        [setup["e721"].address],
+        [token_id],
+        [lending_id],
+        {"from": A.lender},
+    )
+
+
+def test_e721_e721b(setup):
+    ...
+
+
+def test_e721_e721b_e1155(setup):
+    ...
+
+
+def test_e721_e721b_e1155_e1155b(setup):
+    ...
