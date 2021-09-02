@@ -5,7 +5,7 @@ import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/ERC20.so
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/IERC20.sol";
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/utils/SafeERC20.sol";
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/IERC721.sol";
-import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/IERC721Receiver.sol";
+import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/IERC1155.sol";
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/utils/ERC1155Receiver.sol";
@@ -32,12 +32,7 @@ import "./interfaces/IRegistry.sol";
 //                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@
 //                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@
 
-contract Registry is
-    IRegistry,
-    IERC721Receiver,
-    ERC1155Receiver,
-    ERC1155Holder
-{
+contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     using SafeERC20 for ERC20;
 
     IResolver private resolver;
@@ -390,38 +385,6 @@ contract Registry is
                 renting.rentAmount;
             delete rentings[rentingIdentifier];
         }
-    }
-
-    //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
-    // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
-
-    // todo: the same for erc1155
-
-    // only supports airdrops that call safe transfer
-    function onERC721Received(
-        address operator,
-        address from,
-        uint256 tokenID,
-        bytes calldata data
-    ) external override returns (bytes4) {
-        bytes32 callData;
-        assembly {
-            callData := calldataload(0)
-        }
-        bytes4 callSelector = bytes4(callData);
-        if (callSelector != this.lend.selector) {
-            address airdropReceiver = abi.decode(data, (address));
-            require(
-                airdropReceiver != address(0),
-                "ReNFT::receiver is a black hole"
-            );
-            IERC721(msg.sender).transferFrom(
-                address(this),
-                airdropReceiver,
-                tokenID
-            );
-        }
-        return IERC721Receiver.onERC721Received.selector;
     }
 
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
