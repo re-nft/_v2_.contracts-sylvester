@@ -153,6 +153,25 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         );
     }
 
+    function claimRent(
+        IRegistry.NFTStandard[] memory nftStandard,
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory _lendingID,
+        uint256[] memory _rentingID
+    ) external override notPaused {
+        bundleCall(
+            handleClaimRent,
+            createActionCallData(
+                nftStandard,
+                nftAddress,
+                tokenID,
+                _lendingID,
+                _rentingID
+            )
+        );
+    }
+
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
@@ -338,6 +357,39 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         }
     }
 
+    function handleClaimRent(CallData memory cd) private {
+        for (uint256 i = cd.left; i < cd.right; i++) {
+            bytes32 lendingIdentifier = keccak256(
+                abi.encodePacked(
+                    cd.nftAddress[cd.left],
+                    cd.tokenID[i],
+                    cd.lendingID[i]
+                )
+            );
+            bytes32 rentingIdentifier = keccak256(
+                abi.encodePacked(
+                    cd.nftAddress[cd.left],
+                    cd.tokenID[i],
+                    cd.rentingID[i]
+                )
+            );
+            IRegistry.Lending storage lending = lendings[lendingIdentifier];
+            IRegistry.Renting storage renting = rentings[rentingIdentifier];
+            ensureIsNotNull(lending);
+            ensureIsNotNull(renting);
+            ensureIsClaimable(renting, block.timestamp);
+            distributeClaimPayment(lending, renting);
+            emit IRegistry.RentClaimed(
+                cd.lendingID[i],
+                uint32(block.timestamp)
+            );
+            lending.availableAmount =
+                lending.availableAmount +
+                renting.rentAmount;
+            delete rentings[rentingIdentifier];
+        }
+    }
+
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
@@ -394,11 +446,32 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         require(sendLenderAmt > 0, "ReNFT::lender payment is zero");
         uint256 sendRenterAmt = totalRenterPmtWoCollateral - sendLenderAmt;
         if (rentFee != 0) {
-          uint256 takenFee = takeFee(sendLenderAmt, lending.paymentToken);
-          sendLenderAmt -= takenFee;
+            uint256 takenFee = takeFee(sendLenderAmt, lending.paymentToken);
+            sendLenderAmt -= takenFee;
         }
         ERC20(pmtToken).safeTransfer(lending.lenderAddress, sendLenderAmt);
         ERC20(pmtToken).safeTransfer(renting.renterAddress, sendRenterAmt);
+    }
+
+    function distributeClaimPayment(
+        IRegistry.Lending memory lending,
+        IRegistry.Renting memory renting
+    ) private {
+        uint8 paymentTokenIx = uint8(lending.paymentToken);
+        ensureTokenNotSentinel(paymentTokenIx);
+        ERC20 paymentToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
+        uint256 decimals = ERC20(paymentToken).decimals();
+        uint256 scale = 10**decimals;
+        uint256 rentPrice = unpackPrice(lending.dailyRentPrice, scale);
+        uint256 finalAmt = rentPrice * renting.rentDuration;
+        uint256 takenFee = 0;
+        if (rentFee != 0) {
+            takenFee = takeFee(
+                finalAmt,
+                IResolver.PaymentToken(paymentTokenIx)
+            );
+        }
+        paymentToken.safeTransfer(lending.lenderAddress, finalAmt - takenFee);
     }
 
     function safeTransfer(
@@ -620,6 +693,16 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
 
     function ensureTokenNotSentinel(uint8 paymentIx) private pure {
         require(paymentIx > 0, "ReNFT::token is sentinel");
+    }
+
+    function ensureIsClaimable(
+        IRegistry.Renting memory renting,
+        uint256 blockTimestamp
+    ) private pure {
+        require(
+            isPastReturnDate(renting, blockTimestamp),
+            "ReNFT::return date not passed"
+        );
     }
 
     function isPastReturnDate(Renting memory renting, uint256 nowTime)

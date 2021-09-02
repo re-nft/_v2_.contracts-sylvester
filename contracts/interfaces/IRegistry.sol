@@ -50,6 +50,8 @@ interface IRegistry {
 
     event StopRent(uint256 indexed rentingID, uint32 stoppedAt);
 
+    event RentClaimed(uint256 indexed lendingId, uint32 collectedAt);
+
     enum NFTStandard {
         E721,
         E1155
@@ -119,6 +121,14 @@ interface IRegistry {
     ) external payable;
 
     function stopRent(
+        IRegistry.NFTStandard[] memory nftStandard,
+        address[] memory nftAddress,
+        uint256[] memory tokenID,
+        uint256[] memory lendingID,
+        uint256[] memory rentingID
+    ) external;
+
+    function claimRent(
         IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
         uint256[] memory tokenID,
