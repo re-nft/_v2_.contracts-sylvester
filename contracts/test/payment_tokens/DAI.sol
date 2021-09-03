@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity =0.8.6;
+pragma solidity =0.8.7;
 
 import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/ERC20.sol";
 
-contract USDC is ERC20 {
-    constructor() ERC20("USDC", "USDC") {
-        _mint(msg.sender, 1 ether);
-    }
+contract DAI is ERC20 {
+    constructor() ERC20("DAI", "DAI") {}
 
     function decimals() public view virtual override returns (uint8) {
-        return 6;
+        return 18;
     }
 
     function faucet() public {
