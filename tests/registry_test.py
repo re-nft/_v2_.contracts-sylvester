@@ -17,6 +17,7 @@ from brownie import (
     accounts,
     chain,
 )
+from brownie.test import given, strategy
 
 
 EPSILON = Decimal("0.0001")
@@ -260,3 +261,11 @@ def test_e721_e721b_e1155_e1155b(A, setup):
         [lending_id, lending_id + 1, lending_id + 2, lending_id + 3],
         {"from": A.lender},
     )
+
+
+# edit lend price!
+
+
+@given()
+def test_lend_property(A, setup):
+    ...

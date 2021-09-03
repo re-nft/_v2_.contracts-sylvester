@@ -5,20 +5,18 @@ import "OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/ERC115
 
 contract E1155B is ERC1155 {
     uint256 private tokenId;
-    uint256 public constant GOLD = 1000;
-    uint256 public constant SILVER = 1001;
-    uint256 public constant THORS_HAMMER = 1002;
-    uint256 public constant SWORD = 1003;
-    uint256 public constant SHIELD = 1004;
-    uint256 public constant GUN = 1005;
 
     constructor() ERC1155("https://api.bccg.digital/api/bccg/{id}.json") {
-        _mint(msg.sender, GOLD, 1, "");
-        _mint(msg.sender, SILVER, 10, "");
-        _mint(msg.sender, THORS_HAMMER, 20, "");
-        _mint(msg.sender, SWORD, 1, "");
-        _mint(msg.sender, SHIELD, 20, "");
-        _mint(msg.sender, GUN, 30, "");
+        _mint(msg.sender, 1, 10, "");
+        _mint(msg.sender, 2, 10, "");
+        _mint(msg.sender, 3, 10, "");
+        _mint(msg.sender, 4, 10, "");
+        _mint(msg.sender, 5, 10, "");
+        _mint(msg.sender, 6, 10, "");
+        _mint(msg.sender, 7, 10, "");
+        _mint(msg.sender, 8, 10, "");
+        _mint(msg.sender, 9, 10, "");
+        _mint(msg.sender, 10, 10, "");
     }
 
     function award() public returns (uint256) {

@@ -24,9 +24,16 @@ contract E721 is Ownable, ERC721Enumerable {
         faucet();
         faucet();
         faucet();
+        faucet();
+        faucet();
+        faucet();
+        faucet();
+        faucet();
+        faucet();
+        faucet();
     }
 
-    function setBaseURI(string memory baseURI_) external onlyOwner() {
+    function setBaseURI(string memory baseURI_) external onlyOwner {
         _baseURIextended = baseURI_;
     }
 
