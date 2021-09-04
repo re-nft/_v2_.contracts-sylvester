@@ -128,6 +128,10 @@ class Lending:
     available_amount: int
     payment_token: PaymentToken
 
+    # below are not part of the contract struct
+    nft_address: str
+    token_id: int
+
 
 class StateMachine:
 
@@ -146,14 +150,26 @@ class StateMachine:
         e721.setApprovalForAll(self.contract.address, True, {"from": address})
 
         # todo: max_rent_duration is a strategy, and some cases revert
+        lending = Lending(
+          lender_address=address,
+          nft_standard=NFTStandard.E721.value,
+          lend_amount=1,
+          available_amount=1,
+          max_rent_duration=1,
+          daily_rent_price=1,
+          payment_token=PaymentToken.DAI.value,
+
+          nft_address=e721.address,
+          token_id=txn.events["Transfer"]["tokenId"],
+        )
 
         self.contract.lend(
-            [NFTStandard.E721.value],
-            [e721.address],
-            [txn.events["Transfer"]["tokenId"]],
-            [1],
-            [1],
-            [1],
+            [lending.nft_standard],
+            [lending.nft_address],
+            [lending.token_id],
+            [lending.lend_amount],
+            [lending.max_rent_duration],
+            [lending.daily_rent_price],
             [PaymentToken.DAI.value],
             {"from": address},
         )
