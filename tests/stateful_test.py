@@ -188,7 +188,7 @@ class StateMachine:
             [lending.lend_amount],
             [lending.max_rent_duration],
             [lending.daily_rent_price],
-            [PaymentToken.DAI.value],
+            [lending.payment_token],
             {"from": address},
         )
 
@@ -223,7 +223,7 @@ class StateMachine:
             [lending.lend_amount],
             [lending.max_rent_duration],
             [lending.daily_rent_price],
-            [PaymentToken.DAI.value],
+            [lending.payment_token],
             {"from": address},
         )
 
@@ -231,6 +231,125 @@ class StateMachine:
         self.lendings[
             concat_lending_id(lending.nft_address, lending.token_id, lending.lending_id)
         ] = lending
+
+    def rule_lend_batch_721(self, address, e721a="e721", e721b="e721"):
+        txna = e721a.faucet({"from": address})
+        e721a.setApprovalForAll(self.contract.address, True, {"from": address})
+        txnb = e721b.faucet({"from": address})
+        e721b.setApprovalForAll(self.contract.address, True, {"from": address})
+
+        # todo: max_rent_duration is a strategy, and some cases revert
+        lendinga = Lending(
+            lender_address=address,
+            nft_standard=NFTStandard.E721.value,
+            lend_amount=1,
+            available_amount=1,
+            max_rent_duration=1,
+            daily_rent_price=1,
+            payment_token=PaymentToken.DAI.value,
+            # not part of the contract's lending struct
+            nft_address=e721a.address,
+            token_id=txna.events["Transfer"]["tokenId"],
+            lending_id=0,
+        )
+
+        lendingb = Lending(
+            lender_address=address,
+            nft_standard=NFTStandard.E721.value,
+            lend_amount=1,
+            available_amount=1,
+            max_rent_duration=1,
+            daily_rent_price=1,
+            payment_token=PaymentToken.DAI.value,
+            # not part of the contract's lending struct
+            nft_address=e721b.address,
+            token_id=txnb.events["Transfer"]["tokenId"],
+            lending_id=0,
+        )
+
+        txn = self.contract.lend(
+            [lendinga.nft_standard, lendingb.nft_standard],
+            [lendinga.nft_address, lendingb.nft_address],
+            [lendinga.token_id, lendingb.token_id],
+            [lendinga.lend_amount, lendingb.lend_amount],
+            [lendinga.max_rent_duration, lendingb.max_rent_duration],
+            [lendinga.daily_rent_price, lendingb.daily_rent_price],
+            [lendinga.payment_token, lendingb.payment_token],
+            {"from": address},
+        )
+
+        lendinga.lending_id = txn.events["Lend"][0]["lendingID"]
+        self.lendings[
+            concat_lending_id(
+                lendinga.nft_address, lendinga.token_id, lendinga.lending_id
+            )
+        ] = lendinga
+        lendingb.lending_id = txn.events["Lend"][1]["lendingID"]
+        self.lendings[
+            concat_lending_id(
+                lendingb.nft_address, lendingb.token_id, lendingb.lending_id
+            )
+        ] = lendingb
+
+    def rule_lend_batch_1155(self, address, e1155a="e1155", e1155b="e1155"):
+        txna = e1155a.faucet({"from": address})
+        e1155a.setApprovalForAll(self.contract.address, True, {"from": address})
+        txnb = e1155b.faucet({"from": address})
+        e1155b.setApprovalForAll(self.contract.address, True, {"from": address})
+
+        lendinga = Lending(
+            lender_address=address,
+            nft_standard=NFTStandard.E1155.value,
+            lend_amount=1,
+            available_amount=1,
+            max_rent_duration=1,
+            daily_rent_price=1,
+            payment_token=PaymentToken.DAI.value,
+            # not part of the contract's lending struct
+            nft_address=e1155a.address,
+            token_id=txna.events["TransferSingle"]["id"],
+            lending_id=0,
+        )
+        lendingb = Lending(
+            lender_address=address,
+            nft_standard=NFTStandard.E1155.value,
+            lend_amount=1,
+            available_amount=1,
+            max_rent_duration=1,
+            daily_rent_price=1,
+            payment_token=PaymentToken.DAI.value,
+            # not part of the contract's lending struct
+            nft_address=e1155b.address,
+            token_id=txnb.events["TransferSingle"]["id"],
+            lending_id=0,
+        )
+
+        txn = self.contract.lend(
+            [lendinga.nft_standard, lendingb.nft_standard],
+            [lendinga.nft_address, lendingb.nft_address],
+            [lendinga.token_id, lendingb.token_id],
+            [lendinga.lend_amount, lendingb.lend_amount],
+            [lendinga.max_rent_duration, lendingb.max_rent_duration],
+            [lendinga.daily_rent_price, lendingb.daily_rent_price],
+            [lendinga.payment_token, lendingb.payment_token],
+            {"from": address},
+        )
+
+        lendinga.lending_id = txn.events["Lend"][0]["lendingID"]
+        self.lendings[
+            concat_lending_id(
+                lendinga.nft_address, lendinga.token_id, lendinga.lending_id
+            )
+        ] = lendinga
+        lendingb.lending_id = txn.events["Lend"][1]["lendingID"]
+        self.lendings[
+            concat_lending_id(
+                lendingb.nft_address, lendingb.token_id, lendingb.lending_id
+            )
+        ] = lendingb
+
+    # def rule_lend_batch_721_1155():
+    #     ...
 
     def invariant_correct_lending(self):
         for _id, lending in self.lendings.items():
