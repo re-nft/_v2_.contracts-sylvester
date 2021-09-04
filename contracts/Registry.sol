@@ -447,6 +447,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             sendLenderAmt -= takenFee;
         }
         ERC20(pmtToken).safeTransfer(lending.lenderAddress, sendLenderAmt);
+        // todo ?
+        // if (sendRenterAmt > 0) {
         ERC20(pmtToken).safeTransfer(renting.renterAddress, sendRenterAmt);
     }
 
@@ -493,6 +495,41 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 ""
             );
         }
+    }
+
+    //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
+    // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
+
+    function getLending(
+        address nftAddress,
+        uint256 tokenID,
+        uint256 _lendingID
+    )
+        external
+        view
+        returns (
+            uint8,
+            address,
+            uint8,
+            bytes4,
+            uint16,
+            uint16,
+            uint8
+        )
+    {
+        bytes32 identifier = keccak256(
+            abi.encodePacked(nftAddress, tokenID, _lendingID)
+        );
+        IRegistry.Lending storage lending = lendings[identifier];
+        return (
+            uint8(lending.nftStandard),
+            lending.lenderAddress,
+            lending.maxRentDuration,
+            lending.dailyRentPrice,
+            lending.lendAmount,
+            lending.availableAmount,
+            uint8(lending.paymentToken)
+        );
     }
 
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.

@@ -131,6 +131,20 @@ class Lending:
     # below are not part of the contract struct
     nft_address: str
     token_id: int
+    lending_id: int
+
+
+SEPARATOR = "::"
+
+
+@dataclass
+class ContractLending:
+    nft_standard_ix: int = 0
+    lender_address_ix: int = 1
+
+
+def concat_lending_id(nft_address, token_id, lending_id):
+    return f"{nft_address}{SEPARATOR}{token_id}{SEPARATOR}{lending_id}"
 
 
 class StateMachine:
@@ -145,25 +159,29 @@ class StateMachine:
             resolver.address, beneficiary.address, accounts[0], {"from": accounts[0]}
         )
 
+    def setup(self):
+        self.lendings = dict()
+
     def rule_lend_721(self, address, e721):
         txn = e721.faucet({"from": address})
         e721.setApprovalForAll(self.contract.address, True, {"from": address})
 
         # todo: max_rent_duration is a strategy, and some cases revert
         lending = Lending(
-          lender_address=address,
-          nft_standard=NFTStandard.E721.value,
-          lend_amount=1,
-          available_amount=1,
-          max_rent_duration=1,
-          daily_rent_price=1,
-          payment_token=PaymentToken.DAI.value,
-
-          nft_address=e721.address,
-          token_id=txn.events["Transfer"]["tokenId"],
+            lender_address=address,
+            nft_standard=NFTStandard.E721.value,
+            lend_amount=1,
+            available_amount=1,
+            max_rent_duration=1,
+            daily_rent_price=1,
+            payment_token=PaymentToken.DAI.value,
+            # not part of the contract's lending struct
+            nft_address=e721.address,
+            token_id=txn.events["Transfer"]["tokenId"],
+            lending_id=0,
         )
 
-        self.contract.lend(
+        txn = self.contract.lend(
             [lending.nft_standard],
             [lending.nft_address],
             [lending.token_id],
@@ -173,6 +191,57 @@ class StateMachine:
             [PaymentToken.DAI.value],
             {"from": address},
         )
+
+        lending.lending_id = txn.events["Lend"]["lendingID"]
+        self.lendings[
+            concat_lending_id(lending.nft_address, lending.token_id, lending.lending_id)
+        ] = lending
+
+    def rule_lend_1155(self, address, e1155):
+        txn = e1155.faucet({"from": address})
+        e1155.setApprovalForAll(self.contract.address, True, {"from": address})
+
+        # todo: max_rent_duration is a strategy, and some cases revert
+        lending = Lending(
+            lender_address=address,
+            nft_standard=NFTStandard.E1155.value,
+            lend_amount=1,
+            available_amount=1,
+            max_rent_duration=1,
+            daily_rent_price=1,
+            payment_token=PaymentToken.DAI.value,
+            # not part of the contract's lending struct
+            nft_address=e1155.address,
+            token_id=txn.events["TransferSingle"]["id"],
+            lending_id=0,
+        )
+
+        txn = self.contract.lend(
+            [lending.nft_standard],
+            [lending.nft_address],
+            [lending.token_id],
+            [lending.lend_amount],
+            [lending.max_rent_duration],
+            [lending.daily_rent_price],
+            [PaymentToken.DAI.value],
+            {"from": address},
+        )
+
+        lending.lending_id = txn.events["Lend"]["lendingID"]
+        self.lendings[
+            concat_lending_id(lending.nft_address, lending.token_id, lending.lending_id)
+        ] = lending
+
+    def invariant_correct_lending(self):
+        for _id, lending in self.lendings.items():
+            nft_address, token_id, lending_id = _id.split(SEPARATOR)
+            contract_lending = self.contract.getLending(
+                nft_address, token_id, lending_id
+            )
+            assert (
+                lending.lender_address.address
+                == contract_lending[ContractLending.lender_address_ix]
+            )
 
 
 #     value = strategy("uint256", max_value="1 ether")
