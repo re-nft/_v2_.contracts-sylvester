@@ -532,6 +532,36 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         );
     }
 
+    function getRenting(
+        address nftAddress,
+        uint256 tokenID,
+        uint256 _rentingID
+    )
+        external
+        view
+        returns (
+            address,
+            uint256,
+            uint256,
+            uint16,
+            uint8,
+            uint32
+        )
+    {
+        bytes32 identifier = keccak256(
+            abi.encodePacked(nftAddress, tokenID, _rentingID)
+        );
+        IRegistry.Renting storage renting = rentings[identifier];
+        return (
+            renting.renterAddress,
+            renting.lendingID,
+            renting.rentingID,
+            renting.rentAmount,
+            renting.rentDuration,
+            renting.rentedAt
+        );
+    }
+
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 

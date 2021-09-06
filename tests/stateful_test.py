@@ -69,9 +69,9 @@ def A():
 @pytest.fixture(scope="module")
 def payment_tokens(A):
     dai = DAI.deploy({"from": A.deployer})
-    tusd = TUSD.deploy({"from": A.deployer})
     usdc = USDC.deploy({"from": A.deployer})
-    return dai, tusd, usdc
+    tusd = TUSD.deploy({"from": A.deployer})
+    return {1: dai, 2: usdc, 3: tusd}
 
 
 @pytest.fixture(scope="module")
@@ -88,11 +88,22 @@ def nfts(A):
         E1155.deploy({"from": A.deployer})
 
 
-def find_first(nft_standard: NFTStandard, lendings: dict):
+def find_first(
+    nft_standard: NFTStandard, lendings: dict, lender_blacklist: List[str] = None
+):
+    if lender_blacklist is None:
+        lender_blacklist = []
+
     for _id, item in lendings.items():
-        if item.nft_standard == nft_standard:
+        if (item.nft_standard == nft_standard) and (
+            item.lender_address not in lender_blacklist
+        ):
             return _id
     return ""
+
+
+def mint_and_approve(payment_token_contract, renter_address, registry_address):
+    ...
 
 
 def find_from_lender(
@@ -155,6 +166,16 @@ class Lending:
     lending_id: int
 
 
+@dataclass
+class Renting:
+    renter_address: str
+    lending_id: int
+    renting_id: int
+    rent_amount: int
+    rent_duration: int
+    rented_at: int
+
+
 SEPARATOR = "::"
 
 
@@ -175,14 +196,16 @@ class StateMachine:
     e1155 = contract_strategy("E1155")
     e1155_lend_amount = strategy("uint256", min_value="1", max_value="10")
 
-    def __init__(cls, accounts, Registry, resolver, beneficiary):
+    def __init__(cls, accounts, Registry, resolver, beneficiary, payment_tokens):
         cls.accounts = accounts
         cls.contract = Registry.deploy(
             resolver.address, beneficiary.address, accounts[0], {"from": accounts[0]}
         )
+        cls.payment_tokens = payment_tokens
 
     def setup(self):
         self.lendings = dict()
+        self.rentings = dict()
 
     def rule_lend_721(self, address, e721):
         # print(f'rule_lend_721. a,e721. {address},{e721}')
@@ -652,6 +675,62 @@ class StateMachine:
         del self.lendings[first_]
         del self.lendings[second_]
 
+    def rule_rent_721(self, address):
+        first = find_first(
+            NFTStandard.E721.value, self.lendings, lender_blacklist=[address]
+        )
+        if first == "":
+            return
+
+        #     dai.approve(registry.address, BILLION, {"from": A.renter})
+        #     usdc.approve(registry.address, BILLION, {"from": A.renter})
+        #     tusd.approve(registry.address, BILLION, {"from": A.renter})
+
+        lending = self.lendings[first]
+        renting = Renting(
+            renter_address=address,
+            lending_id=lending.lending_id,
+            renting_id=0,
+            rent_amount=1,
+            rent_duration=1,
+            rented_at=0,
+        )
+        self.contract.rent(
+            [lending.nft_standard],
+            [lending.nft_address],
+            [lending.token_id],
+            [lending.lending_id],
+            {"from": lending.lender_address},
+        )
+        self.lendings[first].available_amount -= renting.rent_amount
+
+    def rule_rent_1155(self):
+        ...
+
+    def rule_rent_batch_721(self):
+        ...
+
+    def rule_rent_batch_1155(self):
+        ...
+
+    def rule_rent_batch_721_1155(self):
+        ...
+
+    def rule_stop_rent_721(self):
+        ...
+
+    def rule_stop_rent_1155(self):
+        ...
+
+    def rule_stop_rent_batch_721(self):
+        ...
+
+    def rule_stop_rent_batch_1155(self):
+        ...
+
+    def rule_stop_rent_batch_721_1155(self):
+        ...
+
     def invariant_correct_lending(self):
         for _id, lending in self.lendings.items():
             nft_address, token_id, lending_id = _id.split(SEPARATOR)
@@ -668,4 +747,6 @@ def test_stateful(Registry, accounts, state_machine, nfts, resolver, payment_tok
     beneficiary = accounts.from_mnemonic(
         "test test test test test test test test test test test junk", count=1
     )
-    state_machine(StateMachine, accounts, Registry, resolver, beneficiary)
+    state_machine(
+        StateMachine, accounts, Registry, resolver, beneficiary, payment_tokens
+    )
