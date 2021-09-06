@@ -199,6 +199,7 @@ SEPARATOR = "::"
 class ContractLending:
     nft_standard_ix: int = 0
     lender_address_ix: int = 1
+    available_amount_ix: int = 5
 
 
 def concat_lending_id(nft_address, token_id, lending_id):
@@ -454,7 +455,7 @@ class StateMachine:
             lender_address=address,
             nft_standard=NFTStandard.E1155.value,
             lend_amount=e1155a_lend_amount,
-            available_amount=1,
+            available_amount=e1155a_lend_amount,
             max_rent_duration=1,
             daily_rent_price=1,
             payment_token=PaymentToken.DAI.value,
@@ -467,7 +468,7 @@ class StateMachine:
             lender_address=address,
             nft_standard=NFTStandard.E1155.value,
             lend_amount=e1155b_lend_amount,
-            available_amount=1,
+            available_amount=e1155b_lend_amount,
             max_rent_duration=1,
             daily_rent_price=1,
             payment_token=PaymentToken.DAI.value,
@@ -947,11 +948,246 @@ class StateMachine:
             )
         ] = rentingb
 
-    def rule_rent_batch_1155(self):
-        ...
+    def rule_rent_batch_1155(self, address):
+        rent_amount = 1
+        first = find_first(
+            NFTStandard.E1155.value,
+            self.lendings,
+            lender_blacklist=[address],
+            rent_amount=rent_amount,
+        )
+        if first == "":
+            return
+        second = find_first(
+            NFTStandard.E1155.value,
+            self.lendings,
+            lender_blacklist=[address],
+            id_blacklist=[self.lendings[first].lending_id],
+            rent_amount=rent_amount,
+        )
+        if second == "":
+            return
+        print(f"rule_rent_batch_1155.a,{first},{second}")
+        lendinga = self.lendings[first]
+        lendingb = self.lendings[second]
+        mint_and_approve(
+            self.payment_tokens[lendinga.payment_token], address, self.contract.address
+        )
+        mint_and_approve(
+            self.payment_tokens[lendingb.payment_token], address, self.contract.address
+        )
+        # todo: rent amount random
+        rentinga = Renting(
+            nft_standard=lendinga.nft_standard,
+            nft_address=lendinga.nft_address,
+            token_id=lendinga.token_id,
+            renter_address=address,
+            lending_id=lendinga.lending_id,
+            renting_id=0,
+            rent_amount=1,
+            rent_duration=1,
+            rented_at=0,
+        )
+        rentingb = Renting(
+            nft_standard=lendingb.nft_standard,
+            nft_address=lendingb.nft_address,
+            token_id=lendingb.token_id,
+            renter_address=address,
+            lending_id=lendingb.lending_id,
+            renting_id=0,
+            rent_amount=1,
+            rent_duration=1,
+            rented_at=0,
+        )
+        txn = self.contract.rent(
+            [rentinga.nft_standard, rentingb.nft_standard],
+            [rentinga.nft_address, rentingb.nft_address],
+            [rentinga.token_id, rentingb.token_id],
+            [rentinga.lending_id, rentingb.lending_id],
+            [rentinga.rent_duration, rentingb.rent_duration],
+            [rentinga.rent_amount, rentingb.rent_amount],
+            {"from": address},
+        )
+        rentinga.renting_id = txn.events["Rent"][0]["rentingID"]
+        rentingb.renting_id = txn.events["Rent"][1]["rentingID"]
+        self.lendings[first].available_amount -= rentinga.rent_amount
+        self.lendings[second].available_amount -= rentingb.rent_amount
+        self.rentings[
+            concat_renting_id(
+                rentinga.nft_address, rentinga.token_id, rentinga.renting_id
+            )
+        ] = rentinga
+        self.rentings[
+            concat_renting_id(
+                rentingb.nft_address, rentingb.token_id, rentingb.renting_id
+            )
+        ] = rentingb
 
-    def rule_rent_batch_721_1155(self):
-        ...
+    def rule_rent_batch_721_1155(self, address):
+        rent_amount = 1
+        first = find_first(
+            NFTStandard.E721.value,
+            self.lendings,
+            lender_blacklist=[address],
+            rent_amount=rent_amount,
+        )
+        if first == "":
+            return
+        second = find_first(
+            NFTStandard.E721.value,
+            self.lendings,
+            lender_blacklist=[address],
+            id_blacklist=[self.lendings[first].lending_id],
+            rent_amount=rent_amount,
+        )
+        if second == "":
+            return
+        first_ = find_first(
+            NFTStandard.E1155.value,
+            self.lendings,
+            lender_blacklist=[address],
+            rent_amount=rent_amount,
+        )
+        if first_ == "":
+            return
+        second_ = find_first(
+            NFTStandard.E1155.value,
+            self.lendings,
+            lender_blacklist=[address],
+            id_blacklist=[self.lendings[first_].lending_id],
+            rent_amount=rent_amount,
+        )
+        if second_ == "":
+            return
+        print(f"rule_rent_batch_721_1155.a,{first},{second},{first_},{second_}")
+        lendinga = self.lendings[first]
+        lendingb = self.lendings[second]
+        lendingc = self.lendings[first_]
+        lendingd = self.lendings[second_]
+        mint_and_approve(
+            self.payment_tokens[lendinga.payment_token], address, self.contract.address
+        )
+        mint_and_approve(
+            self.payment_tokens[lendingb.payment_token], address, self.contract.address
+        )
+        mint_and_approve(
+            self.payment_tokens[lendingc.payment_token], address, self.contract.address
+        )
+        mint_and_approve(
+            self.payment_tokens[lendingd.payment_token], address, self.contract.address
+        )
+        # todo: rent amount random
+        rentinga = Renting(
+            nft_standard=lendinga.nft_standard,
+            nft_address=lendinga.nft_address,
+            token_id=lendinga.token_id,
+            renter_address=address,
+            lending_id=lendinga.lending_id,
+            renting_id=0,
+            rent_amount=1,
+            rent_duration=1,
+            rented_at=0,
+        )
+        rentingb = Renting(
+            nft_standard=lendingb.nft_standard,
+            nft_address=lendingb.nft_address,
+            token_id=lendingb.token_id,
+            renter_address=address,
+            lending_id=lendingb.lending_id,
+            renting_id=0,
+            rent_amount=1,
+            rent_duration=1,
+            rented_at=0,
+        )
+        rentingc = Renting(
+            nft_standard=lendingc.nft_standard,
+            nft_address=lendingc.nft_address,
+            token_id=lendingc.token_id,
+            renter_address=address,
+            lending_id=lendingc.lending_id,
+            renting_id=0,
+            rent_amount=1,
+            rent_duration=1,
+            rented_at=0,
+        )
+        rentingd = Renting(
+            nft_standard=lendingd.nft_standard,
+            nft_address=lendingd.nft_address,
+            token_id=lendingd.token_id,
+            renter_address=address,
+            lending_id=lendingd.lending_id,
+            renting_id=0,
+            rent_amount=1,
+            rent_duration=1,
+            rented_at=0,
+        )
+        txn = self.contract.rent(
+            [
+                rentinga.nft_standard,
+                rentingb.nft_standard,
+                rentingc.nft_standard,
+                rentingd.nft_standard,
+            ],
+            [
+                rentinga.nft_address,
+                rentingb.nft_address,
+                rentingc.nft_address,
+                rentingd.nft_address,
+            ],
+            [
+                rentinga.token_id,
+                rentingb.token_id,
+                rentingc.token_id,
+                rentingd.token_id,
+            ],
+            [
+                rentinga.lending_id,
+                rentingb.lending_id,
+                rentingc.lending_id,
+                rentingd.lending_id,
+            ],
+            [
+                rentinga.rent_duration,
+                rentingb.rent_duration,
+                rentingc.rent_duration,
+                rentingd.rent_duration,
+            ],
+            [
+                rentinga.rent_amount,
+                rentingb.rent_amount,
+                rentingc.rent_amount,
+                rentingd.rent_amount,
+            ],
+            {"from": address},
+        )
+        rentinga.renting_id = txn.events["Rent"][0]["rentingID"]
+        rentingb.renting_id = txn.events["Rent"][1]["rentingID"]
+        rentingc.renting_id = txn.events["Rent"][2]["rentingID"]
+        rentingd.renting_id = txn.events["Rent"][3]["rentingID"]
+        self.lendings[first].available_amount -= rentinga.rent_amount
+        self.lendings[second].available_amount -= rentingb.rent_amount
+        self.lendings[first_].available_amount -= rentingc.rent_amount
+        self.lendings[second_].available_amount -= rentingd.rent_amount
+        self.rentings[
+            concat_renting_id(
+                rentinga.nft_address, rentinga.token_id, rentinga.renting_id
+            )
+        ] = rentinga
+        self.rentings[
+            concat_renting_id(
+                rentingb.nft_address, rentingb.token_id, rentingb.renting_id
+            )
+        ] = rentingb
+        self.rentings[
+            concat_renting_id(
+                rentingc.nft_address, rentingc.token_id, rentingc.renting_id
+            )
+        ] = rentingc
+        self.rentings[
+            concat_renting_id(
+                rentingd.nft_address, rentingd.token_id, rentingd.renting_id
+            )
+        ] = rentingd
 
     def rule_stop_rent_721(self):
         ...
@@ -977,6 +1213,10 @@ class StateMachine:
             assert (
                 lending.lender_address.address
                 == contract_lending[ContractLending.lender_address_ix]
+            )
+            assert (
+                lending.available_amount
+                == contract_lending[ContractLending.available_amount_ix]
             )
 
 
