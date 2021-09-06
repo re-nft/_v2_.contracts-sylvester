@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 from enum import Enum
 
+import sys
 import pytest
 from brownie import (
     DAI,
@@ -163,6 +164,7 @@ class StateMachine:
         self.lendings = dict()
 
     def rule_lend_721(self, address, e721):
+        # print(f'rule_lend_721. a,e721. {address},{e721}')
         txn = e721.faucet({"from": address})
         e721.setApprovalForAll(self.contract.address, True, {"from": address})
 
@@ -198,6 +200,7 @@ class StateMachine:
         ] = lending
 
     def rule_lend_1155(self, address, e1155):
+        # print(f'rule_lend_1155. a,e1155. {address},{e1155}')
         txn = e1155.faucet({"from": address})
         e1155.setApprovalForAll(self.contract.address, True, {"from": address})
 
@@ -233,6 +236,7 @@ class StateMachine:
         ] = lending
 
     def rule_lend_batch_721(self, address, e721a="e721", e721b="e721"):
+        # print(f'rule_lend_batch_721. a,721. {address},{e721a},{e721b}')
         txna = e721a.faucet({"from": address})
         e721a.setApprovalForAll(self.contract.address, True, {"from": address})
         txnb = e721b.faucet({"from": address})
@@ -292,6 +296,7 @@ class StateMachine:
         ] = lendingb
 
     def rule_lend_batch_1155(self, address, e1155a="e1155", e1155b="e1155"):
+        # print(f'rule_lend_batch_1155. a,1155. {address},{e1155a},{e1155b}')
         txna = e1155a.faucet({"from": address})
         e1155a.setApprovalForAll(self.contract.address, True, {"from": address})
         txnb = e1155b.faucet({"from": address})
@@ -348,8 +353,104 @@ class StateMachine:
             )
         ] = lendingb
 
-    # def rule_lend_batch_721_1155():
-    #     ...
+    def rule_lend_batch_721_1155(self, address, e721a="e721", e721b="e721", e1155a="e1155", e1155b="e1155"):
+        txna = e1155a.faucet({"from": address})
+        e1155a.setApprovalForAll(self.contract.address, True, {"from": address})
+        txnb = e1155b.faucet({"from": address})
+        e1155b.setApprovalForAll(self.contract.address, True, {"from": address})
+        txnc = e721a.faucet({"from": address})
+        e721a.setApprovalForAll(self.contract.address, True, {"from": address})
+        txnd = e721b.faucet({"from": address})
+        e721b.setApprovalForAll(self.contract.address, True, {"from": address})
+
+        lendinga = Lending(
+            lender_address=address,
+            nft_standard=NFTStandard.E1155.value,
+            lend_amount=1,
+            available_amount=1,
+            max_rent_duration=1,
+            daily_rent_price=1,
+            payment_token=PaymentToken.DAI.value,
+            # not part of the contract's lending struct
+            nft_address=e1155a.address,
+            token_id=txna.events["TransferSingle"]["id"],
+            lending_id=0,
+        )
+        lendingb = Lending(
+            lender_address=address,
+            nft_standard=NFTStandard.E1155.value,
+            lend_amount=1,
+            available_amount=1,
+            max_rent_duration=1,
+            daily_rent_price=1,
+            payment_token=PaymentToken.DAI.value,
+            # not part of the contract's lending struct
+            nft_address=e1155b.address,
+            token_id=txnb.events["TransferSingle"]["id"],
+            lending_id=0,
+        )
+        lendingc = Lending(
+            lender_address=address,
+            nft_standard=NFTStandard.E721.value,
+            lend_amount=1,
+            available_amount=1,
+            max_rent_duration=1,
+            daily_rent_price=1,
+            payment_token=PaymentToken.DAI.value,
+            # not part of the contract's lending struct
+            nft_address=e721a.address,
+            token_id=txnc.events["Transfer"]["tokenId"],
+            lending_id=0,
+        )
+        lendingd = Lending(
+            lender_address=address,
+            nft_standard=NFTStandard.E721.value,
+            lend_amount=1,
+            available_amount=1,
+            max_rent_duration=1,
+            daily_rent_price=1,
+            payment_token=PaymentToken.DAI.value,
+            # not part of the contract's lending struct
+            nft_address=e721b.address,
+            token_id=txnd.events["Transfer"]["tokenId"],
+            lending_id=0,
+        )
+
+        txn = self.contract.lend(
+            [lendinga.nft_standard, lendingb.nft_standard, lendingc.nft_standard, lendingd.nft_standard],
+            [lendinga.nft_address, lendingb.nft_address, lendingc.nft_address, lendingd.nft_address],
+            [lendinga.token_id, lendingb.token_id, lendingc.token_id, lendingd.token_id],
+            [lendinga.lend_amount, lendingb.lend_amount, lendingc.lend_amount, lendingd.lend_amount],
+            [lendinga.max_rent_duration, lendingb.max_rent_duration, lendingc.max_rent_duration, lendingd.max_rent_duration],
+            [lendinga.daily_rent_price, lendingb.daily_rent_price, lendingc.daily_rent_price, lendingd.daily_rent_price],
+            [lendinga.payment_token, lendingb.payment_token, lendingc.payment_token, lendingd.payment_token],
+            {"from": address},
+        )
+
+        lendinga.lending_id = txn.events["Lend"][0]["lendingID"]
+        self.lendings[
+            concat_lending_id(
+                lendinga.nft_address, lendinga.token_id, lendinga.lending_id
+            )
+        ] = lendinga
+        lendingb.lending_id = txn.events["Lend"][1]["lendingID"]
+        self.lendings[
+            concat_lending_id(
+                lendingb.nft_address, lendingb.token_id, lendingb.lending_id
+            )
+        ] = lendingb
+        lendingc.lending_id = txn.events["Lend"][2]["lendingID"]
+        self.lendings[
+            concat_lending_id(
+                lendingc.nft_address, lendingc.token_id, lendingc.lending_id
+            )
+        ] = lendingc
+        lendingd.lending_id = txn.events["Lend"][3]["lendingID"]
+        self.lendings[
+            concat_lending_id(
+                lendingd.nft_address, lendingd.token_id, lendingd.lending_id
+            )
+        ] = lendingd
 
     def invariant_correct_lending(self):
         for _id, lending in self.lendings.items():
