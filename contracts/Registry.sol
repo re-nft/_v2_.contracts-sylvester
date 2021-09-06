@@ -541,8 +541,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         view
         returns (
             address,
-            uint256,
-            uint256,
             uint16,
             uint8,
             uint32
@@ -554,8 +552,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         IRegistry.Renting storage renting = rentings[identifier];
         return (
             renting.renterAddress,
-            renting.lendingID,
-            renting.rentingID,
             renting.rentAmount,
             renting.rentDuration,
             renting.rentedAt

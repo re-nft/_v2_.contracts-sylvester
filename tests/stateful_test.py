@@ -4,6 +4,7 @@ from enum import Enum
 from typing import List
 
 import pytest
+import brownie
 from brownie import (
     DAI,
     TUSD,
@@ -89,21 +90,33 @@ def nfts(A):
 
 
 def find_first(
-    nft_standard: NFTStandard, lendings: dict, lender_blacklist: List[str] = None
+    nft_standard: NFTStandard,
+    lendings: dict,
+    lender_blacklist: List[str] = None,
+    id_blacklist: List[str] = None,
+    rent_amount: int = 0,
 ):
     if lender_blacklist is None:
         lender_blacklist = []
 
+    if id_blacklist is None:
+        id_blacklist = []
+
     for _id, item in lendings.items():
-        if (item.nft_standard == nft_standard) and (
-            item.lender_address not in lender_blacklist
+        _, _, lending_id = _id.split(SEPARATOR)
+        if (
+            (item.nft_standard == nft_standard)
+            and (item.lender_address not in lender_blacklist)
+            and (lending_id not in id_blacklist)
+            and (item.available_amount >= rent_amount)
         ):
             return _id
     return ""
 
 
 def mint_and_approve(payment_token_contract, renter_address, registry_address):
-    ...
+    payment_token_contract.faucet({"from": renter_address})
+    payment_token_contract.approve(registry_address, BILLION, {"from": renter_address})
 
 
 def find_from_lender(
@@ -168,6 +181,9 @@ class Lending:
 
 @dataclass
 class Renting:
+    nft_standard: NFTStandard
+    nft_address: str
+    token_id: int
     renter_address: str
     lending_id: int
     renting_id: int
@@ -189,6 +205,17 @@ def concat_lending_id(nft_address, token_id, lending_id):
     return f"{nft_address}{SEPARATOR}{token_id}{SEPARATOR}{lending_id}"
 
 
+def concat_renting_id(nft_address, token_id, renting_id):
+    return f"{nft_address}{SEPARATOR}{token_id}{SEPARATOR}{renting_id}"
+
+
+def is_actively_rented(lending_id: int, rentings: dict) -> bool:
+    for _id, item in rentings.items():
+        if item.lending_id == lending_id:
+            return True
+    return False
+
+
 class StateMachine:
 
     address = strategy("address")
@@ -208,7 +235,7 @@ class StateMachine:
         self.rentings = dict()
 
     def rule_lend_721(self, address, e721):
-        # print(f'rule_lend_721. a,e721. {address},{e721}')
+        print(f"rule_lend_721. a,e721. {address},{e721}")
         txn = e721.faucet({"from": address})
         e721.setApprovalForAll(self.contract.address, True, {"from": address})
 
@@ -244,7 +271,7 @@ class StateMachine:
         ] = lending
 
     def rule_lend_1155(self, address, e1155, e1155_lend_amount):
-        # print(f'rule_lend_1155. a,e1155. {address},{e1155}')
+        print(f"rule_lend_1155. a,e1155. {address},{e1155}")
         txn = e1155.faucet({"from": address})
         e1155.setApprovalForAll(self.contract.address, True, {"from": address})
 
@@ -280,7 +307,7 @@ class StateMachine:
         ] = lending
 
     def rule_lend_batch_721(self, address, e721a="e721", e721b="e721"):
-        # print(f'rule_lend_batch_721. a,721. {address},{e721a},{e721b}')
+        print(f"rule_lend_batch_721. a,721. {address},{e721a},{e721b}")
         txna = e721a.faucet({"from": address})
         e721a.setApprovalForAll(self.contract.address, True, {"from": address})
         txnb = e721b.faucet({"from": address})
@@ -347,7 +374,7 @@ class StateMachine:
         e1155a_lend_amount="e1155_lend_amount",
         e1155b_lend_amount="e1155_lend_amount",
     ):
-        # print(f'rule_lend_batch_1155. a,1155. {address},{e1155a},{e1155b}')
+        print(f"rule_lend_batch_1155. a,1155. {address},{e1155a},{e1155b}")
         txna = e1155a.faucet({"from": address})
         e1155a.setApprovalForAll(self.contract.address, True, {"from": address})
         txnb = e1155b.faucet({"from": address})
@@ -551,31 +578,53 @@ class StateMachine:
         first = find_first(NFTStandard.E721.value, self.lendings)
         if first == "":
             return
+        print(f"rule_stop_lend_721.a,{first}")
         lending = self.lendings[first]
         # todo: when renting, add the reverts here, since when the available amount != lend amount, this will revert
-        self.contract.stopLend(
-            [lending.nft_standard],
-            [lending.nft_address],
-            [lending.token_id],
-            [lending.lending_id],
-            {"from": lending.lender_address},
-        )
-        del self.lendings[first]
+        if is_actively_rented(lending.lending_id, self.rentings):
+            with brownie.reverts("ReNFT::actively rented"):
+                self.contract.stopLend(
+                    [lending.nft_standard],
+                    [lending.nft_address],
+                    [lending.token_id],
+                    [lending.lending_id],
+                    {"from": lending.lender_address},
+                )
+        else:
+            self.contract.stopLend(
+                [lending.nft_standard],
+                [lending.nft_address],
+                [lending.token_id],
+                [lending.lending_id],
+                {"from": lending.lender_address},
+            )
+            del self.lendings[first]
 
     def rule_stop_lend_1155(self):
         first = find_first(NFTStandard.E1155.value, self.lendings)
         if first == "":
             return
+        print(f"rule_stop_lend_1155.a,{first}")
         lending = self.lendings[first]
         # todo: when renting, add the reverts here, since when the available amount != lend amount, this will revert
-        self.contract.stopLend(
-            [lending.nft_standard],
-            [lending.nft_address],
-            [lending.token_id],
-            [lending.lending_id],
-            {"from": lending.lender_address},
-        )
-        del self.lendings[first]
+        if is_actively_rented(lending.lending_id, self.rentings):
+            with brownie.reverts("ReNFT::actively rented"):
+                self.contract.stopLend(
+                    [lending.nft_standard],
+                    [lending.nft_address],
+                    [lending.token_id],
+                    [lending.lending_id],
+                    {"from": lending.lender_address},
+                )
+        else:
+            self.contract.stopLend(
+                [lending.nft_standard],
+                [lending.nft_address],
+                [lending.token_id],
+                [lending.lending_id],
+                {"from": lending.lender_address},
+            )
+            del self.lendings[first]
 
     def rule_stop_lend_batch_721(self):
         first = find_first(NFTStandard.E721.value, self.lendings)
@@ -587,17 +636,30 @@ class StateMachine:
         )
         if second == "":
             return
+        print(f"rule_stop_lend_batch_1155.a,{first},{second}")
         lendingb = self.lendings[second]
         # todo: when renting, add the reverts here, since when the available amount != lend amount, this will revert
-        self.contract.stopLend(
-            [lendinga.nft_standard, lendingb.nft_standard],
-            [lendinga.nft_address, lendingb.nft_address],
-            [lendinga.token_id, lendingb.token_id],
-            [lendinga.lending_id, lendingb.lending_id],
-            {"from": lendinga.lender_address},
-        )
-        del self.lendings[first]
-        del self.lendings[second]
+        if is_actively_rented(lendinga.lending_id, self.rentings) or is_actively_rented(
+            lendingb.lending_id, self.rentings
+        ):
+            with brownie.reverts("ReNFT::actively rented"):
+                self.contract.stopLend(
+                    [lendinga.nft_standard, lendingb.nft_standard],
+                    [lendinga.nft_address, lendingb.nft_address],
+                    [lendinga.token_id, lendingb.token_id],
+                    [lendinga.lending_id, lendingb.lending_id],
+                    {"from": lendinga.lender_address},
+                )
+        else:
+            self.contract.stopLend(
+                [lendinga.nft_standard, lendingb.nft_standard],
+                [lendinga.nft_address, lendingb.nft_address],
+                [lendinga.token_id, lendingb.token_id],
+                [lendinga.lending_id, lendingb.lending_id],
+                {"from": lendinga.lender_address},
+            )
+            del self.lendings[first]
+            del self.lendings[second]
 
     def rule_stop_lend_batch_1155(self):
         first = find_first(NFTStandard.E1155.value, self.lendings)
@@ -609,17 +671,30 @@ class StateMachine:
         )
         if second == "":
             return
+        print(f"rule_stop_lend_batch_1155.a,{first},{second}")
         lendingb = self.lendings[second]
         # todo: when renting, add the reverts here, since when the available amount != lend amount, this will revert
-        self.contract.stopLend(
-            [lendinga.nft_standard, lendingb.nft_standard],
-            [lendinga.nft_address, lendingb.nft_address],
-            [lendinga.token_id, lendingb.token_id],
-            [lendinga.lending_id, lendingb.lending_id],
-            {"from": lendinga.lender_address},
-        )
-        del self.lendings[first]
-        del self.lendings[second]
+        if is_actively_rented(lendinga.lending_id, self.rentings) or is_actively_rented(
+            lendingb.lending_id, self.rentings
+        ):
+            with brownie.reverts("ReNFT::actively rented"):
+                self.contract.stopLend(
+                    [lendinga.nft_standard, lendingb.nft_standard],
+                    [lendinga.nft_address, lendingb.nft_address],
+                    [lendinga.token_id, lendingb.token_id],
+                    [lendinga.lending_id, lendingb.lending_id],
+                    {"from": lendinga.lender_address},
+                )
+        else:
+            self.contract.stopLend(
+                [lendinga.nft_standard, lendingb.nft_standard],
+                [lendinga.nft_address, lendingb.nft_address],
+                [lendinga.token_id, lendingb.token_id],
+                [lendinga.lending_id, lendingb.lending_id],
+                {"from": lendinga.lender_address},
+            )
+            del self.lendings[first]
+            del self.lendings[second]
 
     def rule_stop_lend_batch_721_1155(self):
         first_ = find_first(NFTStandard.E1155.value, self.lendings)
@@ -643,72 +718,234 @@ class StateMachine:
         )
         if second == "":
             return
+        print(f"rule_stop_lend_batch_721_1155.a,{first_},{second_},{first},{second}")
         lendingd = self.lendings[second]
         # todo: when renting, add the reverts here, since when the available amount != lend amount, this will revert
-        self.contract.stopLend(
-            [
-                lendinga.nft_standard,
-                lendingb.nft_standard,
-                lendingc.nft_standard,
-                lendingd.nft_standard,
-            ],
-            [
-                lendinga.nft_address,
-                lendingb.nft_address,
-                lendingc.nft_address,
-                lendingd.nft_address,
-            ],
-            [
-                lendinga.token_id,
-                lendingb.token_id,
-                lendingc.token_id,
-                lendingd.token_id,
-            ],
-            [
-                lendinga.lending_id,
-                lendingb.lending_id,
-                lendingc.lending_id,
-                lendingd.lending_id,
-            ],
-            {"from": lendinga.lender_address},
-        )
-        del self.lendings[first_]
-        del self.lendings[second_]
+        if (
+            is_actively_rented(lendinga.lending_id, self.rentings)
+            or is_actively_rented(lendingb.lending_id, self.rentings)
+            or is_actively_rented(lendingc.lending_id, self.rentings)
+            or is_actively_rented(lendingd.lending_id, self.rentings)
+        ):
+            with brownie.reverts("ReNFT::actively rented"):
+                self.contract.stopLend(
+                    [
+                        lendinga.nft_standard,
+                        lendingb.nft_standard,
+                        lendingc.nft_standard,
+                        lendingd.nft_standard,
+                    ],
+                    [
+                        lendinga.nft_address,
+                        lendingb.nft_address,
+                        lendingc.nft_address,
+                        lendingd.nft_address,
+                    ],
+                    [
+                        lendinga.token_id,
+                        lendingb.token_id,
+                        lendingc.token_id,
+                        lendingd.token_id,
+                    ],
+                    [
+                        lendinga.lending_id,
+                        lendingb.lending_id,
+                        lendingc.lending_id,
+                        lendingd.lending_id,
+                    ],
+                    {"from": lendinga.lender_address},
+                )
+        else:
+            self.contract.stopLend(
+                [
+                    lendinga.nft_standard,
+                    lendingb.nft_standard,
+                    lendingc.nft_standard,
+                    lendingd.nft_standard,
+                ],
+                [
+                    lendinga.nft_address,
+                    lendingb.nft_address,
+                    lendingc.nft_address,
+                    lendingd.nft_address,
+                ],
+                [
+                    lendinga.token_id,
+                    lendingb.token_id,
+                    lendingc.token_id,
+                    lendingd.token_id,
+                ],
+                [
+                    lendinga.lending_id,
+                    lendingb.lending_id,
+                    lendingc.lending_id,
+                    lendingd.lending_id,
+                ],
+                {"from": lendinga.lender_address},
+            )
+            del self.lendings[first_]
+            del self.lendings[second_]
+            del self.lendings[first]
+            del self.lendings[second]
 
     def rule_rent_721(self, address):
+        rent_amount = 1
         first = find_first(
-            NFTStandard.E721.value, self.lendings, lender_blacklist=[address]
+            NFTStandard.E721.value,
+            self.lendings,
+            lender_blacklist=[address],
+            rent_amount=rent_amount,
         )
         if first == "":
             return
-
-        #     dai.approve(registry.address, BILLION, {"from": A.renter})
-        #     usdc.approve(registry.address, BILLION, {"from": A.renter})
-        #     tusd.approve(registry.address, BILLION, {"from": A.renter})
-
+        print(f"rule_rent_721.a,{first}")
         lending = self.lendings[first]
+        mint_and_approve(
+            self.payment_tokens[lending.payment_token], address, self.contract.address
+        )
+        # todo: rent amount random
         renting = Renting(
+            nft_standard=lending.nft_standard,
+            nft_address=lending.nft_address,
+            token_id=lending.token_id,
             renter_address=address,
             lending_id=lending.lending_id,
+            renting_id=0,
+            rent_amount=rent_amount,
+            rent_duration=1,
+            rented_at=0,
+        )
+        txn = self.contract.rent(
+            [renting.nft_standard],
+            [renting.nft_address],
+            [renting.token_id],
+            [renting.lending_id],
+            [renting.rent_duration],
+            [renting.rent_amount],
+            {"from": address},
+        )
+        renting.renting_id = txn.events["Rent"]["rentingID"]
+        self.lendings[first].available_amount -= renting.rent_amount
+        self.rentings[
+            concat_renting_id(renting.nft_address, renting.token_id, renting.renting_id)
+        ] = renting
+
+    def rule_rent_1155(self, address):
+        rent_amount = 1
+        first = find_first(
+            NFTStandard.E1155.value,
+            self.lendings,
+            lender_blacklist=[address],
+            rent_amount=rent_amount,
+        )
+        if first == "":
+            return
+        print(f"rule_rent_1155.a,{first}")
+        lending = self.lendings[first]
+        mint_and_approve(
+            self.payment_tokens[lending.payment_token], address, self.contract.address
+        )
+        # todo: rent amount random
+        renting = Renting(
+            nft_standard=lending.nft_standard,
+            nft_address=lending.nft_address,
+            token_id=lending.token_id,
+            renter_address=address,
+            lending_id=lending.lending_id,
+            renting_id=0,
+            rent_amount=rent_amount,
+            rent_duration=1,
+            rented_at=0,
+        )
+        txn = self.contract.rent(
+            [renting.nft_standard],
+            [renting.nft_address],
+            [renting.token_id],
+            [renting.lending_id],
+            [renting.rent_duration],
+            [renting.rent_amount],
+            {"from": address},
+        )
+        renting.renting_id = txn.events["Rent"]["rentingID"]
+        self.lendings[first].available_amount -= renting.rent_amount
+        self.rentings[
+            concat_renting_id(renting.nft_address, renting.token_id, renting.renting_id)
+        ] = renting
+
+    def rule_rent_batch_721(self, address):
+        rent_amount = 1
+        first = find_first(
+            NFTStandard.E721.value,
+            self.lendings,
+            lender_blacklist=[address],
+            rent_amount=rent_amount,
+        )
+        if first == "":
+            return
+        second = find_first(
+            NFTStandard.E721.value,
+            self.lendings,
+            lender_blacklist=[address],
+            id_blacklist=[self.lendings[first].lending_id],
+            rent_amount=rent_amount,
+        )
+        if second == "":
+            return
+        print(f"rule_rent_batch_721.a,{first},{second}")
+        lendinga = self.lendings[first]
+        lendingb = self.lendings[second]
+        mint_and_approve(
+            self.payment_tokens[lendinga.payment_token], address, self.contract.address
+        )
+        mint_and_approve(
+            self.payment_tokens[lendingb.payment_token], address, self.contract.address
+        )
+        # todo: rent amount random
+        rentinga = Renting(
+            nft_standard=lendinga.nft_standard,
+            nft_address=lendinga.nft_address,
+            token_id=lendinga.token_id,
+            renter_address=address,
+            lending_id=lendinga.lending_id,
             renting_id=0,
             rent_amount=1,
             rent_duration=1,
             rented_at=0,
         )
-        self.contract.rent(
-            [lending.nft_standard],
-            [lending.nft_address],
-            [lending.token_id],
-            [lending.lending_id],
-            {"from": lending.lender_address},
+        rentingb = Renting(
+            nft_standard=lendingb.nft_standard,
+            nft_address=lendingb.nft_address,
+            token_id=lendingb.token_id,
+            renter_address=address,
+            lending_id=lendingb.lending_id,
+            renting_id=0,
+            rent_amount=1,
+            rent_duration=1,
+            rented_at=0,
         )
-        self.lendings[first].available_amount -= renting.rent_amount
-
-    def rule_rent_1155(self):
-        ...
-
-    def rule_rent_batch_721(self):
-        ...
+        txn = self.contract.rent(
+            [rentinga.nft_standard, rentingb.nft_standard],
+            [rentinga.nft_address, rentingb.nft_address],
+            [rentinga.token_id, rentingb.token_id],
+            [rentinga.lending_id, rentingb.lending_id],
+            [rentinga.rent_duration, rentingb.rent_duration],
+            [rentinga.rent_amount, rentingb.rent_amount],
+            {"from": address},
+        )
+        rentinga.renting_id = txn.events["Rent"][0]["rentingID"]
+        rentingb.renting_id = txn.events["Rent"][1]["rentingID"]
+        self.lendings[first].available_amount -= rentinga.rent_amount
+        self.lendings[second].available_amount -= rentingb.rent_amount
+        self.rentings[
+            concat_renting_id(
+                rentinga.nft_address, rentinga.token_id, rentinga.renting_id
+            )
+        ] = rentinga
+        self.rentings[
+            concat_renting_id(
+                rentingb.nft_address, rentingb.token_id, rentingb.renting_id
+            )
+        ] = rentingb
 
     def rule_rent_batch_1155(self):
         ...
@@ -746,6 +983,15 @@ class StateMachine:
 def test_stateful(Registry, accounts, state_machine, nfts, resolver, payment_tokens):
     beneficiary = accounts.from_mnemonic(
         "test test test test test test test test test test test junk", count=1
+    )
+    resolver.setPaymentToken(
+        PaymentToken.DAI.value, payment_tokens[PaymentToken.DAI.value]
+    )
+    resolver.setPaymentToken(
+        PaymentToken.USDC.value, payment_tokens[PaymentToken.USDC.value]
+    )
+    resolver.setPaymentToken(
+        PaymentToken.TUSD.value, payment_tokens[PaymentToken.TUSD.value]
     )
     state_machine(
         StateMachine, accounts, Registry, resolver, beneficiary, payment_tokens
