@@ -184,6 +184,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             );
             IRegistry.Lending storage lending = lendings[identifier];
             ensureIsNull(lending);
+            ensureTokenNotSentinel(cd.paymentToken[i]);
             bool is721 = cd.nftStandard[i] == IRegistry.NFTStandard.E721;
             lendings[identifier] = IRegistry.Lending({
                 nftStandard: cd.nftStandard[i],
@@ -283,7 +284,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 "ReNFT::invalid rent amount"
             );
             uint8 paymentTokenIx = uint8(lending.paymentToken);
-            ensureTokenNotSentinel(paymentTokenIx);
             address paymentToken = resolver.getPaymentToken(paymentTokenIx);
             uint256 decimals = ERC20(paymentToken).decimals();
             {
@@ -417,7 +417,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         fee = rentAmt * rentFee;
         fee /= 10000;
         uint8 paymentTokenIx = uint8(paymentToken);
-        ensureTokenNotSentinel(paymentTokenIx);
         ERC20 pmtToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
         pmtToken.safeTransfer(beneficiary, fee);
     }
@@ -428,7 +427,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256 secondsSinceRentStart
     ) private {
         uint8 paymentTokenIx = uint8(lending.paymentToken);
-        ensureTokenNotSentinel(paymentTokenIx);
         address pmtToken = resolver.getPaymentToken(paymentTokenIx);
         uint256 decimals = ERC20(pmtToken).decimals();
         uint256 scale = 10**decimals;
@@ -457,7 +455,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         IRegistry.Renting memory renting
     ) private {
         uint8 paymentTokenIx = uint8(lending.paymentToken);
-        ensureTokenNotSentinel(paymentTokenIx);
         ERC20 paymentToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
         uint256 decimals = ERC20(paymentToken).decimals();
         uint256 scale = 10**decimals;
