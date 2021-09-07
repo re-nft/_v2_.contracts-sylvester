@@ -184,7 +184,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             );
             IRegistry.Lending storage lending = lendings[identifier];
             ensureIsNull(lending);
-            ensureTokenNotSentinel(cd.paymentToken[i]);
+            ensureTokenNotSentinel(uint8(cd.paymentToken[i]));
             bool is721 = cd.nftStandard[i] == IRegistry.NFTStandard.E721;
             lendings[identifier] = IRegistry.Lending({
                 nftStandard: cd.nftStandard[i],
@@ -431,23 +431,20 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256 decimals = ERC20(pmtToken).decimals();
         uint256 scale = 10**decimals;
         uint256 rentPrice = unpackPrice(lending.dailyRentPrice, scale);
-        uint256 totalRenterPmtWoCollateral = rentPrice * renting.rentDuration;
+        uint256 totalRenterPmt = rentPrice * renting.rentDuration;
         uint256 sendLenderAmt = (secondsSinceRentStart * rentPrice) /
             SECONDS_IN_DAY;
-        require(
-            totalRenterPmtWoCollateral > 0,
-            "ReNFT::total payment wo collateral is zero"
-        );
+        require(totalRenterPmt > 0, "ReNFT::total renter payment is zero");
         require(sendLenderAmt > 0, "ReNFT::lender payment is zero");
-        uint256 sendRenterAmt = totalRenterPmtWoCollateral - sendLenderAmt;
+        uint256 sendRenterAmt = totalRenterPmt - sendLenderAmt;
         if (rentFee != 0) {
             uint256 takenFee = takeFee(sendLenderAmt, lending.paymentToken);
             sendLenderAmt -= takenFee;
         }
         ERC20(pmtToken).safeTransfer(lending.lenderAddress, sendLenderAmt);
-        // todo ?
-        // if (sendRenterAmt > 0) {
-        ERC20(pmtToken).safeTransfer(renting.renterAddress, sendRenterAmt);
+        if (sendRenterAmt > 0) {
+            ERC20(pmtToken).safeTransfer(renting.renterAddress, sendRenterAmt);
+        }
     }
 
     function distributeClaimPayment(
