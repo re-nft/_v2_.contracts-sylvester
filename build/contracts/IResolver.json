@@ -39,21 +39,21 @@
     }
   ],
   "allSourcePaths": {
-    "17": "contracts/interfaces/IResolver.sol"
+    "26": "contracts/interfaces/IResolver.sol"
   },
   "ast": {
     "absolutePath": "contracts/interfaces/IResolver.sol",
     "exportedSymbols": {
       "IResolver": [
-        4372
+        2812
       ]
     },
-    "id": 4373,
+    "id": 2813,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4352,
+        "id": 2792,
         "literals": [
           "solidity",
           "=",
@@ -61,7 +61,7 @@
           ".7"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:23:17"
+        "src": "32:23:26"
       },
       {
         "abstract": false,
@@ -69,74 +69,74 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 4372,
+        "id": 2812,
         "linearizedBaseContracts": [
-          4372
+          2812
         ],
         "name": "IResolver",
-        "nameLocation": "1345:9:17",
+        "nameLocation": "1345:9:26",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "IResolver.PaymentToken",
-            "id": 4357,
+            "id": 2797,
             "members": [
               {
-                "id": 4353,
+                "id": 2793,
                 "name": "SENTINEL",
-                "nameLocation": "1389:8:17",
+                "nameLocation": "1389:8:26",
                 "nodeType": "EnumValue",
-                "src": "1389:8:17"
+                "src": "1389:8:26"
               },
               {
-                "id": 4354,
+                "id": 2794,
                 "name": "DAI",
-                "nameLocation": "1407:3:17",
+                "nameLocation": "1407:3:26",
                 "nodeType": "EnumValue",
-                "src": "1407:3:17"
+                "src": "1407:3:26"
               },
               {
-                "id": 4355,
+                "id": 2795,
                 "name": "USDC",
-                "nameLocation": "1420:4:17",
+                "nameLocation": "1420:4:26",
                 "nodeType": "EnumValue",
-                "src": "1420:4:17"
+                "src": "1420:4:26"
               },
               {
-                "id": 4356,
+                "id": 2796,
                 "name": "TUSD",
-                "nameLocation": "1434:4:17",
+                "nameLocation": "1434:4:26",
                 "nodeType": "EnumValue",
-                "src": "1434:4:17"
+                "src": "1434:4:26"
               }
             ],
             "name": "PaymentToken",
-            "nameLocation": "1366:12:17",
+            "nameLocation": "1366:12:26",
             "nodeType": "EnumDefinition",
-            "src": "1361:83:17"
+            "src": "1361:83:26"
           },
           {
             "functionSelector": "c6ee427f",
-            "id": 4364,
+            "id": 2804,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getPaymentToken",
-            "nameLocation": "1459:15:17",
+            "nameLocation": "1459:15:26",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4360,
+              "id": 2800,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4359,
+                  "id": 2799,
                   "mutability": "mutable",
                   "name": "_pt",
-                  "nameLocation": "1481:3:17",
+                  "nameLocation": "1481:3:26",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4364,
-                  "src": "1475:9:17",
+                  "scope": 2804,
+                  "src": "1475:9:26",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -144,10 +144,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 4358,
+                    "id": 2798,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1475:5:17",
+                    "src": "1475:5:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -156,21 +156,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1474:11:17"
+              "src": "1474:11:26"
             },
             "returnParameters": {
-              "id": 4363,
+              "id": 2803,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4362,
+                  "id": 2802,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4364,
-                  "src": "1509:7:17",
+                  "scope": 2804,
+                  "src": "1509:7:26",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -178,10 +178,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4361,
+                    "id": 2801,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1509:7:17",
+                    "src": "1509:7:26",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -191,36 +191,36 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1508:9:17"
+              "src": "1508:9:26"
             },
-            "scope": 4372,
-            "src": "1450:68:17",
+            "scope": 2812,
+            "src": "1450:68:26",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "321c6aea",
-            "id": 4371,
+            "id": 2811,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "setPaymentToken",
-            "nameLocation": "1533:15:17",
+            "nameLocation": "1533:15:26",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4369,
+              "id": 2809,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4366,
+                  "id": 2806,
                   "mutability": "mutable",
                   "name": "_pt",
-                  "nameLocation": "1555:3:17",
+                  "nameLocation": "1555:3:26",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4371,
-                  "src": "1549:9:17",
+                  "scope": 2811,
+                  "src": "1549:9:26",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -228,10 +228,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 4365,
+                    "id": 2805,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1549:5:17",
+                    "src": "1549:5:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -241,13 +241,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 4368,
+                  "id": 2808,
                   "mutability": "mutable",
                   "name": "_v",
-                  "nameLocation": "1568:2:17",
+                  "nameLocation": "1568:2:26",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4371,
-                  "src": "1560:10:17",
+                  "scope": 2811,
+                  "src": "1560:10:26",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -255,10 +255,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4367,
+                    "id": 2807,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1560:7:17",
+                    "src": "1560:7:26",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -268,27 +268,27 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1548:23:17"
+              "src": "1548:23:26"
             },
             "returnParameters": {
-              "id": 4370,
+              "id": 2810,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1580:0:17"
+              "src": "1580:0:26"
             },
-            "scope": 4372,
-            "src": "1524:57:17",
+            "scope": 2812,
+            "src": "1524:57:26",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 4373,
-        "src": "1335:248:17",
+        "scope": 2813,
+        "src": "1335:248:26",
         "usedErrors": []
       }
     ],
-    "src": "32:2830:17"
+    "src": "32:2830:26"
   },
   "bytecode": "",
   "bytecodeSha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
