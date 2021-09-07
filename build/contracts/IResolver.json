@@ -1,0 +1,328 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint8",
+          "name": "_pt",
+          "type": "uint8"
+        }
+      ],
+      "name": "getPaymentToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint8",
+          "name": "_pt",
+          "type": "uint8"
+        },
+        {
+          "internalType": "address",
+          "name": "_v",
+          "type": "address"
+        }
+      ],
+      "name": "setPaymentToken",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "allSourcePaths": {
+    "17": "contracts/interfaces/IResolver.sol"
+  },
+  "ast": {
+    "absolutePath": "contracts/interfaces/IResolver.sol",
+    "exportedSymbols": {
+      "IResolver": [
+        4361
+      ]
+    },
+    "id": 4362,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4341,
+        "literals": [
+          "solidity",
+          "=",
+          "0.8",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:23:17"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "id": 4361,
+        "linearizedBaseContracts": [
+          4361
+        ],
+        "name": "IResolver",
+        "nameLocation": "1345:9:17",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "IResolver.PaymentToken",
+            "id": 4346,
+            "members": [
+              {
+                "id": 4342,
+                "name": "SENTINEL",
+                "nameLocation": "1389:8:17",
+                "nodeType": "EnumValue",
+                "src": "1389:8:17"
+              },
+              {
+                "id": 4343,
+                "name": "DAI",
+                "nameLocation": "1407:3:17",
+                "nodeType": "EnumValue",
+                "src": "1407:3:17"
+              },
+              {
+                "id": 4344,
+                "name": "USDC",
+                "nameLocation": "1420:4:17",
+                "nodeType": "EnumValue",
+                "src": "1420:4:17"
+              },
+              {
+                "id": 4345,
+                "name": "TUSD",
+                "nameLocation": "1434:4:17",
+                "nodeType": "EnumValue",
+                "src": "1434:4:17"
+              }
+            ],
+            "name": "PaymentToken",
+            "nameLocation": "1366:12:17",
+            "nodeType": "EnumDefinition",
+            "src": "1361:83:17"
+          },
+          {
+            "functionSelector": "c6ee427f",
+            "id": 4353,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getPaymentToken",
+            "nameLocation": "1459:15:17",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4349,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4348,
+                  "mutability": "mutable",
+                  "name": "_pt",
+                  "nameLocation": "1481:3:17",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4353,
+                  "src": "1475:9:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  },
+                  "typeName": {
+                    "id": 4347,
+                    "name": "uint8",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1475:5:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint8",
+                      "typeString": "uint8"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1474:11:17"
+            },
+            "returnParameters": {
+              "id": 4352,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4351,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4353,
+                  "src": "1509:7:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4350,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1509:7:17",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1508:9:17"
+            },
+            "scope": 4361,
+            "src": "1450:68:17",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "321c6aea",
+            "id": 4360,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setPaymentToken",
+            "nameLocation": "1533:15:17",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4358,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4355,
+                  "mutability": "mutable",
+                  "name": "_pt",
+                  "nameLocation": "1555:3:17",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4360,
+                  "src": "1549:9:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  },
+                  "typeName": {
+                    "id": 4354,
+                    "name": "uint8",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1549:5:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint8",
+                      "typeString": "uint8"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4357,
+                  "mutability": "mutable",
+                  "name": "_v",
+                  "nameLocation": "1568:2:17",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4360,
+                  "src": "1560:10:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4356,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1560:7:17",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1548:23:17"
+            },
+            "returnParameters": {
+              "id": 4359,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1580:0:17"
+            },
+            "scope": 4361,
+            "src": "1524:57:17",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4362,
+        "src": "1335:248:17",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:2830:17"
+  },
+  "bytecode": "",
+  "bytecodeSha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+  "compiler": {
+    "evm_version": "istanbul",
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "version": "0.8.7+commit.e28d00a7"
+  },
+  "contractName": "IResolver",
+  "coverageMap": {
+    "branches": {},
+    "statements": {}
+  },
+  "dependencies": [],
+  "deployedBytecode": "",
+  "deployedSourceMap": "",
+  "language": "Solidity",
+  "natspec": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "offset": [
+    1335,
+    1583
+  ],
+  "opcodes": "",
+  "pcMap": {},
+  "sha1": "525d4ba0d67ee0a1044b42cca7e796c43ca95304",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity =0.8.7;\n\n//              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@\n//              @@@,,,,,,,,,,@@@        ,@@&,,,,,,,,,,@@@\n//         @@@@@@@@,,,,,,,,,,@@@@@@@@&  ,@@&,,,,,,,,,,@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@&            .@@@**********@@@@@@@@@@@@@\n//    @@@@@@@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&       ,@@@@@@@@//////////@@@@@@@@@@@@@\n//         @@@%%%%%/////(((((@@@&       ,@@@(((((/////%%%%%@@@@@@@@\n//         @@@@@@@@//////////@@@@@@@@&  ,@@@//////////@@@@@@@@@@@@@\n//              @@@%%%%%%%%%%@@@@@@@@&  ,@@@%%%%%%%%%%@@@@@@@@@@@@@\n//              @@@@@@@@@@@@@@@@@@@@@&  ,@@@@@@@@@@@@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n\ninterface IResolver {\n    enum PaymentToken {\n        SENTINEL,\n        DAI,\n        USDC,\n        TUSD\n    }\n\n    function getPaymentToken(uint8 _pt) external view returns (address);\n\n    function setPaymentToken(uint8 _pt, address _v) external;\n}\n\n//              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@\n//              @@@,,,,,,,,,,@@@        ,@@&,,,,,,,,,,@@@\n//         @@@@@@@@,,,,,,,,,,@@@@@@@@&  ,@@&,,,,,,,,,,@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@&            .@@@**********@@@@@@@@@@@@@\n//    @@@@@@@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&       ,@@@@@@@@//////////@@@@@@@@@@@@@\n//         @@@%%%%%/////(((((@@@&       ,@@@(((((/////%%%%%@@@@@@@@\n//         @@@@@@@@//////////@@@@@@@@&  ,@@@//////////@@@@@@@@@@@@@\n//              @@@%%%%%%%%%%@@@@@@@@&  ,@@@%%%%%%%%%%@@@@@@@@@@@@@\n//              @@@@@@@@@@@@@@@@@@@@@&  ,@@@@@@@@@@@@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n",
+  "sourceMap": "",
+  "sourcePath": "contracts/interfaces/IResolver.sol",
+  "type": "interface"
+}
