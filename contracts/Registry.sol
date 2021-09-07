@@ -288,7 +288,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             uint256 decimals = ERC20(paymentToken).decimals();
             {
                 uint256 scale = 10**decimals;
-                uint256 rentPrice = cd.rentDuration[i] *
+                uint256 rentPrice = cd.rentAmount[i] *
+                    cd.rentDuration[i] *
                     unpackPrice(lending.dailyRentPrice, scale);
                 require(rentPrice > 0, "ReNFT::rent price is zero");
                 ERC20(paymentToken).safeTransferFrom(
@@ -431,7 +432,9 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256 decimals = ERC20(pmtToken).decimals();
         uint256 scale = 10**decimals;
         uint256 rentPrice = unpackPrice(lending.dailyRentPrice, scale);
-        uint256 totalRenterPmt = rentPrice * renting.rentDuration;
+        uint256 totalRenterPmt = renting.rentAmount *
+            rentPrice *
+            renting.rentDuration;
         uint256 sendLenderAmt = (secondsSinceRentStart * rentPrice) /
             SECONDS_IN_DAY;
         require(totalRenterPmt > 0, "ReNFT::total renter payment is zero");
@@ -456,7 +459,9 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256 decimals = ERC20(paymentToken).decimals();
         uint256 scale = 10**decimals;
         uint256 rentPrice = unpackPrice(lending.dailyRentPrice, scale);
-        uint256 finalAmt = rentPrice * renting.rentDuration;
+        uint256 finalAmt = renting.rentAmount *
+            rentPrice *
+            renting.rentDuration;
         uint256 takenFee = 0;
         if (rentFee != 0) {
             takenFee = takeFee(
