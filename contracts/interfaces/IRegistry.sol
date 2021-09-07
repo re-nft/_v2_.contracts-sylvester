@@ -24,7 +24,6 @@ import "./IResolver.sol";
 //                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@
 
 interface IRegistry {
-    // todo: use bytes for the price, because different tokens have different scales
     event Lend(
         bool is721,
         address indexed lenderAddress,
@@ -50,7 +49,7 @@ interface IRegistry {
 
     event StopRent(uint256 indexed rentingID, uint32 stoppedAt);
 
-    event RentClaimed(uint256 indexed lendingId, uint32 collectedAt);
+    event RentClaimed(uint256 indexed rentingID, uint32 collectedAt);
 
     enum NFTStandard {
         E721,

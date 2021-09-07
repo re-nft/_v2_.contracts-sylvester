@@ -377,7 +377,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             ensureIsClaimable(renting, block.timestamp);
             distributeClaimPayment(lending, renting);
             emit IRegistry.RentClaimed(
-                cd.lendingID[i],
+                cd.rentingID[i],
                 uint32(block.timestamp)
             );
             lending.availableAmount =
