@@ -375,11 +375,11 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             ensureIsNotNull(renting);
             ensureIsClaimable(renting, block.timestamp);
             distributeClaimPayment(lending, renting);
+            lending.availableAmount += renting.rentAmount;
             emit IRegistry.RentClaimed(
                 cd.rentingID[i],
                 uint32(block.timestamp)
             );
-            lending.availableAmount += renting.rentAmount;
             delete rentings[rentingIdentifier];
         }
     }
@@ -453,10 +453,9 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         ERC20 paymentToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
         uint256 decimals = ERC20(paymentToken).decimals();
         uint256 scale = 10**decimals;
-        uint256 rentPrice = unpackPrice(lending.dailyRentPrice, scale);
-        uint256 finalAmt = renting.rentAmount *
-            rentPrice *
-            renting.rentDuration;
+        uint256 rentPrice = renting.rentAmount *
+            unpackPrice(lending.dailyRentPrice, scale);
+        uint256 finalAmt = rentPrice * renting.rentDuration;
         uint256 takenFee = 0;
         if (rentFee != 0) {
             takenFee = takeFee(
