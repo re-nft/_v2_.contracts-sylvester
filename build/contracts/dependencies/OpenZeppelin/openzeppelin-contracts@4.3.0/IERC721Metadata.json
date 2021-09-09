@@ -332,12 +332,12 @@
     }
   ],
   "allSourcePaths": {
-    "12": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/IERC721.sol",
-    "16": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/extensions/IERC721Metadata.sol",
-    "22": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/utils/introspection/IERC165.sol"
+    "12": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/IERC721.sol",
+    "16": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+    "22": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/utils/introspection/IERC165.sol"
   },
   "ast": {
-    "absolutePath": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+    "absolutePath": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/extensions/IERC721Metadata.sol",
     "exportedSymbols": {
       "IERC165": [
         5686
@@ -365,7 +365,7 @@
         "src": "33:23:16"
       },
       {
-        "absolutePath": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/IERC721.sol",
+        "absolutePath": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/IERC721.sol",
         "file": "../IERC721.sol",
         "id": 6978,
         "nameLocation": "-1:-1:-1",
@@ -708,6 +708,6 @@
   "sha1": "ccec4990e0753929e0f7c25b81cf848b739bfaa8",
   "source": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.0;\n\nimport \"../IERC721.sol\";\n\n/**\n * @title ERC-721 Non-Fungible Token Standard, optional metadata extension\n * @dev See https://eips.ethereum.org/EIPS/eip-721\n */\ninterface IERC721Metadata is IERC721 {\n    /**\n     * @dev Returns the token collection name.\n     */\n    function name() external view returns (string memory);\n\n    /**\n     * @dev Returns the token collection symbol.\n     */\n    function symbol() external view returns (string memory);\n\n    /**\n     * @dev Returns the Uniform Resource Identifier (URI) for `tokenId` token.\n     */\n    function tokenURI(uint256 tokenId) external view returns (string memory);\n}\n",
   "sourceMap": "",
-  "sourcePath": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+  "sourcePath": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC721/extensions/IERC721Metadata.sol",
   "type": "interface"
 }

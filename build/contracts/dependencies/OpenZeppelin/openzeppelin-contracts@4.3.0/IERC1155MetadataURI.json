@@ -314,12 +314,12 @@
     }
   ],
   "allSourcePaths": {
-    "2": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/IERC1155.sol",
-    "22": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/utils/introspection/IERC165.sol",
-    "4": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol"
+    "2": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/IERC1155.sol",
+    "22": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/utils/introspection/IERC165.sol",
+    "4": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol"
   },
   "ast": {
-    "absolutePath": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol",
+    "absolutePath": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol",
     "exportedSymbols": {
       "IERC1155": [
         3075
@@ -347,7 +347,7 @@
         "src": "33:23:4"
       },
       {
-        "absolutePath": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/IERC1155.sol",
+        "absolutePath": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/IERC1155.sol",
         "file": "../IERC1155.sol",
         "id": 6116,
         "nameLocation": "-1:-1:-1",
@@ -552,6 +552,6 @@
   "sha1": "50d455e1ea062155ff10d1c3b04574d734e15388",
   "source": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.0;\n\nimport \"../IERC1155.sol\";\n\n/**\n * @dev Interface of the optional ERC1155MetadataExtension interface, as defined\n * in the https://eips.ethereum.org/EIPS/eip-1155#metadata-extensions[EIP].\n *\n * _Available since v3.1._\n */\ninterface IERC1155MetadataURI is IERC1155 {\n    /**\n     * @dev Returns the URI for token type `id`.\n     *\n     * If the `\\{id\\}` substring is present in the URI, it must be replaced by\n     * clients with the actual token type ID.\n     */\n    function uri(uint256 id) external view returns (string memory);\n}\n",
   "sourceMap": "",
-  "sourcePath": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol",
+  "sourcePath": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol",
   "type": "interface"
 }

@@ -224,25 +224,25 @@
     }
   ],
   "allSourcePaths": {
-    "1": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/IERC20.sol",
-    "2": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/extensions/IERC20Metadata.sol"
+    "5": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/IERC20.sol",
+    "6": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/extensions/IERC20Metadata.sol"
   },
   "ast": {
-    "absolutePath": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+    "absolutePath": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/extensions/IERC20Metadata.sol",
     "exportedSymbols": {
       "IERC20": [
-        662
+        3302
       ],
       "IERC20Metadata": [
-        687
+        3999
       ]
     },
-    "id": 688,
+    "id": 4000,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 664,
+        "id": 3976,
         "literals": [
           "solidity",
           "^",
@@ -250,17 +250,17 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "33:23:2"
+        "src": "33:23:6"
       },
       {
-        "absolutePath": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/IERC20.sol",
+        "absolutePath": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/IERC20.sol",
         "file": "../IERC20.sol",
-        "id": 665,
+        "id": 3977,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 688,
-        "sourceUnit": 663,
-        "src": "58:23:2",
+        "scope": 4000,
+        "sourceUnit": 3303,
+        "src": "58:23:6",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -269,69 +269,69 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 667,
+              "id": 3979,
               "name": "IERC20",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 662,
-              "src": "228:6:2"
+              "referencedDeclaration": 3302,
+              "src": "228:6:6"
             },
-            "id": 668,
+            "id": 3980,
             "nodeType": "InheritanceSpecifier",
-            "src": "228:6:2"
+            "src": "228:6:6"
           }
         ],
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 666,
+          "id": 3978,
           "nodeType": "StructuredDocumentation",
-          "src": "83:116:2",
+          "src": "83:116:6",
           "text": " @dev Interface for the optional metadata functions from the ERC20 standard.\n _Available since v4.1._"
         },
         "fullyImplemented": false,
-        "id": 687,
+        "id": 3999,
         "linearizedBaseContracts": [
-          687,
-          662
+          3999,
+          3302
         ],
         "name": "IERC20Metadata",
-        "nameLocation": "210:14:2",
+        "nameLocation": "210:14:6",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "documentation": {
-              "id": 669,
+              "id": 3981,
               "nodeType": "StructuredDocumentation",
-              "src": "241:54:2",
+              "src": "241:54:6",
               "text": " @dev Returns the name of the token."
             },
             "functionSelector": "06fdde03",
-            "id": 674,
+            "id": 3986,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "name",
-            "nameLocation": "309:4:2",
+            "nameLocation": "309:4:6",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 670,
+              "id": 3982,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "313:2:2"
+              "src": "313:2:6"
             },
             "returnParameters": {
-              "id": 673,
+              "id": 3985,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 672,
+                  "id": 3984,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 674,
-                  "src": "339:13:2",
+                  "scope": 3986,
+                  "src": "339:13:6",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -339,10 +339,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 671,
+                    "id": 3983,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "339:6:2",
+                    "src": "339:6:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -351,48 +351,48 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "338:15:2"
+              "src": "338:15:6"
             },
-            "scope": 687,
-            "src": "300:54:2",
+            "scope": 3999,
+            "src": "300:54:6",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "documentation": {
-              "id": 675,
+              "id": 3987,
               "nodeType": "StructuredDocumentation",
-              "src": "360:56:2",
+              "src": "360:56:6",
               "text": " @dev Returns the symbol of the token."
             },
             "functionSelector": "95d89b41",
-            "id": 680,
+            "id": 3992,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "symbol",
-            "nameLocation": "430:6:2",
+            "nameLocation": "430:6:6",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 676,
+              "id": 3988,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "436:2:2"
+              "src": "436:2:6"
             },
             "returnParameters": {
-              "id": 679,
+              "id": 3991,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 678,
+                  "id": 3990,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 680,
-                  "src": "462:13:2",
+                  "scope": 3992,
+                  "src": "462:13:6",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -400,10 +400,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 677,
+                    "id": 3989,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "462:6:2",
+                    "src": "462:6:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -412,48 +412,48 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "461:15:2"
+              "src": "461:15:6"
             },
-            "scope": 687,
-            "src": "421:56:2",
+            "scope": 3999,
+            "src": "421:56:6",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "documentation": {
-              "id": 681,
+              "id": 3993,
               "nodeType": "StructuredDocumentation",
-              "src": "483:65:2",
+              "src": "483:65:6",
               "text": " @dev Returns the decimals places of the token."
             },
             "functionSelector": "313ce567",
-            "id": 686,
+            "id": 3998,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "decimals",
-            "nameLocation": "562:8:2",
+            "nameLocation": "562:8:6",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 682,
+              "id": 3994,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "570:2:2"
+              "src": "570:2:6"
             },
             "returnParameters": {
-              "id": 685,
+              "id": 3997,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 684,
+                  "id": 3996,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 686,
-                  "src": "596:5:2",
+                  "scope": 3998,
+                  "src": "596:5:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -461,10 +461,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 683,
+                    "id": 3995,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "596:5:2",
+                    "src": "596:5:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -473,21 +473,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "595:7:2"
+              "src": "595:7:6"
             },
-            "scope": 687,
-            "src": "553:50:2",
+            "scope": 3999,
+            "src": "553:50:6",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 688,
-        "src": "200:405:2",
+        "scope": 4000,
+        "src": "200:405:6",
         "usedErrors": []
       }
     ],
-    "src": "33:573:2"
+    "src": "33:573:6"
   },
   "bytecode": "",
   "bytecodeSha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
@@ -497,7 +497,7 @@
       "enabled": true,
       "runs": 200
     },
-    "version": "0.8.6+commit.11564f7e"
+    "version": "0.8.7+commit.e28d00a7"
   },
   "contractName": "IERC20Metadata",
   "coverageMap": {
@@ -553,6 +553,6 @@
   "sha1": "b161b91d2d390ac907747aaa70acf5806a4cde5c",
   "source": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.0;\n\nimport \"../IERC20.sol\";\n\n/**\n * @dev Interface for the optional metadata functions from the ERC20 standard.\n *\n * _Available since v4.1._\n */\ninterface IERC20Metadata is IERC20 {\n    /**\n     * @dev Returns the name of the token.\n     */\n    function name() external view returns (string memory);\n\n    /**\n     * @dev Returns the symbol of the token.\n     */\n    function symbol() external view returns (string memory);\n\n    /**\n     * @dev Returns the decimals places of the token.\n     */\n    function decimals() external view returns (uint8);\n}\n",
   "sourceMap": "",
-  "sourcePath": "/Users/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+  "sourcePath": "/home/shredder/.brownie/packages/OpenZeppelin/openzeppelin-contracts@4.3.0/contracts/token/ERC20/extensions/IERC20Metadata.sol",
   "type": "interface"
 }
