@@ -297,18 +297,18 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             }
             rentings[rentingIdentifier] = IRegistry.Renting({
                 renterAddress: payable(msg.sender),
-                rentAmount: uint8(cd.rentAmount[i]),
+                rentAmount: uint16(cd.rentAmount[i]),
                 rentDuration: cd.rentDuration[i],
                 rentedAt: uint32(block.timestamp)
             });
-            lendings[lendingIdentifier].availableAmount -= uint8(
+            lendings[lendingIdentifier].availableAmount -= uint16(
                 cd.rentAmount[i]
             );
             emit IRegistry.Rent(
                 msg.sender,
                 cd.lendingID[i],
                 rentingID,
-                uint8(cd.rentAmount[i]),
+                uint16(cd.rentAmount[i]),
                 cd.rentDuration[i],
                 renting.rentedAt
             );
@@ -717,6 +717,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         require(msgSender != lending.lenderAddress, "ReNFT::cant rent own nft");
         require(cd.rentDuration[i] <= type(uint8).max, "ReNFT::not uint8");
         require(cd.rentDuration[i] > 0, "ReNFT::duration is zero");
+        require(cd.rentAmount[i] <= type(uint16).max, "ReNFT::not uint16");
+        require(cd.rentAmount[i] > 0, "ReNFT::rentAmount is zero");
         require(
             cd.rentDuration[i] <= lending.maxRentDuration,
             "ReNFT::rent duration exceeds allowed max"
