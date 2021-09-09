@@ -335,6 +335,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             IRegistry.Lending storage lending = lendings[lendingIdentifier];
             IRegistry.Renting storage renting = rentings[rentingIdentifier];
             ensureIsNotNull(lending);
+            ensureIsNotNull(renting);
             ensureIsReturnable(renting, msg.sender, block.timestamp);
             require(
                 cd.nftStandard[i] == lending.nftStandard,
@@ -347,7 +348,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             uint256 secondsSinceRentStart = block.timestamp - renting.rentedAt;
             distributePayments(lending, renting, secondsSinceRentStart);
             lendings[lendingIdentifier].availableAmount += renting.rentAmount;
-            emit IRegistry.StopRent(cd.lendingID[i], uint32(block.timestamp));
+            emit IRegistry.StopRent(cd.rentingID[i], uint32(block.timestamp));
             delete rentings[rentingIdentifier];
         }
     }
@@ -378,9 +379,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 cd.rentingID[i],
                 uint32(block.timestamp)
             );
-            lending.availableAmount =
-                lending.availableAmount +
-                renting.rentAmount;
+            lending.availableAmount += renting.rentAmount;
             delete rentings[rentingIdentifier];
         }
     }
@@ -428,10 +427,9 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         address pmtToken = resolver.getPaymentToken(paymentTokenIx);
         uint256 decimals = ERC20(pmtToken).decimals();
         uint256 scale = 10**decimals;
-        uint256 rentPrice = unpackPrice(lending.dailyRentPrice, scale);
-        uint256 totalRenterPmt = renting.rentAmount *
-            rentPrice *
-            renting.rentDuration;
+        uint256 rentPrice = renting.rentAmount *
+            unpackPrice(lending.dailyRentPrice, scale);
+        uint256 totalRenterPmt = rentPrice * renting.rentDuration;
         uint256 sendLenderAmt = (secondsSinceRentStart * rentPrice) /
             SECONDS_IN_DAY;
         require(totalRenterPmt > 0, "ReNFT::total renter payment is zero");
