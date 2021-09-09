@@ -191,8 +191,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 lenderAddress: payable(msg.sender),
                 maxRentDuration: cd.maxRentDuration[i],
                 dailyRentPrice: cd.dailyRentPrice[i],
-                lendAmount: is721 ? 1 : uint8(cd.lendAmount[i]),
-                availableAmount: is721 ? 1 : uint8(cd.lendAmount[i]),
+                lendAmount: is721 ? 1 : uint16(cd.lendAmount[i]),
+                availableAmount: is721 ? 1 : uint16(cd.lendAmount[i]),
                 paymentToken: cd.paymentToken[i]
             });
             emit IRegistry.Lend(
@@ -203,7 +203,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 lendingID,
                 cd.maxRentDuration[i],
                 cd.dailyRentPrice[i],
-                is721 ? 1 : uint8(cd.lendAmount[i]),
+                is721 ? 1 : uint16(cd.lendAmount[i]),
                 cd.paymentToken[i]
             );
             lendingID++;
@@ -219,7 +219,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
 
     function handleStopLend(IRegistry.CallData memory cd) private {
         uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
-        IRegistry.NFTStandard nftStandard = IRegistry.NFTStandard.E721;
         for (uint256 i = cd.left; i < cd.right; i++) {
             bytes32 lendingIdentifier = keccak256(
                 abi.encodePacked(
@@ -229,19 +228,17 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 )
             );
             Lending storage lending = lendings[lendingIdentifier];
+            ensureIsNotNull(lending);
+            ensureIsStoppable(lending, msg.sender);
             require(
                 cd.nftStandard[i] == lending.nftStandard,
                 "ReNFT::invalid nft standard"
             );
-            // the condition below ensures there are no rentings tied up to this lending
             require(
                 lending.lendAmount == lending.availableAmount,
                 "ReNFT::actively rented"
             );
-            ensureIsNotNull(lending);
-            ensureIsStoppable(lending, msg.sender);
             lentAmounts[i - cd.left] = lending.lendAmount;
-            nftStandard = lending.nftStandard;
             emit IRegistry.StopLend(cd.lendingID[i], uint32(block.timestamp));
             delete lendings[lendingIdentifier];
         }
@@ -705,7 +702,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
 
     function ensureIsLendable(CallData memory cd, uint256 i) private pure {
         require(cd.lendAmount[i] > 0, "ReNFT::lend amount is zero");
-        require(cd.lendAmount[i] <= type(uint8).max, "ReNFT::not uint8");
+        require(cd.lendAmount[i] <= type(uint16).max, "ReNFT::not uint16");
         require(cd.maxRentDuration[i] > 0, "ReNFT::duration is zero");
         require(cd.maxRentDuration[i] <= type(uint8).max, "ReNFT::not uint8");
         require(uint32(cd.dailyRentPrice[i]) > 0, "ReNFT::rent price is zero");
