@@ -20,6 +20,8 @@ The above gives you the tools to actively test your contract. Brownie allows you
 
 To run the tests, simply run `brownie test`.
 
+For stateful tests, or otherwise, you may want to see `stdout`, in which case suffix the command above with `-s`, i.e. `brownie test -s`.
+
 If you would like to deploy the contracts to a testnet, you can write `brownie run <name_of_script_in_scripts_folder> --network ropsten`, for example.
 
 If you would like to verify the contract (this will show the contract code on Etherscan), you need to first get Etherscan API, and then using that env variable, start a console like so `ETHERSCAP_API=... brownie console --network ropsten`. When you are in there, get the instance of a contract `registry = Registry.at('contract_address')` and finally, `Registry.publish_source(registry)`.
