@@ -1,0 +1,26 @@
+name: Pull Request Builder
+# TODO
+# * change `1.1.11` to input variable
+# * change open zepplin and brownie packages to variable
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python_version: ['3.9.6']
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./.github/actions/common/setup-build-environment
+      with:
+        python_version: ${{ matrix.python_version }}
+    - run: |
+        poetry run brownie test
+      shell: bash
+
