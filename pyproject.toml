@@ -5,8 +5,8 @@ description = ""
 authors = ["nazariyv <nazariy@inbox.ru>"]
 
 [tool.poetry.dependencies]
-python = "3.9.6"
-eth-brownie = "^1.16.1"
+python = ">=3.8,<3.10"
+eth-brownie = "1.17.2"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.910"

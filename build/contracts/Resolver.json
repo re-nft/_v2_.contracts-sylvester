@@ -50,43 +50,43 @@
     }
   ],
   "allSourcePaths": {
-    "24": "contracts/Resolver.sol",
-    "26": "contracts/interfaces/IResolver.sol"
+    "15": "contracts/Resolver.sol",
+    "17": "contracts/interfaces/IResolver.sol"
   },
   "ast": {
     "absolutePath": "contracts/Resolver.sol",
     "exportedSymbols": {
       "IResolver": [
-        2812
+        2608
       ],
       "Resolver": [
-        2562
+        2440
       ]
     },
-    "id": 2563,
+    "id": 2441,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2487,
+        "id": 2365,
         "literals": [
           "solidity",
           "=",
           "0.8",
-          ".7"
+          ".6"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:23:24"
+        "src": "32:23:15"
       },
       {
         "absolutePath": "contracts/interfaces/IResolver.sol",
         "file": "./interfaces/IResolver.sol",
-        "id": 2488,
+        "id": 2366,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 2563,
-        "sourceUnit": 2813,
-        "src": "57:36:24",
+        "scope": 2441,
+        "sourceUnit": 2609,
+        "src": "57:36:15",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -95,38 +95,38 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 2489,
+              "id": 2367,
               "name": "IResolver",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 2812,
-              "src": "1394:9:24"
+              "referencedDeclaration": 2608,
+              "src": "1394:9:15"
             },
-            "id": 2490,
+            "id": 2368,
             "nodeType": "InheritanceSpecifier",
-            "src": "1394:9:24"
+            "src": "1394:9:15"
           }
         ],
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 2562,
+        "id": 2440,
         "linearizedBaseContracts": [
-          2562,
-          2812
+          2440,
+          2608
         ],
         "name": "Resolver",
-        "nameLocation": "1382:8:24",
+        "nameLocation": "1382:8:15",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 2492,
+            "id": 2370,
             "mutability": "mutable",
             "name": "admin",
-            "nameLocation": "1426:5:24",
+            "nameLocation": "1426:5:15",
             "nodeType": "VariableDeclaration",
-            "scope": 2562,
-            "src": "1410:21:24",
+            "scope": 2440,
+            "src": "1410:21:15",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -134,10 +134,10 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 2491,
+              "id": 2369,
               "name": "address",
               "nodeType": "ElementaryTypeName",
-              "src": "1410:7:24",
+              "src": "1410:7:15",
               "stateMutability": "nonpayable",
               "typeDescriptions": {
                 "typeIdentifier": "t_address",
@@ -148,13 +148,13 @@
           },
           {
             "constant": false,
-            "id": 2496,
+            "id": 2374,
             "mutability": "mutable",
             "name": "addresses",
-            "nameLocation": "1471:9:24",
+            "nameLocation": "1471:9:15",
             "nodeType": "VariableDeclaration",
-            "scope": 2562,
-            "src": "1437:43:24",
+            "scope": 2440,
+            "src": "1437:43:15",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -162,28 +162,28 @@
               "typeString": "mapping(uint8 => address)"
             },
             "typeName": {
-              "id": 2495,
+              "id": 2373,
               "keyType": {
-                "id": 2493,
+                "id": 2371,
                 "name": "uint8",
                 "nodeType": "ElementaryTypeName",
-                "src": "1445:5:24",
+                "src": "1445:5:15",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint8",
                   "typeString": "uint8"
                 }
               },
               "nodeType": "Mapping",
-              "src": "1437:25:24",
+              "src": "1437:25:15",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_uint8_$_t_address_$",
                 "typeString": "mapping(uint8 => address)"
               },
               "valueType": {
-                "id": 2494,
+                "id": 2372,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "1454:7:24",
+                "src": "1454:7:15",
                 "stateMutability": "nonpayable",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
@@ -195,24 +195,24 @@
           },
           {
             "body": {
-              "id": 2505,
+              "id": 2383,
               "nodeType": "Block",
-              "src": "1515:31:24",
+              "src": "1515:31:15",
               "statements": [
                 {
                   "expression": {
-                    "id": 2503,
+                    "id": 2381,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 2501,
+                      "id": 2379,
                       "name": "admin",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2492,
-                      "src": "1525:5:24",
+                      "referencedDeclaration": 2370,
+                      "src": "1525:5:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -221,30 +221,30 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 2502,
+                      "id": 2380,
                       "name": "_admin",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2498,
-                      "src": "1533:6:24",
+                      "referencedDeclaration": 2376,
+                      "src": "1533:6:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "1525:14:24",
+                    "src": "1525:14:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "id": 2504,
+                  "id": 2382,
                   "nodeType": "ExpressionStatement",
-                  "src": "1525:14:24"
+                  "src": "1525:14:15"
                 }
               ]
             },
-            "id": 2506,
+            "id": 2384,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
@@ -252,18 +252,18 @@
             "nameLocation": "-1:-1:-1",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2499,
+              "id": 2377,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2498,
+                  "id": 2376,
                   "mutability": "mutable",
                   "name": "_admin",
-                  "nameLocation": "1507:6:24",
+                  "nameLocation": "1507:6:15",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2506,
-                  "src": "1499:14:24",
+                  "scope": 2384,
+                  "src": "1499:14:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -271,10 +271,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2497,
+                    "id": 2375,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1499:7:24",
+                    "src": "1499:7:15",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -284,51 +284,51 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1498:16:24"
+              "src": "1498:16:15"
             },
             "returnParameters": {
-              "id": 2500,
+              "id": 2378,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1515:0:24"
+              "src": "1515:0:15"
             },
-            "scope": 2562,
-            "src": "1487:59:24",
+            "scope": 2440,
+            "src": "1487:59:15",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           },
           {
             "baseFunctions": [
-              2804
+              2600
             ],
             "body": {
-              "id": 2518,
+              "id": 2396,
               "nodeType": "Block",
-              "src": "1665:38:24",
+              "src": "1665:38:15",
               "statements": [
                 {
                   "expression": {
                     "baseExpression": {
-                      "id": 2514,
+                      "id": 2392,
                       "name": "addresses",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2496,
-                      "src": "1682:9:24",
+                      "referencedDeclaration": 2374,
+                      "src": "1682:9:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_mapping$_t_uint8_$_t_address_$",
                         "typeString": "mapping(uint8 => address)"
                       }
                     },
-                    "id": 2516,
+                    "id": 2394,
                     "indexExpression": {
-                      "id": 2515,
+                      "id": 2393,
                       "name": "_pt",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2508,
-                      "src": "1692:3:24",
+                      "referencedDeclaration": 2386,
+                      "src": "1692:3:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint8",
                         "typeString": "uint8"
@@ -339,46 +339,46 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "1682:14:24",
+                    "src": "1682:14:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "functionReturnParameters": 2513,
-                  "id": 2517,
+                  "functionReturnParameters": 2391,
+                  "id": 2395,
                   "nodeType": "Return",
-                  "src": "1675:21:24"
+                  "src": "1675:21:15"
                 }
               ]
             },
             "functionSelector": "c6ee427f",
-            "id": 2519,
+            "id": 2397,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "getPaymentToken",
-            "nameLocation": "1561:15:24",
+            "nameLocation": "1561:15:15",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 2510,
+              "id": 2388,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "1626:8:24"
+              "src": "1626:8:15"
             },
             "parameters": {
-              "id": 2509,
+              "id": 2387,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2508,
+                  "id": 2386,
                   "mutability": "mutable",
                   "name": "_pt",
-                  "nameLocation": "1583:3:24",
+                  "nameLocation": "1583:3:15",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2519,
-                  "src": "1577:9:24",
+                  "scope": 2397,
+                  "src": "1577:9:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -386,10 +386,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 2507,
+                    "id": 2385,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1577:5:24",
+                    "src": "1577:5:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -398,21 +398,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1576:11:24"
+              "src": "1576:11:15"
             },
             "returnParameters": {
-              "id": 2513,
+              "id": 2391,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2512,
+                  "id": 2390,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2519,
-                  "src": "1652:7:24",
+                  "scope": 2397,
+                  "src": "1652:7:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -420,10 +420,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2511,
+                    "id": 2389,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1652:7:24",
+                    "src": "1652:7:15",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -433,22 +433,22 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1651:9:24"
+              "src": "1651:9:15"
             },
-            "scope": 2562,
-            "src": "1552:151:24",
+            "scope": 2440,
+            "src": "1552:151:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "baseFunctions": [
-              2811
+              2607
             ],
             "body": {
-              "id": 2560,
+              "id": 2438,
               "nodeType": "Block",
-              "src": "1775:266:24",
+              "src": "1775:266:15",
               "statements": [
                 {
                   "expression": {
@@ -458,18 +458,18 @@
                           "typeIdentifier": "t_uint8",
                           "typeString": "uint8"
                         },
-                        "id": 2530,
+                        "id": 2408,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 2528,
+                          "id": 2406,
                           "name": "_pt",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2521,
-                          "src": "1793:3:24",
+                          "referencedDeclaration": 2399,
+                          "src": "1793:3:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint8",
                             "typeString": "uint8"
@@ -479,21 +479,21 @@
                         "operator": "!=",
                         "rightExpression": {
                           "hexValue": "30",
-                          "id": 2529,
+                          "id": 2407,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "1800:1:24",
+                          "src": "1800:1:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_0_by_1",
                             "typeString": "int_const 0"
                           },
                           "value": "0"
                         },
-                        "src": "1793:8:24",
+                        "src": "1793:8:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -501,14 +501,14 @@
                       },
                       {
                         "hexValue": "52654e46543a3a63616e74207365742073656e74696e656c",
-                        "id": 2531,
+                        "id": 2409,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1803:26:24",
+                        "src": "1803:26:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_3fd708fcff6824a7bdbc66df077cd1eb0e43c7e3ed29bb9c82bd6c8cc806a460",
                           "typeString": "literal_string \"ReNFT::cant set sentinel\""
@@ -527,7 +527,7 @@
                           "typeString": "literal_string \"ReNFT::cant set sentinel\""
                         }
                       ],
-                      "id": 2527,
+                      "id": 2405,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -535,13 +535,13 @@
                         -18
                       ],
                       "referencedDeclaration": -18,
-                      "src": "1785:7:24",
+                      "src": "1785:7:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 2532,
+                    "id": 2410,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -549,16 +549,16 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1785:45:24",
+                    "src": "1785:45:15",
                     "tryCall": false,
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2533,
+                  "id": 2411,
                   "nodeType": "ExpressionStatement",
-                  "src": "1785:45:24"
+                  "src": "1785:45:15"
                 },
                 {
                   "expression": {
@@ -568,32 +568,32 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 2542,
+                        "id": 2420,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "baseExpression": {
-                            "id": 2535,
+                            "id": 2413,
                             "name": "addresses",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2496,
-                            "src": "1861:9:24",
+                            "referencedDeclaration": 2374,
+                            "src": "1861:9:15",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_uint8_$_t_address_$",
                               "typeString": "mapping(uint8 => address)"
                             }
                           },
-                          "id": 2537,
+                          "id": 2415,
                           "indexExpression": {
-                            "id": 2536,
+                            "id": 2414,
                             "name": "_pt",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2521,
-                            "src": "1871:3:24",
+                            "referencedDeclaration": 2399,
+                            "src": "1871:3:15",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint8",
                               "typeString": "uint8"
@@ -604,7 +604,7 @@
                           "isPure": false,
                           "lValueRequested": false,
                           "nodeType": "IndexAccess",
-                          "src": "1861:14:24",
+                          "src": "1861:14:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -616,14 +616,14 @@
                           "arguments": [
                             {
                               "hexValue": "30",
-                              "id": 2540,
+                              "id": 2418,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
                               "kind": "number",
                               "lValueRequested": false,
                               "nodeType": "Literal",
-                              "src": "1887:1:24",
+                              "src": "1887:1:15",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_rational_0_by_1",
                                 "typeString": "int_const 0"
@@ -638,26 +638,26 @@
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 2539,
+                            "id": 2417,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "lValueRequested": false,
                             "nodeType": "ElementaryTypeNameExpression",
-                            "src": "1879:7:24",
+                            "src": "1879:7:15",
                             "typeDescriptions": {
                               "typeIdentifier": "t_type$_t_address_$",
                               "typeString": "type(address)"
                             },
                             "typeName": {
-                              "id": 2538,
+                              "id": 2416,
                               "name": "address",
                               "nodeType": "ElementaryTypeName",
-                              "src": "1879:7:24",
+                              "src": "1879:7:15",
                               "typeDescriptions": {}
                             }
                           },
-                          "id": 2541,
+                          "id": 2419,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -665,14 +665,14 @@
                           "lValueRequested": false,
                           "names": [],
                           "nodeType": "FunctionCall",
-                          "src": "1879:10:24",
+                          "src": "1879:10:15",
                           "tryCall": false,
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
                           }
                         },
-                        "src": "1861:28:24",
+                        "src": "1861:28:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -680,14 +680,14 @@
                       },
                       {
                         "hexValue": "52654e46543a3a63616e6e6f74207265736574207468652061646472657373",
-                        "id": 2543,
+                        "id": 2421,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1903:33:24",
+                        "src": "1903:33:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_be3f57871b4f7d0e14380b0bef1e43d89cfa1161a413556c9a3d768d3de098c7",
                           "typeString": "literal_string \"ReNFT::cannot reset the address\""
@@ -706,7 +706,7 @@
                           "typeString": "literal_string \"ReNFT::cannot reset the address\""
                         }
                       ],
-                      "id": 2534,
+                      "id": 2412,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -714,13 +714,13 @@
                         -18
                       ],
                       "referencedDeclaration": -18,
-                      "src": "1840:7:24",
+                      "src": "1840:7:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 2544,
+                    "id": 2422,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -728,16 +728,16 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1840:106:24",
+                    "src": "1840:106:15",
                     "tryCall": false,
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2545,
+                  "id": 2423,
                   "nodeType": "ExpressionStatement",
-                  "src": "1840:106:24"
+                  "src": "1840:106:15"
                 },
                 {
                   "expression": {
@@ -747,32 +747,32 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 2550,
+                        "id": 2428,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "expression": {
-                            "id": 2547,
+                            "id": 2425,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": -15,
-                            "src": "1964:3:24",
+                            "src": "1964:3:15",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 2548,
+                          "id": 2426,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "memberName": "sender",
                           "nodeType": "MemberAccess",
-                          "src": "1964:10:24",
+                          "src": "1964:10:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -781,18 +781,18 @@
                         "nodeType": "BinaryOperation",
                         "operator": "==",
                         "rightExpression": {
-                          "id": 2549,
+                          "id": 2427,
                           "name": "admin",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2492,
-                          "src": "1978:5:24",
+                          "referencedDeclaration": 2370,
+                          "src": "1978:5:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
                           }
                         },
-                        "src": "1964:19:24",
+                        "src": "1964:19:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -800,14 +800,14 @@
                       },
                       {
                         "hexValue": "52654e46543a3a6f6e6c792061646d696e",
-                        "id": 2551,
+                        "id": 2429,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1985:19:24",
+                        "src": "1985:19:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_d801d92bd97c7808af5aa53cb60b9ef4d5adcb1b41dd6ea3bb886a6c53c93aa7",
                           "typeString": "literal_string \"ReNFT::only admin\""
@@ -826,7 +826,7 @@
                           "typeString": "literal_string \"ReNFT::only admin\""
                         }
                       ],
-                      "id": 2546,
+                      "id": 2424,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -834,13 +834,13 @@
                         -18
                       ],
                       "referencedDeclaration": -18,
-                      "src": "1956:7:24",
+                      "src": "1956:7:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 2552,
+                    "id": 2430,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -848,45 +848,45 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1956:49:24",
+                    "src": "1956:49:15",
                     "tryCall": false,
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2553,
+                  "id": 2431,
                   "nodeType": "ExpressionStatement",
-                  "src": "1956:49:24"
+                  "src": "1956:49:15"
                 },
                 {
                   "expression": {
-                    "id": 2558,
+                    "id": 2436,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 2554,
+                        "id": 2432,
                         "name": "addresses",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2496,
-                        "src": "2015:9:24",
+                        "referencedDeclaration": 2374,
+                        "src": "2015:9:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint8_$_t_address_$",
                           "typeString": "mapping(uint8 => address)"
                         }
                       },
-                      "id": 2556,
+                      "id": 2434,
                       "indexExpression": {
-                        "id": 2555,
+                        "id": 2433,
                         "name": "_pt",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2521,
-                        "src": "2025:3:24",
+                        "referencedDeclaration": 2399,
+                        "src": "2025:3:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint8",
                           "typeString": "uint8"
@@ -897,7 +897,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "2015:14:24",
+                      "src": "2015:14:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -906,56 +906,56 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 2557,
+                      "id": 2435,
                       "name": "_v",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2523,
-                      "src": "2032:2:24",
+                      "referencedDeclaration": 2401,
+                      "src": "2032:2:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "2015:19:24",
+                    "src": "2015:19:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "id": 2559,
+                  "id": 2437,
                   "nodeType": "ExpressionStatement",
-                  "src": "2015:19:24"
+                  "src": "2015:19:15"
                 }
               ]
             },
             "functionSelector": "321c6aea",
-            "id": 2561,
+            "id": 2439,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "setPaymentToken",
-            "nameLocation": "1718:15:24",
+            "nameLocation": "1718:15:15",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 2525,
+              "id": 2403,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "1766:8:24"
+              "src": "1766:8:15"
             },
             "parameters": {
-              "id": 2524,
+              "id": 2402,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2521,
+                  "id": 2399,
                   "mutability": "mutable",
                   "name": "_pt",
-                  "nameLocation": "1740:3:24",
+                  "nameLocation": "1740:3:15",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2561,
-                  "src": "1734:9:24",
+                  "scope": 2439,
+                  "src": "1734:9:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -963,10 +963,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 2520,
+                    "id": 2398,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1734:5:24",
+                    "src": "1734:5:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -976,13 +976,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2523,
+                  "id": 2401,
                   "mutability": "mutable",
                   "name": "_v",
-                  "nameLocation": "1753:2:24",
+                  "nameLocation": "1753:2:15",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2561,
-                  "src": "1745:10:24",
+                  "scope": 2439,
+                  "src": "1745:10:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -990,10 +990,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2522,
+                    "id": 2400,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1745:7:24",
+                    "src": "1745:7:15",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1003,29 +1003,29 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1733:23:24"
+              "src": "1733:23:15"
             },
             "returnParameters": {
-              "id": 2526,
+              "id": 2404,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1775:0:24"
+              "src": "1775:0:15"
             },
-            "scope": 2562,
-            "src": "1709:332:24",
+            "scope": 2440,
+            "src": "1709:332:15",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2563,
-        "src": "1373:670:24",
+        "scope": 2441,
+        "src": "1373:670:15",
         "usedErrors": []
       }
     ],
-    "src": "32:3290:24"
+    "src": "32:3290:15"
   },
-  "bytecode": "608060405234801561001057600080fd5b5060405161031b38038061031b83398101604081905261002f91610054565b600080546001600160a01b0319166001600160a01b0392909216919091179055610084565b60006020828403121561006657600080fd5b81516001600160a01b038116811461007d57600080fd5b9392505050565b610288806100936000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c8063321c6aea1461003b578063c6ee427f14610050575b600080fd5b61004e61004936600461020f565b610098565b005b61007c61005e3660046101ed565b60ff166000908152600160205260409020546001600160a01b031690565b6040516001600160a01b03909116815260200160405180910390f35b60ff82166100ed5760405162461bcd60e51b815260206004820152601860248201527f52654e46543a3a63616e74207365742073656e74696e656c000000000000000060448201526064015b60405180910390fd5b60ff82166000908152600160205260409020546001600160a01b0316156101565760405162461bcd60e51b815260206004820152601f60248201527f52654e46543a3a63616e6e6f742072657365742074686520616464726573730060448201526064016100e4565b6000546001600160a01b031633146101a45760405162461bcd60e51b81526020600482015260116024820152702932a7232a1d1d37b7363c9030b236b4b760791b60448201526064016100e4565b60ff91909116600090815260016020526040902080546001600160a01b0319166001600160a01b03909216919091179055565b803560ff811681146101e857600080fd5b919050565b6000602082840312156101ff57600080fd5b610208826101d7565b9392505050565b6000806040838503121561022257600080fd5b61022b836101d7565b915060208301356001600160a01b038116811461024757600080fd5b80915050925092905056fea2646970667358221220b869729c600e5c3ec87d7d94ecb37969e141ee61b50a9def5036c5c713c296c464736f6c63430008070033",
+  "bytecode": "608060405234801561001057600080fd5b5060405161031b38038061031b83398101604081905261002f91610054565b600080546001600160a01b0319166001600160a01b0392909216919091179055610084565b60006020828403121561006657600080fd5b81516001600160a01b038116811461007d57600080fd5b9392505050565b610288806100936000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c8063321c6aea1461003b578063c6ee427f14610050575b600080fd5b61004e61004936600461020f565b610098565b005b61007c61005e3660046101ed565b60ff166000908152600160205260409020546001600160a01b031690565b6040516001600160a01b03909116815260200160405180910390f35b60ff82166100ed5760405162461bcd60e51b815260206004820152601860248201527f52654e46543a3a63616e74207365742073656e74696e656c000000000000000060448201526064015b60405180910390fd5b60ff82166000908152600160205260409020546001600160a01b0316156101565760405162461bcd60e51b815260206004820152601f60248201527f52654e46543a3a63616e6e6f742072657365742074686520616464726573730060448201526064016100e4565b6000546001600160a01b031633146101a45760405162461bcd60e51b81526020600482015260116024820152702932a7232a1d1d37b7363c9030b236b4b760791b60448201526064016100e4565b60ff91909116600090815260016020526040902080546001600160a01b0319166001600160a01b03909216919091179055565b803560ff811681146101e857600080fd5b919050565b6000602082840312156101ff57600080fd5b610208826101d7565b9392505050565b6000806040838503121561022257600080fd5b61022b836101d7565b915060208301356001600160a01b038116811461024757600080fd5b80915050925092905056fea2646970667358221220833368b8bb5ba25e255e616675e381808eef75c261d3cdee260aae45dc4ed7a164736f6c63430008060033",
   "bytecodeSha1": "386663497f519360b7ae50d6fe2a1c37ef21d368",
   "compiler": {
     "evm_version": "istanbul",
@@ -1033,12 +1033,12 @@
       "enabled": true,
       "runs": 200
     },
-    "version": "0.8.7+commit.e28d00a7"
+    "version": "0.8.6+commit.11564f7e"
   },
   "contractName": "Resolver",
   "coverageMap": {
     "branches": {
-      "24": {
+      "15": {
         "Resolver.setPaymentToken": {
           "5": [
             1793,
@@ -1057,10 +1057,10 @@
           ]
         }
       },
-      "26": {}
+      "17": {}
     },
     "statements": {
-      "24": {
+      "15": {
         "Resolver.getPaymentToken": {
           "0": [
             1675,
@@ -1086,14 +1086,14 @@
           ]
         }
       },
-      "26": {}
+      "17": {}
     }
   },
   "dependencies": [
     "IResolver"
   ],
-  "deployedBytecode": "608060405234801561001057600080fd5b50600436106100365760003560e01c8063321c6aea1461003b578063c6ee427f14610050575b600080fd5b61004e61004936600461020f565b610098565b005b61007c61005e3660046101ed565b60ff166000908152600160205260409020546001600160a01b031690565b6040516001600160a01b03909116815260200160405180910390f35b60ff82166100ed5760405162461bcd60e51b815260206004820152601860248201527f52654e46543a3a63616e74207365742073656e74696e656c000000000000000060448201526064015b60405180910390fd5b60ff82166000908152600160205260409020546001600160a01b0316156101565760405162461bcd60e51b815260206004820152601f60248201527f52654e46543a3a63616e6e6f742072657365742074686520616464726573730060448201526064016100e4565b6000546001600160a01b031633146101a45760405162461bcd60e51b81526020600482015260116024820152702932a7232a1d1d37b7363c9030b236b4b760791b60448201526064016100e4565b60ff91909116600090815260016020526040902080546001600160a01b0319166001600160a01b03909216919091179055565b803560ff811681146101e857600080fd5b919050565b6000602082840312156101ff57600080fd5b610208826101d7565b9392505050565b6000806040838503121561022257600080fd5b61022b836101d7565b915060208301356001600160a01b038116811461024757600080fd5b80915050925092905056fea2646970667358221220b869729c600e5c3ec87d7d94ecb37969e141ee61b50a9def5036c5c713c296c464736f6c63430008070033",
-  "deployedSourceMap": "1373:670:24:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1709:332;;;;;;:::i;:::-;;:::i;:::-;;1552:151;;;;;;:::i;:::-;1682:14;;1652:7;1682:14;;;:9;:14;;;;;;-1:-1:-1;;;;;1682:14:24;;1552:151;;;;-1:-1:-1;;;;;887:32:31;;;869:51;;857:2;842:18;1552:151:24;;;;;;;1709:332;1793:8;;;1785:45;;;;-1:-1:-1;;;1785:45:24;;1133:2:31;1785:45:24;;;1115:21:31;1172:2;1152:18;;;1145:30;1211:26;1191:18;;;1184:54;1255:18;;1785:45:24;;;;;;;;;1861:14;;;1887:1;1861:14;;;:9;:14;;;;;;-1:-1:-1;;;;;1861:14:24;:28;1840:106;;;;-1:-1:-1;;;1840:106:24;;1486:2:31;1840:106:24;;;1468:21:31;1525:2;1505:18;;;1498:30;1564:33;1544:18;;;1537:61;1615:18;;1840:106:24;1284:355:31;1840:106:24;1978:5;;-1:-1:-1;;;;;1978:5:24;1964:10;:19;1956:49;;;;-1:-1:-1;;;1956:49:24;;1846:2:31;1956:49:24;;;1828:21:31;1885:2;1865:18;;;1858:30;-1:-1:-1;;;1904:18:31;;;1897:47;1961:18;;1956:49:24;1644:341:31;1956:49:24;2015:14;;;;;;;;;:9;:14;;;;;:19;;-1:-1:-1;;;;;;2015:19:24;-1:-1:-1;;;;;2015:19:24;;;;;;;;;1709:332::o;14:156:31:-;80:20;;140:4;129:16;;119:27;;109:55;;160:1;157;150:12;109:55;14:156;;;:::o;175:182::-;232:6;285:2;273:9;264:7;260:23;256:32;253:52;;;301:1;298;291:12;253:52;324:27;341:9;324:27;:::i;:::-;314:37;175:182;-1:-1:-1;;;175:182:31:o;362:356::-;428:6;436;489:2;477:9;468:7;464:23;460:32;457:52;;;505:1;502;495:12;457:52;528:27;545:9;528:27;:::i;:::-;518:37;-1:-1:-1;605:2:31;590:18;;577:32;-1:-1:-1;;;;;638:31:31;;628:42;;618:70;;684:1;681;674:12;618:70;707:5;697:15;;;362:356;;;;;:::o",
+  "deployedBytecode": "608060405234801561001057600080fd5b50600436106100365760003560e01c8063321c6aea1461003b578063c6ee427f14610050575b600080fd5b61004e61004936600461020f565b610098565b005b61007c61005e3660046101ed565b60ff166000908152600160205260409020546001600160a01b031690565b6040516001600160a01b03909116815260200160405180910390f35b60ff82166100ed5760405162461bcd60e51b815260206004820152601860248201527f52654e46543a3a63616e74207365742073656e74696e656c000000000000000060448201526064015b60405180910390fd5b60ff82166000908152600160205260409020546001600160a01b0316156101565760405162461bcd60e51b815260206004820152601f60248201527f52654e46543a3a63616e6e6f742072657365742074686520616464726573730060448201526064016100e4565b6000546001600160a01b031633146101a45760405162461bcd60e51b81526020600482015260116024820152702932a7232a1d1d37b7363c9030b236b4b760791b60448201526064016100e4565b60ff91909116600090815260016020526040902080546001600160a01b0319166001600160a01b03909216919091179055565b803560ff811681146101e857600080fd5b919050565b6000602082840312156101ff57600080fd5b610208826101d7565b9392505050565b6000806040838503121561022257600080fd5b61022b836101d7565b915060208301356001600160a01b038116811461024757600080fd5b80915050925092905056fea2646970667358221220833368b8bb5ba25e255e616675e381808eef75c261d3cdee260aae45dc4ed7a164736f6c63430008060033",
+  "deployedSourceMap": "1373:670:15:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1709:332;;;;;;:::i;:::-;;:::i;:::-;;1552:151;;;;;;:::i;:::-;1682:14;;1652:7;1682:14;;;:9;:14;;;;;;-1:-1:-1;;;;;1682:14:15;;1552:151;;;;-1:-1:-1;;;;;887:32:18;;;869:51;;857:2;842:18;1552:151:15;;;;;;;1709:332;1793:8;;;1785:45;;;;-1:-1:-1;;;1785:45:15;;1133:2:18;1785:45:15;;;1115:21:18;1172:2;1152:18;;;1145:30;1211:26;1191:18;;;1184:54;1255:18;;1785:45:15;;;;;;;;;1861:14;;;1887:1;1861:14;;;:9;:14;;;;;;-1:-1:-1;;;;;1861:14:15;:28;1840:106;;;;-1:-1:-1;;;1840:106:15;;1486:2:18;1840:106:15;;;1468:21:18;1525:2;1505:18;;;1498:30;1564:33;1544:18;;;1537:61;1615:18;;1840:106:15;1458:181:18;1840:106:15;1978:5;;-1:-1:-1;;;;;1978:5:15;1964:10;:19;1956:49;;;;-1:-1:-1;;;1956:49:15;;1846:2:18;1956:49:15;;;1828:21:18;1885:2;1865:18;;;1858:30;-1:-1:-1;;;1904:18:18;;;1897:47;1961:18;;1956:49:15;1818:167:18;1956:49:15;2015:14;;;;;;;;;:9;:14;;;;;:19;;-1:-1:-1;;;;;;2015:19:15;-1:-1:-1;;;;;2015:19:15;;;;;;;;;1709:332::o;14:156:18:-;80:20;;140:4;129:16;;119:27;;109:2;;160:1;157;150:12;109:2;61:109;;;:::o;175:182::-;232:6;285:2;273:9;264:7;260:23;256:32;253:2;;;301:1;298;291:12;253:2;324:27;341:9;324:27;:::i;:::-;314:37;243:114;-1:-1:-1;;;243:114:18:o;362:356::-;428:6;436;489:2;477:9;468:7;464:23;460:32;457:2;;;505:1;502;495:12;457:2;528:27;545:9;528:27;:::i;:::-;518:37;-1:-1:-1;605:2:18;590:18;;577:32;-1:-1:-1;;;;;638:31:18;;628:42;;618:2;;684:1;681;674:12;618:2;707:5;697:15;;;447:271;;;;;:::o",
   "language": "Solidity",
   "natspec": {
     "kind": "dev",
@@ -1104,7 +1104,7 @@
     1373,
     2043
   ],
-  "opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE CALLVALUE DUP1 ISZERO PUSH2 0x10 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST POP PUSH1 0x4 CALLDATASIZE LT PUSH2 0x36 JUMPI PUSH1 0x0 CALLDATALOAD PUSH1 0xE0 SHR DUP1 PUSH4 0x321C6AEA EQ PUSH2 0x3B JUMPI DUP1 PUSH4 0xC6EE427F EQ PUSH2 0x50 JUMPI JUMPDEST PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x4E PUSH2 0x49 CALLDATASIZE PUSH1 0x4 PUSH2 0x20F JUMP JUMPDEST PUSH2 0x98 JUMP JUMPDEST STOP JUMPDEST PUSH2 0x7C PUSH2 0x5E CALLDATASIZE PUSH1 0x4 PUSH2 0x1ED JUMP JUMPDEST PUSH1 0xFF AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND SWAP1 JUMP JUMPDEST PUSH1 0x40 MLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB SWAP1 SWAP2 AND DUP2 MSTORE PUSH1 0x20 ADD PUSH1 0x40 MLOAD DUP1 SWAP2 SUB SWAP1 RETURN JUMPDEST PUSH1 0xFF DUP3 AND PUSH2 0xED JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x18 PUSH1 0x24 DUP3 ADD MSTORE PUSH32 0x52654E46543A3A63616E74207365742073656E74696E656C0000000000000000 PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD JUMPDEST PUSH1 0x40 MLOAD DUP1 SWAP2 SUB SWAP1 REVERT JUMPDEST PUSH1 0xFF DUP3 AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND ISZERO PUSH2 0x156 JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x1F PUSH1 0x24 DUP3 ADD MSTORE PUSH32 0x52654E46543A3A63616E6E6F7420726573657420746865206164647265737300 PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD PUSH2 0xE4 JUMP JUMPDEST PUSH1 0x0 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND CALLER EQ PUSH2 0x1A4 JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x11 PUSH1 0x24 DUP3 ADD MSTORE PUSH17 0x2932A7232A1D1D37B7363C9030B236B4B7 PUSH1 0x79 SHL PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD PUSH2 0xE4 JUMP JUMPDEST PUSH1 0xFF SWAP2 SWAP1 SWAP2 AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 DUP1 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB NOT AND PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB SWAP1 SWAP3 AND SWAP2 SWAP1 SWAP2 OR SWAP1 SSTORE JUMP JUMPDEST DUP1 CALLDATALOAD PUSH1 0xFF DUP2 AND DUP2 EQ PUSH2 0x1E8 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST SWAP2 SWAP1 POP JUMP JUMPDEST PUSH1 0x0 PUSH1 0x20 DUP3 DUP5 SUB SLT ISZERO PUSH2 0x1FF JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x208 DUP3 PUSH2 0x1D7 JUMP JUMPDEST SWAP4 SWAP3 POP POP POP JUMP JUMPDEST PUSH1 0x0 DUP1 PUSH1 0x40 DUP4 DUP6 SUB SLT ISZERO PUSH2 0x222 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x22B DUP4 PUSH2 0x1D7 JUMP JUMPDEST SWAP2 POP PUSH1 0x20 DUP4 ADD CALLDATALOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB DUP2 AND DUP2 EQ PUSH2 0x247 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST DUP1 SWAP2 POP POP SWAP3 POP SWAP3 SWAP1 POP JUMP INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 0xB8 PUSH10 0x729C600E5C3EC87D7D94 0xEC 0xB3 PUSH26 0x69E141EE61B50A9DEF5036C5C713C296C464736F6C6343000807 STOP CALLER ",
+  "opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE CALLVALUE DUP1 ISZERO PUSH2 0x10 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST POP PUSH1 0x4 CALLDATASIZE LT PUSH2 0x36 JUMPI PUSH1 0x0 CALLDATALOAD PUSH1 0xE0 SHR DUP1 PUSH4 0x321C6AEA EQ PUSH2 0x3B JUMPI DUP1 PUSH4 0xC6EE427F EQ PUSH2 0x50 JUMPI JUMPDEST PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x4E PUSH2 0x49 CALLDATASIZE PUSH1 0x4 PUSH2 0x20F JUMP JUMPDEST PUSH2 0x98 JUMP JUMPDEST STOP JUMPDEST PUSH2 0x7C PUSH2 0x5E CALLDATASIZE PUSH1 0x4 PUSH2 0x1ED JUMP JUMPDEST PUSH1 0xFF AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND SWAP1 JUMP JUMPDEST PUSH1 0x40 MLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB SWAP1 SWAP2 AND DUP2 MSTORE PUSH1 0x20 ADD PUSH1 0x40 MLOAD DUP1 SWAP2 SUB SWAP1 RETURN JUMPDEST PUSH1 0xFF DUP3 AND PUSH2 0xED JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x18 PUSH1 0x24 DUP3 ADD MSTORE PUSH32 0x52654E46543A3A63616E74207365742073656E74696E656C0000000000000000 PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD JUMPDEST PUSH1 0x40 MLOAD DUP1 SWAP2 SUB SWAP1 REVERT JUMPDEST PUSH1 0xFF DUP3 AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND ISZERO PUSH2 0x156 JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x1F PUSH1 0x24 DUP3 ADD MSTORE PUSH32 0x52654E46543A3A63616E6E6F7420726573657420746865206164647265737300 PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD PUSH2 0xE4 JUMP JUMPDEST PUSH1 0x0 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND CALLER EQ PUSH2 0x1A4 JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x11 PUSH1 0x24 DUP3 ADD MSTORE PUSH17 0x2932A7232A1D1D37B7363C9030B236B4B7 PUSH1 0x79 SHL PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD PUSH2 0xE4 JUMP JUMPDEST PUSH1 0xFF SWAP2 SWAP1 SWAP2 AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 DUP1 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB NOT AND PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB SWAP1 SWAP3 AND SWAP2 SWAP1 SWAP2 OR SWAP1 SSTORE JUMP JUMPDEST DUP1 CALLDATALOAD PUSH1 0xFF DUP2 AND DUP2 EQ PUSH2 0x1E8 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST SWAP2 SWAP1 POP JUMP JUMPDEST PUSH1 0x0 PUSH1 0x20 DUP3 DUP5 SUB SLT ISZERO PUSH2 0x1FF JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x208 DUP3 PUSH2 0x1D7 JUMP JUMPDEST SWAP4 SWAP3 POP POP POP JUMP JUMPDEST PUSH1 0x0 DUP1 PUSH1 0x40 DUP4 DUP6 SUB SLT ISZERO PUSH2 0x222 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x22B DUP4 PUSH2 0x1D7 JUMP JUMPDEST SWAP2 POP PUSH1 0x20 DUP4 ADD CALLDATALOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB DUP2 AND DUP2 EQ PUSH2 0x247 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST DUP1 SWAP2 POP POP SWAP3 POP SWAP3 SWAP1 POP JUMP INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 DUP4 CALLER PUSH9 0xB8BB5BA25E255E6166 PUSH22 0xE381808EEF75C261D3CDEE260AAE45DC4ED7A164736F PUSH13 0x63430008060033000000000000 ",
   "pcMap": {
     "0": {
       "offset": [
@@ -1112,7 +1112,7 @@
         2043
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x80"
     },
     "2": {
@@ -1122,7 +1122,7 @@
         2043
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x40"
     },
     "4": {
@@ -1132,7 +1132,7 @@
         2043
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "15"
     },
     "5": {
       "fn": null,
@@ -1141,7 +1141,7 @@
         2043
       ],
       "op": "CALLVALUE",
-      "path": "24"
+      "path": "15"
     },
     "6": {
       "fn": null,
@@ -1150,7 +1150,7 @@
         2043
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "15"
     },
     "7": {
       "fn": null,
@@ -1159,7 +1159,7 @@
         2043
       ],
       "op": "ISZERO",
-      "path": "24"
+      "path": "15"
     },
     "8": {
       "fn": null,
@@ -1168,7 +1168,7 @@
         2043
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x10"
     },
     "11": {
@@ -1178,7 +1178,7 @@
         2043
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "15"
     },
     "12": {
       "fn": null,
@@ -1187,7 +1187,7 @@
         2043
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x0"
     },
     "14": {
@@ -1197,7 +1197,7 @@
         2043
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "15"
     },
     "15": {
       "dev": "Cannot send ether to nonpayable function",
@@ -1207,7 +1207,7 @@
         2043
       ],
       "op": "REVERT",
-      "path": "24"
+      "path": "15"
     },
     "16": {
       "fn": null,
@@ -1216,7 +1216,7 @@
         2043
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "17": {
       "fn": null,
@@ -1225,7 +1225,7 @@
         2043
       ],
       "op": "POP",
-      "path": "24"
+      "path": "15"
     },
     "18": {
       "fn": null,
@@ -1234,7 +1234,7 @@
         2043
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x4"
     },
     "20": {
@@ -1244,7 +1244,7 @@
         2043
       ],
       "op": "CALLDATASIZE",
-      "path": "24"
+      "path": "15"
     },
     "21": {
       "fn": null,
@@ -1253,7 +1253,7 @@
         2043
       ],
       "op": "LT",
-      "path": "24"
+      "path": "15"
     },
     "22": {
       "fn": null,
@@ -1262,7 +1262,7 @@
         2043
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x36"
     },
     "25": {
@@ -1272,7 +1272,7 @@
         2043
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "15"
     },
     "26": {
       "fn": null,
@@ -1281,7 +1281,7 @@
         2043
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x0"
     },
     "28": {
@@ -1291,7 +1291,7 @@
         2043
       ],
       "op": "CALLDATALOAD",
-      "path": "24"
+      "path": "15"
     },
     "29": {
       "fn": null,
@@ -1300,7 +1300,7 @@
         2043
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0xE0"
     },
     "31": {
@@ -1310,7 +1310,7 @@
         2043
       ],
       "op": "SHR",
-      "path": "24"
+      "path": "15"
     },
     "32": {
       "fn": null,
@@ -1319,7 +1319,7 @@
         2043
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "15"
     },
     "33": {
       "fn": null,
@@ -1328,7 +1328,7 @@
         2043
       ],
       "op": "PUSH4",
-      "path": "24",
+      "path": "15",
       "value": "0x321C6AEA"
     },
     "38": {
@@ -1338,7 +1338,7 @@
         2043
       ],
       "op": "EQ",
-      "path": "24"
+      "path": "15"
     },
     "39": {
       "fn": null,
@@ -1347,7 +1347,7 @@
         2043
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x3B"
     },
     "42": {
@@ -1357,7 +1357,7 @@
         2043
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "15"
     },
     "43": {
       "fn": null,
@@ -1366,7 +1366,7 @@
         2043
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "15"
     },
     "44": {
       "fn": null,
@@ -1375,7 +1375,7 @@
         2043
       ],
       "op": "PUSH4",
-      "path": "24",
+      "path": "15",
       "value": "0xC6EE427F"
     },
     "49": {
@@ -1385,7 +1385,7 @@
         2043
       ],
       "op": "EQ",
-      "path": "24"
+      "path": "15"
     },
     "50": {
       "fn": null,
@@ -1394,7 +1394,7 @@
         2043
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x50"
     },
     "53": {
@@ -1404,7 +1404,7 @@
         2043
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "15"
     },
     "54": {
       "fn": null,
@@ -1413,7 +1413,7 @@
         2043
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "55": {
       "fn": null,
@@ -1422,7 +1422,7 @@
         2043
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x0"
     },
     "57": {
@@ -1432,7 +1432,7 @@
         2043
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "15"
     },
     "58": {
       "first_revert": true,
@@ -1442,7 +1442,7 @@
         2043
       ],
       "op": "REVERT",
-      "path": "24"
+      "path": "15"
     },
     "59": {
       "fn": "Resolver.setPaymentToken",
@@ -1451,7 +1451,7 @@
         2041
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "60": {
       "fn": "Resolver.setPaymentToken",
@@ -1460,7 +1460,7 @@
         2041
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x4E"
     },
     "63": {
@@ -1470,7 +1470,7 @@
         2041
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x49"
     },
     "66": {
@@ -1480,7 +1480,7 @@
         2041
       ],
       "op": "CALLDATASIZE",
-      "path": "24"
+      "path": "15"
     },
     "67": {
       "fn": "Resolver.setPaymentToken",
@@ -1489,7 +1489,7 @@
         2041
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x4"
     },
     "69": {
@@ -1499,7 +1499,7 @@
         2041
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x20F"
     },
     "72": {
@@ -1510,7 +1510,7 @@
         2041
       ],
       "op": "JUMP",
-      "path": "24"
+      "path": "15"
     },
     "73": {
       "fn": "Resolver.setPaymentToken",
@@ -1519,7 +1519,7 @@
         2041
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "74": {
       "fn": "Resolver.setPaymentToken",
@@ -1528,7 +1528,7 @@
         2041
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x98"
     },
     "77": {
@@ -1539,7 +1539,7 @@
         2041
       ],
       "op": "JUMP",
-      "path": "24"
+      "path": "15"
     },
     "78": {
       "fn": "Resolver.setPaymentToken",
@@ -1548,7 +1548,7 @@
         2041
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "79": {
       "fn": "Resolver.setPaymentToken",
@@ -1557,7 +1557,7 @@
         2041
       ],
       "op": "STOP",
-      "path": "24"
+      "path": "15"
     },
     "80": {
       "fn": "Resolver.getPaymentToken",
@@ -1566,7 +1566,7 @@
         1703
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "81": {
       "fn": "Resolver.getPaymentToken",
@@ -1575,7 +1575,7 @@
         1703
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x7C"
     },
     "84": {
@@ -1585,7 +1585,7 @@
         1703
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x5E"
     },
     "87": {
@@ -1595,7 +1595,7 @@
         1703
       ],
       "op": "CALLDATASIZE",
-      "path": "24"
+      "path": "15"
     },
     "88": {
       "fn": "Resolver.getPaymentToken",
@@ -1604,7 +1604,7 @@
         1703
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x4"
     },
     "90": {
@@ -1614,7 +1614,7 @@
         1703
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x1ED"
     },
     "93": {
@@ -1625,7 +1625,7 @@
         1703
       ],
       "op": "JUMP",
-      "path": "24"
+      "path": "15"
     },
     "94": {
       "fn": "Resolver.getPaymentToken",
@@ -1634,7 +1634,7 @@
         1703
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "95": {
       "fn": "Resolver.getPaymentToken",
@@ -1643,7 +1643,7 @@
         1696
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "statement": 0,
       "value": "0xFF"
     },
@@ -1654,7 +1654,7 @@
         1696
       ],
       "op": "AND",
-      "path": "24"
+      "path": "15"
     },
     "98": {
       "fn": "Resolver.getPaymentToken",
@@ -1663,7 +1663,7 @@
         1659
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x0"
     },
     "100": {
@@ -1673,7 +1673,7 @@
         1696
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "101": {
       "fn": "Resolver.getPaymentToken",
@@ -1682,7 +1682,7 @@
         1696
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "15"
     },
     "102": {
       "fn": "Resolver.getPaymentToken",
@@ -1691,7 +1691,7 @@
         1696
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "15"
     },
     "103": {
       "fn": "Resolver.getPaymentToken",
@@ -1700,7 +1700,7 @@
         1691
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x1"
     },
     "105": {
@@ -1710,7 +1710,7 @@
         1696
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x20"
     },
     "107": {
@@ -1720,7 +1720,7 @@
         1696
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "15"
     },
     "108": {
       "fn": "Resolver.getPaymentToken",
@@ -1729,7 +1729,7 @@
         1696
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x40"
     },
     "110": {
@@ -1739,7 +1739,7 @@
         1696
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "111": {
       "fn": "Resolver.getPaymentToken",
@@ -1748,7 +1748,7 @@
         1696
       ],
       "op": "KECCAK256",
-      "path": "24"
+      "path": "15"
     },
     "112": {
       "fn": "Resolver.getPaymentToken",
@@ -1757,7 +1757,7 @@
         1696
       ],
       "op": "SLOAD",
-      "path": "24"
+      "path": "15"
     },
     "113": {
       "op": "PUSH1",
@@ -1784,7 +1784,7 @@
         1696
       ],
       "op": "AND",
-      "path": "24"
+      "path": "15"
     },
     "122": {
       "fn": "Resolver.getPaymentToken",
@@ -1793,7 +1793,7 @@
         1696
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "123": {
       "fn": "Resolver.getPaymentToken",
@@ -1802,7 +1802,7 @@
         1703
       ],
       "op": "JUMP",
-      "path": "24"
+      "path": "15"
     },
     "124": {
       "fn": "Resolver.getPaymentToken",
@@ -1811,7 +1811,7 @@
         1703
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "125": {
       "fn": "Resolver.getPaymentToken",
@@ -1820,7 +1820,7 @@
         1703
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x40"
     },
     "127": {
@@ -1830,7 +1830,7 @@
         1703
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "15"
     },
     "128": {
       "op": "PUSH1",
@@ -1879,7 +1879,7 @@
         1703
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x40"
     },
     "146": {
@@ -1889,7 +1889,7 @@
         1703
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "15"
     },
     "147": {
       "fn": "Resolver.getPaymentToken",
@@ -1898,7 +1898,7 @@
         1703
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "15"
     },
     "148": {
       "fn": "Resolver.getPaymentToken",
@@ -1907,7 +1907,7 @@
         1703
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "15"
     },
     "149": {
       "fn": "Resolver.getPaymentToken",
@@ -1916,7 +1916,7 @@
         1703
       ],
       "op": "SUB",
-      "path": "24"
+      "path": "15"
     },
     "150": {
       "fn": "Resolver.getPaymentToken",
@@ -1925,7 +1925,7 @@
         1703
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "151": {
       "fn": "Resolver.getPaymentToken",
@@ -1934,7 +1934,7 @@
         1703
       ],
       "op": "RETURN",
-      "path": "24"
+      "path": "15"
     },
     "152": {
       "fn": "Resolver.setPaymentToken",
@@ -1943,7 +1943,7 @@
         2041
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "153": {
       "fn": "Resolver.setPaymentToken",
@@ -1952,7 +1952,7 @@
         1801
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "statement": 1,
       "value": "0xFF"
     },
@@ -1963,7 +1963,7 @@
         1801
       ],
       "op": "DUP3",
-      "path": "24"
+      "path": "15"
     },
     "156": {
       "branch": 5,
@@ -1973,7 +1973,7 @@
         1801
       ],
       "op": "AND",
-      "path": "24"
+      "path": "15"
     },
     "157": {
       "fn": "Resolver.setPaymentToken",
@@ -1982,7 +1982,7 @@
         1830
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0xED"
     },
     "160": {
@@ -1993,7 +1993,7 @@
         1830
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "15"
     },
     "161": {
       "fn": "Resolver.setPaymentToken",
@@ -2002,7 +2002,7 @@
         1830
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x40"
     },
     "163": {
@@ -2012,7 +2012,7 @@
         1830
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "15"
     },
     "164": {
       "op": "PUSH3",
@@ -2032,7 +2032,7 @@
         1830
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "15"
     },
     "172": {
       "fn": "Resolver.setPaymentToken",
@@ -2041,7 +2041,7 @@
         1830
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "15"
     },
     "173": {
       "op": "PUSH1",
@@ -2054,7 +2054,7 @@
         1830
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x4"
     },
     "177": {
@@ -2064,7 +2064,7 @@
         1830
       ],
       "op": "DUP3",
-      "path": "24"
+      "path": "15"
     },
     "178": {
       "fn": "Resolver.setPaymentToken",
@@ -2073,7 +2073,7 @@
         1830
       ],
       "op": "ADD",
-      "path": "24"
+      "path": "15"
     },
     "179": {
       "op": "MSTORE"
@@ -2126,7 +2126,7 @@
         1830
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "229": {
       "fn": "Resolver.setPaymentToken",
@@ -2135,7 +2135,7 @@
         1830
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x40"
     },
     "231": {
@@ -2145,7 +2145,7 @@
         1830
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "15"
     },
     "232": {
       "fn": "Resolver.setPaymentToken",
@@ -2154,7 +2154,7 @@
         1830
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "15"
     },
     "233": {
       "fn": "Resolver.setPaymentToken",
@@ -2163,7 +2163,7 @@
         1830
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "15"
     },
     "234": {
       "fn": "Resolver.setPaymentToken",
@@ -2172,7 +2172,7 @@
         1830
       ],
       "op": "SUB",
-      "path": "24"
+      "path": "15"
     },
     "235": {
       "fn": "Resolver.setPaymentToken",
@@ -2181,7 +2181,7 @@
         1830
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "236": {
       "fn": "Resolver.setPaymentToken",
@@ -2191,7 +2191,7 @@
       ],
       "op": "REVERT",
       "optimizer_revert": true,
-      "path": "24"
+      "path": "15"
     },
     "237": {
       "fn": "Resolver.setPaymentToken",
@@ -2200,7 +2200,7 @@
         1830
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "238": {
       "fn": "Resolver.setPaymentToken",
@@ -2209,7 +2209,7 @@
         1875
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "statement": 2,
       "value": "0xFF"
     },
@@ -2220,7 +2220,7 @@
         1875
       ],
       "op": "DUP3",
-      "path": "24"
+      "path": "15"
     },
     "241": {
       "fn": "Resolver.setPaymentToken",
@@ -2229,7 +2229,7 @@
         1875
       ],
       "op": "AND",
-      "path": "24"
+      "path": "15"
     },
     "242": {
       "fn": "Resolver.setPaymentToken",
@@ -2238,7 +2238,7 @@
         1888
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x0"
     },
     "244": {
@@ -2248,7 +2248,7 @@
         1875
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "245": {
       "fn": "Resolver.setPaymentToken",
@@ -2257,7 +2257,7 @@
         1875
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "15"
     },
     "246": {
       "fn": "Resolver.setPaymentToken",
@@ -2266,7 +2266,7 @@
         1875
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "15"
     },
     "247": {
       "fn": "Resolver.setPaymentToken",
@@ -2275,7 +2275,7 @@
         1870
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x1"
     },
     "249": {
@@ -2285,7 +2285,7 @@
         1875
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x20"
     },
     "251": {
@@ -2295,7 +2295,7 @@
         1875
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "15"
     },
     "252": {
       "fn": "Resolver.setPaymentToken",
@@ -2304,7 +2304,7 @@
         1875
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x40"
     },
     "254": {
@@ -2314,7 +2314,7 @@
         1875
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "255": {
       "fn": "Resolver.setPaymentToken",
@@ -2323,7 +2323,7 @@
         1875
       ],
       "op": "KECCAK256",
-      "path": "24"
+      "path": "15"
     },
     "256": {
       "fn": "Resolver.setPaymentToken",
@@ -2332,7 +2332,7 @@
         1875
       ],
       "op": "SLOAD",
-      "path": "24"
+      "path": "15"
     },
     "257": {
       "op": "PUSH1",
@@ -2359,7 +2359,7 @@
         1875
       ],
       "op": "AND",
-      "path": "24"
+      "path": "15"
     },
     "266": {
       "branch": 6,
@@ -2369,7 +2369,7 @@
         1889
       ],
       "op": "ISZERO",
-      "path": "24"
+      "path": "15"
     },
     "267": {
       "fn": "Resolver.setPaymentToken",
@@ -2378,7 +2378,7 @@
         1946
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x156"
     },
     "270": {
@@ -2389,7 +2389,7 @@
         1946
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "15"
     },
     "271": {
       "fn": "Resolver.setPaymentToken",
@@ -2398,7 +2398,7 @@
         1946
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x40"
     },
     "273": {
@@ -2408,7 +2408,7 @@
         1946
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "15"
     },
     "274": {
       "op": "PUSH3",
@@ -2428,7 +2428,7 @@
         1946
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "15"
     },
     "282": {
       "fn": "Resolver.setPaymentToken",
@@ -2437,7 +2437,7 @@
         1946
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "15"
     },
     "283": {
       "op": "PUSH1",
@@ -2450,7 +2450,7 @@
         1946
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x4"
     },
     "287": {
@@ -2460,7 +2460,7 @@
         1946
       ],
       "op": "DUP3",
-      "path": "24"
+      "path": "15"
     },
     "288": {
       "fn": "Resolver.setPaymentToken",
@@ -2469,7 +2469,7 @@
         1946
       ],
       "op": "ADD",
-      "path": "24"
+      "path": "15"
     },
     "289": {
       "op": "MSTORE"
@@ -2522,7 +2522,7 @@
         1946
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0xE4"
     },
     "341": {
@@ -2535,7 +2535,7 @@
         1946
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "343": {
       "fn": "Resolver.setPaymentToken",
@@ -2544,7 +2544,7 @@
         1983
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "statement": 3,
       "value": "0x0"
     },
@@ -2555,7 +2555,7 @@
         1983
       ],
       "op": "SLOAD",
-      "path": "24"
+      "path": "15"
     },
     "346": {
       "op": "PUSH1",
@@ -2582,7 +2582,7 @@
         1983
       ],
       "op": "AND",
-      "path": "24"
+      "path": "15"
     },
     "355": {
       "fn": "Resolver.setPaymentToken",
@@ -2591,7 +2591,7 @@
         1974
       ],
       "op": "CALLER",
-      "path": "24"
+      "path": "15"
     },
     "356": {
       "branch": 7,
@@ -2601,7 +2601,7 @@
         1983
       ],
       "op": "EQ",
-      "path": "24"
+      "path": "15"
     },
     "357": {
       "fn": "Resolver.setPaymentToken",
@@ -2610,7 +2610,7 @@
         2005
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0x1A4"
     },
     "360": {
@@ -2621,7 +2621,7 @@
         2005
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "15"
     },
     "361": {
       "fn": "Resolver.setPaymentToken",
@@ -2630,7 +2630,7 @@
         2005
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x40"
     },
     "363": {
@@ -2640,7 +2640,7 @@
         2005
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "15"
     },
     "364": {
       "op": "PUSH3",
@@ -2660,7 +2660,7 @@
         2005
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "15"
     },
     "372": {
       "fn": "Resolver.setPaymentToken",
@@ -2669,7 +2669,7 @@
         2005
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "15"
     },
     "373": {
       "op": "PUSH1",
@@ -2682,7 +2682,7 @@
         2005
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x4"
     },
     "377": {
@@ -2692,7 +2692,7 @@
         2005
       ],
       "op": "DUP3",
-      "path": "24"
+      "path": "15"
     },
     "378": {
       "fn": "Resolver.setPaymentToken",
@@ -2701,7 +2701,7 @@
         2005
       ],
       "op": "ADD",
-      "path": "24"
+      "path": "15"
     },
     "379": {
       "op": "MSTORE"
@@ -2761,7 +2761,7 @@
         2005
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "15",
       "value": "0xE4"
     },
     "419": {
@@ -2774,7 +2774,7 @@
         2005
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "15"
     },
     "421": {
       "fn": "Resolver.setPaymentToken",
@@ -2783,7 +2783,7 @@
         2029
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "statement": 4,
       "value": "0xFF"
     },
@@ -2794,7 +2794,7 @@
         2029
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "15"
     },
     "424": {
       "fn": "Resolver.setPaymentToken",
@@ -2803,7 +2803,7 @@
         2029
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "425": {
       "fn": "Resolver.setPaymentToken",
@@ -2812,7 +2812,7 @@
         2029
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "15"
     },
     "426": {
       "fn": "Resolver.setPaymentToken",
@@ -2821,7 +2821,7 @@
         2029
       ],
       "op": "AND",
-      "path": "24"
+      "path": "15"
     },
     "427": {
       "fn": "Resolver.setPaymentToken",
@@ -2830,7 +2830,7 @@
         2029
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x0"
     },
     "429": {
@@ -2840,7 +2840,7 @@
         2029
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "430": {
       "fn": "Resolver.setPaymentToken",
@@ -2849,7 +2849,7 @@
         2029
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "15"
     },
     "431": {
       "fn": "Resolver.setPaymentToken",
@@ -2858,7 +2858,7 @@
         2029
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "15"
     },
     "432": {
       "fn": "Resolver.setPaymentToken",
@@ -2867,7 +2867,7 @@
         2024
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x1"
     },
     "434": {
@@ -2877,7 +2877,7 @@
         2029
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x20"
     },
     "436": {
@@ -2887,7 +2887,7 @@
         2029
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "15"
     },
     "437": {
       "fn": "Resolver.setPaymentToken",
@@ -2896,7 +2896,7 @@
         2029
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "15",
       "value": "0x40"
     },
     "439": {
@@ -2906,7 +2906,7 @@
         2029
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "440": {
       "fn": "Resolver.setPaymentToken",
@@ -2915,7 +2915,7 @@
         2029
       ],
       "op": "KECCAK256",
-      "path": "24"
+      "path": "15"
     },
     "441": {
       "fn": "Resolver.setPaymentToken",
@@ -2924,7 +2924,7 @@
         2034
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "15"
     },
     "442": {
       "fn": "Resolver.setPaymentToken",
@@ -2933,7 +2933,7 @@
         2034
       ],
       "op": "SLOAD",
-      "path": "24"
+      "path": "15"
     },
     "443": {
       "op": "PUSH1",
@@ -2963,7 +2963,7 @@
         2034
       ],
       "op": "AND",
-      "path": "24"
+      "path": "15"
     },
     "453": {
       "op": "PUSH1",
@@ -2990,7 +2990,7 @@
         2034
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "462": {
       "fn": "Resolver.setPaymentToken",
@@ -2999,7 +2999,7 @@
         2034
       ],
       "op": "SWAP3",
-      "path": "24"
+      "path": "15"
     },
     "463": {
       "fn": "Resolver.setPaymentToken",
@@ -3008,7 +3008,7 @@
         2034
       ],
       "op": "AND",
-      "path": "24"
+      "path": "15"
     },
     "464": {
       "fn": "Resolver.setPaymentToken",
@@ -3017,7 +3017,7 @@
         2034
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "15"
     },
     "465": {
       "fn": "Resolver.setPaymentToken",
@@ -3026,7 +3026,7 @@
         2034
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "466": {
       "fn": "Resolver.setPaymentToken",
@@ -3035,7 +3035,7 @@
         2034
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "15"
     },
     "467": {
       "fn": "Resolver.setPaymentToken",
@@ -3044,7 +3044,7 @@
         2034
       ],
       "op": "OR",
-      "path": "24"
+      "path": "15"
     },
     "468": {
       "fn": "Resolver.setPaymentToken",
@@ -3053,7 +3053,7 @@
         2034
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "15"
     },
     "469": {
       "fn": "Resolver.setPaymentToken",
@@ -3062,7 +3062,7 @@
         2034
       ],
       "op": "SSTORE",
-      "path": "24"
+      "path": "15"
     },
     "470": {
       "fn": "Resolver.setPaymentToken",
@@ -3072,7 +3072,7 @@
         2041
       ],
       "op": "JUMP",
-      "path": "24"
+      "path": "15"
     },
     "471": {
       "op": "JUMPDEST"
@@ -3383,9 +3383,9 @@
       "op": "JUMP"
     }
   },
-  "sha1": "5ddc0470615f9523d9ed769898802d517942a66b",
-  "source": "// SPDX-License-Identifier: MIT\npragma solidity =0.8.7;\n\nimport \"./interfaces/IResolver.sol\";\n\n//              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@\n//              @@@,,,,,,,,,,@@@        ,@@&,,,,,,,,,,@@@\n//         @@@@@@@@,,,,,,,,,,@@@@@@@@&  ,@@&,,,,,,,,,,@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@&            .@@@**********@@@@@@@@@@@@@\n//    @@@@@@@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&       ,@@@@@@@@//////////@@@@@@@@@@@@@\n//         @@@%%%%%/////(((((@@@&       ,@@@(((((/////%%%%%@@@@@@@@\n//         @@@@@@@@//////////@@@@@@@@&  ,@@@//////////@@@@@@@@@@@@@\n//              @@@%%%%%%%%%%@@@@@@@@&  ,@@@%%%%%%%%%%@@@@@@@@@@@@@\n//              @@@@@@@@@@@@@@@@@@@@@&  ,@@@@@@@@@@@@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n\ncontract Resolver is IResolver {\n    address private admin;\n    mapping(uint8 => address) private addresses;\n\n    constructor(address _admin) {\n        admin = _admin;\n    }\n\n    function getPaymentToken(uint8 _pt)\n        external\n        view\n        override\n        returns (address)\n    {\n        return addresses[_pt];\n    }\n\n    function setPaymentToken(uint8 _pt, address _v) external override {\n        require(_pt != 0, \"ReNFT::cant set sentinel\");\n        require(\n            addresses[_pt] == address(0),\n            \"ReNFT::cannot reset the address\"\n        );\n        require(msg.sender == admin, \"ReNFT::only admin\");\n        addresses[_pt] = _v;\n    }\n}\n\n//              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@\n//              @@@,,,,,,,,,,@@@        ,@@&,,,,,,,,,,@@@\n//         @@@@@@@@,,,,,,,,,,@@@@@@@@&  ,@@&,,,,,,,,,,@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@&            .@@@**********@@@@@@@@@@@@@\n//    @@@@@@@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&       ,@@@@@@@@//////////@@@@@@@@@@@@@\n//         @@@%%%%%/////(((((@@@&       ,@@@(((((/////%%%%%@@@@@@@@\n//         @@@@@@@@//////////@@@@@@@@&  ,@@@//////////@@@@@@@@@@@@@\n//              @@@%%%%%%%%%%@@@@@@@@&  ,@@@%%%%%%%%%%@@@@@@@@@@@@@\n//              @@@@@@@@@@@@@@@@@@@@@&  ,@@@@@@@@@@@@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n",
-  "sourceMap": "1373:670:24:-:0;;;1487:59;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;1525:5;:14;;-1:-1:-1;;;;;;1525:14:24;-1:-1:-1;;;;;1525:14:24;;;;;;;;;;1373:670;;14:290:31;84:6;137:2;125:9;116:7;112:23;108:32;105:52;;;153:1;150;143:12;105:52;179:16;;-1:-1:-1;;;;;224:31:31;;214:42;;204:70;;270:1;267;260:12;204:70;293:5;14:290;-1:-1:-1;;;14:290:31:o;:::-;1373:670:24;;;;;;",
+  "sha1": "4981f9288826ec928b5255cfaba884274304a0d3",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity =0.8.6;\n\nimport \"./interfaces/IResolver.sol\";\n\n//              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@\n//              @@@,,,,,,,,,,@@@        ,@@&,,,,,,,,,,@@@\n//         @@@@@@@@,,,,,,,,,,@@@@@@@@&  ,@@&,,,,,,,,,,@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@&            .@@@**********@@@@@@@@@@@@@\n//    @@@@@@@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&       ,@@@@@@@@//////////@@@@@@@@@@@@@\n//         @@@%%%%%/////(((((@@@&       ,@@@(((((/////%%%%%@@@@@@@@\n//         @@@@@@@@//////////@@@@@@@@&  ,@@@//////////@@@@@@@@@@@@@\n//              @@@%%%%%%%%%%@@@@@@@@&  ,@@@%%%%%%%%%%@@@@@@@@@@@@@\n//              @@@@@@@@@@@@@@@@@@@@@&  ,@@@@@@@@@@@@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n\ncontract Resolver is IResolver {\n    address private admin;\n    mapping(uint8 => address) private addresses;\n\n    constructor(address _admin) {\n        admin = _admin;\n    }\n\n    function getPaymentToken(uint8 _pt)\n        external\n        view\n        override\n        returns (address)\n    {\n        return addresses[_pt];\n    }\n\n    function setPaymentToken(uint8 _pt, address _v) external override {\n        require(_pt != 0, \"ReNFT::cant set sentinel\");\n        require(\n            addresses[_pt] == address(0),\n            \"ReNFT::cannot reset the address\"\n        );\n        require(msg.sender == admin, \"ReNFT::only admin\");\n        addresses[_pt] = _v;\n    }\n}\n\n//              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@\n//              @@@,,,,,,,,,,@@@        ,@@&,,,,,,,,,,@@@\n//         @@@@@@@@,,,,,,,,,,@@@@@@@@&  ,@@&,,,,,,,,,,@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@&            .@@@**********@@@@@@@@@@@@@\n//    @@@@@@@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&       ,@@@@@@@@//////////@@@@@@@@@@@@@\n//         @@@%%%%%/////(((((@@@&       ,@@@(((((/////%%%%%@@@@@@@@\n//         @@@@@@@@//////////@@@@@@@@&  ,@@@//////////@@@@@@@@@@@@@\n//              @@@%%%%%%%%%%@@@@@@@@&  ,@@@%%%%%%%%%%@@@@@@@@@@@@@\n//              @@@@@@@@@@@@@@@@@@@@@&  ,@@@@@@@@@@@@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n",
+  "sourceMap": "1373:670:15:-:0;;;1487:59;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;1525:5;:14;;-1:-1:-1;;;;;;1525:14:15;-1:-1:-1;;;;;1525:14:15;;;;;;;;;;1373:670;;14:290:18;84:6;137:2;125:9;116:7;112:23;108:32;105:2;;;153:1;150;143:12;105:2;179:16;;-1:-1:-1;;;;;224:31:18;;214:42;;204:2;;270:1;267;260:12;204:2;293:5;95:209;-1:-1:-1;;;95:209:18:o;:::-;1373:670:15;;;;;;",
   "sourcePath": "contracts/Resolver.sol",
   "type": "contract"
 }
