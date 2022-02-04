@@ -1,8 +1,7 @@
 .history
 .hypothesis/
-build/
 reports/
-
+build/deployments/
 .vscode/
 
 # Byte-compiled / optimized / DLL files
