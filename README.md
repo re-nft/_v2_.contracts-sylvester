@@ -18,9 +18,13 @@ To get access to a particular contract you have deployed, run `registry = Regist
 
 The above gives you the tools to actively test your contract. Brownie allows you to do more cool things, like forking the mainnet and deploying your contract, and testing its interaction with live contracts. Although, this is not required for our purposes.
 
+### Testing
+
 To run the tests, simply run `brownie test`.
 
 For stateful tests, or otherwise, you may want to see `stdout`, in which case suffix the command above with `-s`, i.e. `brownie test -s`.
+
+Tests can also be run in isolation through docker. First build the image with `docker build -t sylvester-test:latest --platform linux/x86_64 .` and then run the tests with `docker run --platform linux/x86_64 sylvester-test:latest`.
 
 If you would like to deploy the contracts to a testnet, you can write `brownie run <name_of_script_in_scripts_folder> --network ropsten`, for example.
 
