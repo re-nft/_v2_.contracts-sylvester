@@ -208,7 +208,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 cd.dailyRentPrice[i],
                 is721 ? 1 : uint16(cd.lendAmount[i]),
                 cd.paymentToken[i],
-                bool(automaticRenewal[i])
+                bytes1ToBool(cd.automaticRenewal[i])
             );
             lendingID++;
         }
@@ -415,11 +415,11 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 lending.lendAmount -= renting.rentAmount;
                 
                 // return the assets to the lender
-                IERC1155(nftAddress).safeBatchTransferFrom(
+                IERC1155(nftAddress).safeTransferFrom(
                     address(this),
                     lending.lenderAddress,
                     tokenID,
-                    renting.rentAmount,
+                    uint256(renting.rentAmount),
                     ""
                 );
             }
@@ -438,11 +438,11 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                         tokenID
                     );
                 } else {
-                    IERC1155(nftAddress).safeBatchTransferFrom(
+                    IERC1155(nftAddress).safeTransferFrom(
                         address(this),
-                        lending.lendAddress,
+                        lending.lenderAddress,
                         tokenID,
-                        renting.rentAmount,
+                        uint256(renting.rentAmount),
                         ""
                     );
                 }
@@ -674,7 +674,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             rentAmount: rentAmount,
             maxRentDuration: new uint8[](0),
             dailyRentPrice: new bytes4[](0),
-            paymentToken: new IResolver.PaymentToken[](0)
+            paymentToken: new IResolver.PaymentToken[](0),
+            automaticRenewal: new bytes1[](0)
         });
     }
 
@@ -698,7 +699,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             rentAmount: new uint256[](0),
             maxRentDuration: new uint8[](0),
             dailyRentPrice: new bytes4[](0),
-            paymentToken: new IResolver.PaymentToken[](0)
+            paymentToken: new IResolver.PaymentToken[](0),
+            automaticRenewal: new bytes1[](0)
         });
     }
 
@@ -733,6 +735,10 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         for (uint256 i = fromIx; i < toIx; i++) {
             r[i - fromIx] = arr[i - arrOffset];
         }
+    }
+
+    function bytes1ToBool(bytes1 val) private pure returns(bool){
+        return val > 0x00 ? true : false;
     }
 
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
