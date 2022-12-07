@@ -46,13 +46,13 @@ RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poet
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
+RUN poetry install
+RUN poetry run brownie pm install OpenZeppelin/openzeppelin-contracts@4.3.0
 
 COPY contracts contracts
 COPY scripts scripts
 COPY tests tests
 
-RUN poetry install
-RUN poetry run brownie pm install OpenZeppelin/openzeppelin-contracts@4.3.0
 RUN poetry run brownie compile
 
 CMD ["poetry", "run", "brownie", "test", "-s"]
