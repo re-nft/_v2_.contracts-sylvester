@@ -33,7 +33,8 @@ interface IRegistry {
         uint8 maxRentDuration,
         bytes4 dailyRentPrice,
         uint16 lendAmount,
-        IResolver.PaymentToken paymentToken
+        IResolver.PaymentToken paymentToken,
+        bool automaticRenewal
     );
 
     event Rent(
@@ -70,17 +71,19 @@ interface IRegistry {
         uint8[] rentDuration;
         uint256[] rentAmount;
         IResolver.PaymentToken[] paymentToken;
+        bytes1[] automaticRenewal;
     }
 
-    // 2, 162, 170, 202, 218, 234, 242
+    // 160, 168, 200, 216, 232, 240, 248, 249
     struct Lending {
-        NFTStandard nftStandard;
         address payable lenderAddress;
         uint8 maxRentDuration;
         bytes4 dailyRentPrice;
         uint16 lendAmount;
         uint16 availableAmount;
         IResolver.PaymentToken paymentToken;
+        NFTStandard nftStandard;
+        bytes1 automaticRenewal;
     }
 
     // 180, 212

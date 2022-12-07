@@ -76,7 +76,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256[] memory lendAmount,
         uint8[] memory maxRentDuration,
         bytes4[] memory dailyRentPrice,
-        IResolver.PaymentToken[] memory paymentToken
+        IResolver.PaymentToken[] memory paymentToken,
+        bytes1[] memory automaticRenewal
     ) external override notPaused {
         bundleCall(
             handleLend,
@@ -87,7 +88,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 lendAmount,
                 maxRentDuration,
                 dailyRentPrice,
-                paymentToken
+                paymentToken,
+                automaticRenewal
             )
         );
     }
@@ -193,7 +195,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 dailyRentPrice: cd.dailyRentPrice[i],
                 lendAmount: is721 ? 1 : uint16(cd.lendAmount[i]),
                 availableAmount: is721 ? 1 : uint16(cd.lendAmount[i]),
-                paymentToken: cd.paymentToken[i]
+                paymentToken: cd.paymentToken[i],
+                automaticRenewal: cd.automaticRenewal[i]
             });
             emit IRegistry.Lend(
                 is721,
@@ -204,7 +207,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 cd.maxRentDuration[i],
                 cd.dailyRentPrice[i],
                 is721 ? 1 : uint16(cd.lendAmount[i]),
-                cd.paymentToken[i]
+                cd.paymentToken[i],
+                bool(automaticRenewal[i])
             );
             lendingID++;
         }
@@ -347,7 +351,9 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             );
             uint256 secondsSinceRentStart = block.timestamp - renting.rentedAt;
             distributePayments(lending, renting, secondsSinceRentStart);
-            lendings[lendingIdentifier].availableAmount += renting.rentAmount;
+
+            handleAutomaticRenewal(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], lendingIdentifier);
+
             emit IRegistry.StopRent(cd.rentingID[i], uint32(block.timestamp));
             delete rentings[rentingIdentifier];
         }
@@ -375,7 +381,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             ensureIsNotNull(renting);
             ensureIsClaimable(renting, block.timestamp);
             distributeClaimPayment(lending, renting);
-            lending.availableAmount += renting.rentAmount;
+            handleAutomaticRenewal(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], lendingIdentifier);
             emit IRegistry.RentClaimed(
                 cd.rentingID[i],
                 uint32(block.timestamp)
@@ -387,6 +393,71 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
+    
+    function handleAutomaticRenewal(
+        IRegistry.Lending storage lending,
+        IRegistry.Renting storage renting,
+        address nftAddress,
+        IRegistry.NFTStandard nftStandard,
+        uint256 tokenID,
+        bytes32 lendingIdentifier
+    ) private {
+        if(lending.automaticRenewal == 0x0){
+            // No automatic renewal, stop the lending completely!
+            
+            // We must be careful here, because the lending might be for an ERC1155 token, which means
+            // that the renting.rentAmount is might not be the same as the lending.lendAmount. In this case, we
+            // must NOT delete the lending, but only decrement the lending.lendAmount by the renting.rentAmount.
+            // Notice: this is only possible for ERC1155 tokens!
+            if(lending.lendAmount > renting.rentAmount){
+                // update lending lendAmount to reflect NOT renewing the lending
+                // Do not update lending.availableAmount, because the assets will not be lent out again
+                lending.lendAmount -= renting.rentAmount;
+                
+                // return the assets to the lender
+                IERC1155(nftAddress).safeBatchTransferFrom(
+                    address(this),
+                    lending.lenderAddress,
+                    tokenID,
+                    renting.rentAmount,
+                    ""
+                );
+            }
+
+            // If the lending is for an ERC721 token, then the renting.rentAmount is always the same as the
+            // lending.lendAmount, and we can delete the lending. If the lending is for an ERC1155 token and
+            // the renting.rentAmount is the same as the lending.lendAmount, then we can also delete the
+            // lending.
+            else if(lending.lendAmount == renting.rentAmount){
+                
+                // return the assets to the lender
+                    if (nftStandard == IRegistry.NFTStandard.E721) {
+                    IERC721(nftAddress).transferFrom(
+                        address(this),
+                        lending.lenderAddress,
+                        tokenID
+                    );
+                } else {
+                    IERC1155(nftAddress).safeBatchTransferFrom(
+                        address(this),
+                        lending.lendAddress,
+                        tokenID,
+                        renting.rentAmount,
+                        ""
+                    );
+                }
+
+                delete lendings[lendingIdentifier];
+            }
+
+            // Do we want to emit a StopLend event here? This would require we add an extra parameter to the
+            // StopLend event, which is the amount. 
+        }else {
+            // automatic renewal, make the assets available to be lent out again
+            lending.availableAmount += renting.rentAmount;
+        }
+    }
+    
     function bundleCall(
         function(IRegistry.CallData memory) handler,
         IRegistry.CallData memory cd
@@ -561,7 +632,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256[] memory lendAmount,
         uint8[] memory maxRentDuration,
         bytes4[] memory dailyRentPrice,
-        IResolver.PaymentToken[] memory paymentToken
+        IResolver.PaymentToken[] memory paymentToken,
+        bytes1[] memory automaticRenewal
     ) private pure returns (CallData memory cd) {
         cd = CallData({
             left: 0,
@@ -576,7 +648,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             rentAmount: new uint256[](0),
             maxRentDuration: maxRentDuration,
             dailyRentPrice: dailyRentPrice,
-            paymentToken: paymentToken
+            paymentToken: paymentToken,
+            automaticRenewal: automaticRenewal
         });
     }
 
