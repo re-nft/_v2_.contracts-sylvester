@@ -46,7 +46,7 @@ interface IRegistry {
         uint32 rentedAt
     );
 
-    event StopLend(uint256 indexed lendingID, uint32 stoppedAt);
+    event StopLend(uint256 indexed lendingID, uint32 stoppedAt, uint16 amount);
 
     event StopRent(uint256 indexed rentingID, uint32 stoppedAt);
 

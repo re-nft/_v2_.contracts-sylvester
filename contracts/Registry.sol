@@ -243,7 +243,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 "ReNFT::actively rented"
             );
             lentAmounts[i - cd.left] = lending.lendAmount;
-            emit IRegistry.StopLend(cd.lendingID[i], uint32(block.timestamp));
+            emit IRegistry.StopLend(cd.lendingID[i], uint32(block.timestamp), lending.lendAmount);
             delete lendings[lendingIdentifier];
         }
         safeTransfer(
@@ -352,7 +352,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             uint256 secondsSinceRentStart = block.timestamp - renting.rentedAt;
             distributePayments(lending, renting, secondsSinceRentStart);
 
-            handlewillAutoRenew(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], lendingIdentifier);
+            handleWillAutoRenew(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], cd.lendingID[i]);
 
             emit IRegistry.StopRent(cd.rentingID[i], uint32(block.timestamp));
             delete rentings[rentingIdentifier];
@@ -381,7 +381,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             ensureIsNotNull(renting);
             ensureIsClaimable(renting, block.timestamp);
             distributeClaimPayment(lending, renting);
-            handlewillAutoRenew(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], lendingIdentifier);
+            handleWillAutoRenew(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], cd.lendingID[i]);
             emit IRegistry.RentClaimed(
                 cd.rentingID[i],
                 uint32(block.timestamp)
@@ -394,13 +394,13 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
     
-    function handlewillAutoRenew(
+    function handleWillAutoRenew(
         IRegistry.Lending storage lending,
         IRegistry.Renting storage renting,
         address nftAddress,
         IRegistry.NFTStandard nftStandard,
         uint256 tokenID,
-        bytes32 lendingIdentifier
+        uint256 lendingID
     ) private {
         if(lending.willAutoRenew == false){
             // No automatic renewal, stop the lending completely!
@@ -447,12 +447,12 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                     );
                 }
 
-                delete lendings[lendingIdentifier];
+                delete lendings[keccak256(abi.encodePacked(nftAddress, tokenID, lendingID))];
             }
 
-            // Do we want to emit a StopLend event here? This would require we add an extra parameter to the
-            // StopLend event, which is the amount. 
-        }else {
+            // StopLend event but only the amount that was not renewed
+            emit IRegistry.StopLend(lendingID, uint32(block.timestamp), renting.rentAmount); 
+        } else {
             // automatic renewal, make the assets available to be lent out again
             lending.availableAmount += renting.rentAmount;
         }
