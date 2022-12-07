@@ -74,7 +74,7 @@ interface IRegistry {
         bytes1[] automaticRenewal;
     }
 
-    // 160, 168, 200, 216, 232, 240, 248, 249
+    // 160, 168, 200, 216, 232, 240, 248, 256
     struct Lending {
         address payable lenderAddress;
         uint8 maxRentDuration;
@@ -102,7 +102,8 @@ interface IRegistry {
         uint256[] memory lendAmount,
         uint8[] memory maxRentDuration,
         bytes4[] memory dailyRentPrice,
-        IResolver.PaymentToken[] memory paymentToken
+        IResolver.PaymentToken[] memory paymentToken,
+        bytes1[] memory automaticRenewal
     ) external;
 
     function stopLend(
