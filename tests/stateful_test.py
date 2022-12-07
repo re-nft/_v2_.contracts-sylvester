@@ -172,6 +172,7 @@ class Lending:
     lend_amount: int
     available_amount: int
     payment_token: PaymentToken
+    will_auto_renew: str
 
     # below are not part of the contract struct
     nft_address: str
@@ -253,6 +254,7 @@ class StateMachine:
             nft_address=e721.address,
             token_id=txn.events["Transfer"]["tokenId"],
             lending_id=0,
+            will_auto_renew=True
         )
 
         txn = self.contract.lend(
@@ -263,6 +265,7 @@ class StateMachine:
             [lending.max_rent_duration],
             [lending.daily_rent_price],
             [lending.payment_token],
+            [lending.will_auto_renew],
             {"from": address},
         )
 
@@ -289,6 +292,7 @@ class StateMachine:
             nft_address=e1155.address,
             token_id=txn.events["TransferSingle"]["id"],
             lending_id=0,
+            will_auto_renew=True
         )
 
         txn = self.contract.lend(
@@ -299,6 +303,7 @@ class StateMachine:
             [lending.max_rent_duration],
             [lending.daily_rent_price],
             [lending.payment_token],
+            [lending.will_auto_renew],
             {"from": address},
         )
 
@@ -327,6 +332,7 @@ class StateMachine:
             nft_address=e721a.address,
             token_id=txna.events["Transfer"]["tokenId"],
             lending_id=0,
+            will_auto_renew=True
         )
 
         lendingb = Lending(
@@ -341,6 +347,7 @@ class StateMachine:
             nft_address=e721b.address,
             token_id=txnb.events["Transfer"]["tokenId"],
             lending_id=0,
+            will_auto_renew=True
         )
 
         txn = self.contract.lend(
@@ -351,6 +358,7 @@ class StateMachine:
             [lendinga.max_rent_duration, lendingb.max_rent_duration],
             [lendinga.daily_rent_price, lendingb.daily_rent_price],
             [lendinga.payment_token, lendingb.payment_token],
+            [lendinga.will_auto_renew, lendingb.will_auto_renew],
             {"from": address},
         )
 
@@ -393,6 +401,7 @@ class StateMachine:
             nft_address=e1155a.address,
             token_id=txna.events["TransferSingle"]["id"],
             lending_id=0,
+            will_auto_renew=True
         )
         lendingb = Lending(
             lender_address=address,
@@ -406,6 +415,7 @@ class StateMachine:
             nft_address=e1155b.address,
             token_id=txnb.events["TransferSingle"]["id"],
             lending_id=0,
+            will_auto_renew=True
         )
 
         txn = self.contract.lend(
@@ -416,6 +426,7 @@ class StateMachine:
             [lendinga.max_rent_duration, lendingb.max_rent_duration],
             [lendinga.daily_rent_price, lendingb.daily_rent_price],
             [lendinga.payment_token, lendingb.payment_token],
+            [lendinga.will_auto_renew, lendingb.will_auto_renew],
             {"from": address},
         )
 
@@ -463,6 +474,7 @@ class StateMachine:
             nft_address=e1155a.address,
             token_id=txna.events["TransferSingle"]["id"],
             lending_id=0,
+            will_auto_renew=True
         )
         lendingb = Lending(
             lender_address=address,
@@ -476,6 +488,7 @@ class StateMachine:
             nft_address=e1155b.address,
             token_id=txnb.events["TransferSingle"]["id"],
             lending_id=0,
+            will_auto_renew=True
         )
         lendingc = Lending(
             lender_address=address,
@@ -489,6 +502,7 @@ class StateMachine:
             nft_address=e721a.address,
             token_id=txnc.events["Transfer"]["tokenId"],
             lending_id=0,
+            will_auto_renew=True
         )
         lendingd = Lending(
             lender_address=address,
@@ -502,6 +516,7 @@ class StateMachine:
             nft_address=e721b.address,
             token_id=txnd.events["Transfer"]["tokenId"],
             lending_id=0,
+            will_auto_renew=True
         )
 
         txn = self.contract.lend(
@@ -546,6 +561,12 @@ class StateMachine:
                 lendingb.payment_token,
                 lendingc.payment_token,
                 lendingd.payment_token,
+            ],
+            [
+                lendinga.will_auto_renew,
+                lendingb.will_auto_renew,
+                lendingc.will_auto_renew,
+                lendingd.will_auto_renew,
             ],
             {"from": address},
         )
