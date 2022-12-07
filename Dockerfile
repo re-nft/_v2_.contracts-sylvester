@@ -50,9 +50,11 @@ RUN poetry install
 RUN poetry run brownie pm install OpenZeppelin/openzeppelin-contracts@4.3.0
 
 COPY contracts contracts
+
+RUN poetry run brownie compile
+
 COPY scripts scripts
 COPY tests tests
 
-RUN poetry run brownie compile
 
 CMD ["poetry", "run", "brownie", "test", "-s"]
