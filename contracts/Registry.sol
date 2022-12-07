@@ -77,7 +77,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint8[] memory maxRentDuration,
         bytes4[] memory dailyRentPrice,
         IResolver.PaymentToken[] memory paymentToken,
-        bytes1[] memory automaticRenewal
+        bool[] memory willAutoRenew
     ) external override notPaused {
         bundleCall(
             handleLend,
@@ -89,7 +89,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 maxRentDuration,
                 dailyRentPrice,
                 paymentToken,
-                automaticRenewal
+                willAutoRenew
             )
         );
     }
@@ -196,7 +196,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 lendAmount: is721 ? 1 : uint16(cd.lendAmount[i]),
                 availableAmount: is721 ? 1 : uint16(cd.lendAmount[i]),
                 paymentToken: cd.paymentToken[i],
-                automaticRenewal: cd.automaticRenewal[i]
+                willAutoRenew: cd.willAutoRenew[i]
             });
             emit IRegistry.Lend(
                 is721,
@@ -208,7 +208,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 cd.dailyRentPrice[i],
                 is721 ? 1 : uint16(cd.lendAmount[i]),
                 cd.paymentToken[i],
-                bytes1ToBool(cd.automaticRenewal[i])
+                cd.willAutoRenew[i]
             );
             lendingID++;
         }
@@ -352,7 +352,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             uint256 secondsSinceRentStart = block.timestamp - renting.rentedAt;
             distributePayments(lending, renting, secondsSinceRentStart);
 
-            handleAutomaticRenewal(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], lendingIdentifier);
+            handlewillAutoRenew(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], lendingIdentifier);
 
             emit IRegistry.StopRent(cd.rentingID[i], uint32(block.timestamp));
             delete rentings[rentingIdentifier];
@@ -381,7 +381,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             ensureIsNotNull(renting);
             ensureIsClaimable(renting, block.timestamp);
             distributeClaimPayment(lending, renting);
-            handleAutomaticRenewal(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], lendingIdentifier);
+            handlewillAutoRenew(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], lendingIdentifier);
             emit IRegistry.RentClaimed(
                 cd.rentingID[i],
                 uint32(block.timestamp)
@@ -394,7 +394,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
     
-    function handleAutomaticRenewal(
+    function handlewillAutoRenew(
         IRegistry.Lending storage lending,
         IRegistry.Renting storage renting,
         address nftAddress,
@@ -402,7 +402,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256 tokenID,
         bytes32 lendingIdentifier
     ) private {
-        if(lending.automaticRenewal == 0x0){
+        if(lending.willAutoRenew == false){
             // No automatic renewal, stop the lending completely!
             
             // We must be careful here, because the lending might be for an ERC1155 token, which means
@@ -633,7 +633,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint8[] memory maxRentDuration,
         bytes4[] memory dailyRentPrice,
         IResolver.PaymentToken[] memory paymentToken,
-        bytes1[] memory automaticRenewal
+        bool[] memory willAutoRenew
     ) private pure returns (CallData memory cd) {
         cd = CallData({
             left: 0,
@@ -649,7 +649,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             maxRentDuration: maxRentDuration,
             dailyRentPrice: dailyRentPrice,
             paymentToken: paymentToken,
-            automaticRenewal: automaticRenewal
+            willAutoRenew: willAutoRenew
         });
     }
 
@@ -675,7 +675,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             maxRentDuration: new uint8[](0),
             dailyRentPrice: new bytes4[](0),
             paymentToken: new IResolver.PaymentToken[](0),
-            automaticRenewal: new bytes1[](0)
+            willAutoRenew: new bool[](0)
         });
     }
 
@@ -700,7 +700,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             maxRentDuration: new uint8[](0),
             dailyRentPrice: new bytes4[](0),
             paymentToken: new IResolver.PaymentToken[](0),
-            automaticRenewal: new bytes1[](0)
+            willAutoRenew: new bool[](0)
         });
     }
 
@@ -735,10 +735,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         for (uint256 i = fromIx; i < toIx; i++) {
             r[i - fromIx] = arr[i - arrOffset];
         }
-    }
-
-    function bytes1ToBool(bytes1 val) private pure returns(bool){
-        return val > 0x00 ? true : false;
     }
 
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
