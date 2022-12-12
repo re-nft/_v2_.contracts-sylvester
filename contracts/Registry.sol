@@ -188,13 +188,18 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             ensureIsNull(lending);
             ensureTokenNotSentinel(uint8(cd.paymentToken[i]));
             bool is721 = cd.nftStandard[i] == IRegistry.NFTStandard.E721;
+
+            uint16 _lendAmount = uint16(cd.lendAmount[i]);
+
+            if(is721) require(_lendAmount == 1, "ReNFT::lendAmount should be equal to 1");
+
             lendings[identifier] = IRegistry.Lending({
                 nftStandard: cd.nftStandard[i],
                 lenderAddress: payable(msg.sender),
                 maxRentDuration: cd.maxRentDuration[i],
                 dailyRentPrice: cd.dailyRentPrice[i],
-                lendAmount: is721 ? 1 : uint16(cd.lendAmount[i]),
-                availableAmount: is721 ? 1 : uint16(cd.lendAmount[i]),
+                lendAmount: _lendAmount,
+                availableAmount: _lendAmount,
                 paymentToken: cd.paymentToken[i],
                 willAutoRenew: cd.willAutoRenew[i]
             });
@@ -206,7 +211,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 lendingID,
                 cd.maxRentDuration[i],
                 cd.dailyRentPrice[i],
-                is721 ? 1 : uint16(cd.lendAmount[i]),
+                _lendAmount,
                 cd.paymentToken[i],
                 cd.willAutoRenew[i]
             );
