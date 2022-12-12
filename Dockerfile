@@ -44,7 +44,7 @@ RUN npm install -g ganache
 RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
 
 WORKDIR $PYSETUP_PATH
-COPY poetry.lock pyproject.toml ./
+COPY pyproject.toml ./
 
 RUN poetry install
 RUN poetry run brownie pm install OpenZeppelin/openzeppelin-contracts@4.3.0
