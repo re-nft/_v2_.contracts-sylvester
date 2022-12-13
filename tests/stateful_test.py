@@ -251,12 +251,13 @@ class StateMachine:
     e1155 = contract_strategy("E1155")
     e1155_lend_amount = strategy("uint256", min_value="1", max_value="10")
 
-    def __init__(cls, accounts, Registry, resolver, beneficiary, payment_tokens):
+    def __init__(cls, accounts, Registry, resolver, beneficiary, payment_tokens, chain):
         cls.accounts = accounts
         cls.contract = Registry.deploy(
             resolver.address, beneficiary.address, accounts[0], {"from": accounts[0]}
         )
         cls.payment_tokens = payment_tokens
+        cls.chain = chain
 
     def setup(self):
         self.lendings: Dict[Lending] = dict()
@@ -1263,6 +1264,9 @@ class StateMachine:
         renting: Renting = self.rentings[first]
         print(f"rule_stop_rent_721. a,e721. {renting.nft_address},{renting.renter_address},{renting.rent_amount}")
 
+        self.chain.sleep(100)
+        self.chain.mine()
+
         txn = self.contract.stopRent(
             [renting.nft_standard],
             [renting.nft_address],
@@ -1282,6 +1286,9 @@ class StateMachine:
 
         renting: Renting = self.rentings[first]
         print(f"rule_stop_rent_1155. a,e1155. {renting.nft_address},{renting.renter_address},{renting.rent_amount}")
+
+        self.chain.sleep(100)
+        self.chain.mine()
 
         txn = self.contract.stopRent(
             [renting.nft_standard],
@@ -1317,6 +1324,9 @@ class StateMachine:
 
         print(f"rule_stop_rent_batch_721. a,e721. {first},{second}")
 
+        self.chain.sleep(100)
+        self.chain.mine()
+        
         txn = self.contract.stopRent(
             [rentingA.nft_standard, rentingB.nft_standard],
             [rentingA.nft_address, rentingB.nft_address],
@@ -1351,6 +1361,9 @@ class StateMachine:
         rentingB: Renting = self.rentings[second]
 
         print(f"rule_stop_rent_batch_1155. a,e1155. {first},{second}")
+
+        self.chain.sleep(100)
+        self.chain.mine()
 
         txn = self.contract.stopRent(
             [rentingA.nft_standard, rentingB.nft_standard],
@@ -1387,6 +1400,9 @@ class StateMachine:
 
         print(f"rule_stop_rent_batch_721_1155. a,e721 b,e1155. {first},{second}")
 
+        self.chain.sleep(100)
+        self.chain.mine()
+
         txn = self.contract.stopRent(
             [rentingA.nft_standard, rentingB.nft_standard],
             [rentingA.nft_address, rentingB.nft_address],
@@ -1416,7 +1432,7 @@ class StateMachine:
             )
 
 
-def test_stateful(Registry, accounts, state_machine, nfts, resolver, payment_tokens):
+def test_stateful(Registry, accounts, state_machine, nfts, resolver, payment_tokens, chain):
     beneficiary = accounts.from_mnemonic(
         "test test test test test test test test test test test junk", count=1
     )
@@ -1430,5 +1446,5 @@ def test_stateful(Registry, accounts, state_machine, nfts, resolver, payment_tok
         PaymentToken.TUSD.value, payment_tokens[PaymentToken.TUSD.value]
     )
     state_machine(
-        StateMachine, accounts, Registry, resolver, beneficiary, payment_tokens
+        StateMachine, accounts, Registry, resolver, beneficiary, payment_tokens, chain
     )
