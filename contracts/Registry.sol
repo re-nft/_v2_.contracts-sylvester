@@ -72,7 +72,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256[] memory lendAmount,
         uint8[] memory maxRentDuration,
         bytes4[] memory dailyRentPrice,
-        IResolver.PaymentToken[] memory paymentToken,
+        uint8[] memory paymentToken,
         bool[] memory willAutoRenew
     ) external override notPaused {
         bundleCall(
@@ -354,7 +354,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         handler(cd);
     }
 
-    function takeFee(uint256 rentAmt, IResolver.PaymentToken paymentToken) private returns (uint256 fee) {
+    function takeFee(uint256 rentAmt, uint8 paymentToken) private returns (uint256 fee) {
         fee = rentAmt * rentFee;
         fee /= 10000;
         uint8 paymentTokenIx = uint8(paymentToken);
@@ -396,7 +396,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256 finalAmt = rentPrice * renting.rentDuration;
         uint256 takenFee = 0;
         if (rentFee != 0) {
-            takenFee = takeFee(finalAmt, IResolver.PaymentToken(paymentTokenIx));
+            takenFee = takeFee(finalAmt, paymentTokenIx);
         }
         paymentToken.safeTransfer(lending.lenderAddress, finalAmt - takenFee);
     }
@@ -456,7 +456,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256[] memory lendAmount,
         uint8[] memory maxRentDuration,
         bytes4[] memory dailyRentPrice,
-        IResolver.PaymentToken[] memory paymentToken,
+        uint8[] memory paymentToken,
         bool[] memory willAutoRenew
     ) private pure returns (CallData memory cd) {
         cd = CallData({
@@ -498,7 +498,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             rentAmount: rentAmount,
             maxRentDuration: new uint8[](0),
             dailyRentPrice: new bytes4[](0),
-            paymentToken: new IResolver.PaymentToken[](0),
+            paymentToken: new uint8[](0),
             willAutoRenew: new bool[](0)
         });
     }
@@ -523,7 +523,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             rentAmount: new uint256[](0),
             maxRentDuration: new uint8[](0),
             dailyRentPrice: new bytes4[](0),
-            paymentToken: new IResolver.PaymentToken[](0),
+            paymentToken: new uint8[](0),
             willAutoRenew: new bool[](0)
         });
     }

@@ -33,7 +33,7 @@ interface IRegistry {
         uint8 maxRentDuration,
         bytes4 dailyRentPrice,
         uint16 lendAmount,
-        IResolver.PaymentToken paymentToken,
+        uint8 paymentToken,
         bool willAutoRenew
     );
 
@@ -70,7 +70,7 @@ interface IRegistry {
         uint256[] rentingID;
         uint8[] rentDuration;
         uint256[] rentAmount;
-        IResolver.PaymentToken[] paymentToken;
+        uint8[] paymentToken;
         bool[] willAutoRenew;
     }
 
@@ -91,7 +91,7 @@ interface IRegistry {
         bytes4 dailyRentPrice;
         uint16 lendAmount;
         uint16 availableAmount;
-        IResolver.PaymentToken paymentToken;
+        uint8 paymentToken;
         bool willAutoRenew;
     }
 
@@ -116,7 +116,7 @@ interface IRegistry {
         uint256[] memory lendAmount,
         uint8[] memory maxRentDuration,
         bytes4[] memory dailyRentPrice,
-        IResolver.PaymentToken[] memory paymentToken,
+        uint8[] memory paymentToken,
         bool[] memory willAutoRenew
     ) external;
 
