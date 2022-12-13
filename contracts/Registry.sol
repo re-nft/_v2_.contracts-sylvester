@@ -254,11 +254,9 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             require(renting.rentAmount <= lending.lendAmount, "ReNFT::critical error");
             uint256 secondsSinceRentStart = block.timestamp - renting.rentedAt;
             distributePayments(lending, renting, secondsSinceRentStart);
-
-            handleWillAutoRenew(
+            manageWillAutoRenew(
                 lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], cd.lendingID[i]
             );
-
             emit IRegistry.StopRent(cd.rentingID[i], uint32(block.timestamp));
             delete rentings[rentingIdentifier];
         }
@@ -276,7 +274,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             ensureIsNotNull(renting);
             ensureIsClaimable(renting, block.timestamp);
             distributeClaimPayment(lending, renting);
-            handleWillAutoRenew(
+            manageWillAutoRenew(
                 lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], cd.lendingID[i]
             );
             emit IRegistry.RentClaimed(cd.rentingID[i], uint32(block.timestamp));
@@ -287,7 +285,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
-    function handleWillAutoRenew(
+    function manageWillAutoRenew(
         IRegistry.Lending storage lending,
         IRegistry.Renting storage renting,
         address nftAddress,
