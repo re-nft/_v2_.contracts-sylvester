@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from decimal import Decimal
 from enum import Enum
-from typing import List
+from typing import List, Dict
 
 import pytest
 import brownie
@@ -89,7 +89,7 @@ def nfts(A):
         E1155.deploy({"from": A.deployer})
 
 
-def find_first(
+def find_first_lending(
     nft_standard: NFTStandard,
     lendings: dict,
     lender_blacklist: List[str] = None,
@@ -112,6 +112,31 @@ def find_first(
         ):
             return _id
     return ""
+
+
+def find_first_renting(
+    nft_standard: NFTStandard,
+    rentings: dict, 
+    renter_whitelist: List[str] = None,
+    id_blacklist: List[str] = None,
+):
+    if renter_whitelist is None:
+        renter_whitelist = []
+
+    if id_blacklist is None:
+        id_blacklist = []
+    
+    for _id, item in rentings.items():
+        _, _, renting_id = _id.split(SEPARATOR)
+        if(
+            (item.nft_standard == nft_standard)
+            and ((len(renter_whitelist) > 0 and item.renter_address in renter_whitelist) or len(renter_whitelist) == 0)
+            and (renting_id not in id_blacklist)
+        ):
+            return _id
+
+    return ""
+
 
 
 def mint_and_approve(payment_token_contract, renter_address, registry_address):
@@ -221,6 +246,7 @@ def is_actively_rented(lending_id: int, rentings: dict) -> bool:
 class StateMachine:
 
     address = strategy("address")
+    will_auto_renew = strategy("bool")
     e721 = contract_strategy("E721")
     e1155 = contract_strategy("E1155")
     e1155_lend_amount = strategy("uint256", min_value="1", max_value="10")
@@ -233,10 +259,10 @@ class StateMachine:
         cls.payment_tokens = payment_tokens
 
     def setup(self):
-        self.lendings = dict()
-        self.rentings = dict()
+        self.lendings: Dict[Lending] = dict()
+        self.rentings: Dict[Renting] = dict()
 
-    def rule_lend_721(self, address, e721):
+    def rule_lend_721(self, address, e721, will_auto_renew):
         print(f"rule_lend_721. a,e721. {address},{e721}")
         txn = e721.faucet({"from": address})
         e721.setApprovalForAll(self.contract.address, True, {"from": address})
@@ -254,7 +280,7 @@ class StateMachine:
             nft_address=e721.address,
             token_id=txn.events["Transfer"]["tokenId"],
             lending_id=0,
-            will_auto_renew=True
+            will_auto_renew=will_auto_renew
         )
 
         txn = self.contract.lend(
@@ -274,7 +300,7 @@ class StateMachine:
             concat_lending_id(lending.nft_address, lending.token_id, lending.lending_id)
         ] = lending
 
-    def rule_lend_1155(self, address, e1155, e1155_lend_amount):
+    def rule_lend_1155(self, address, e1155, e1155_lend_amount, will_auto_renew):
         print(f"rule_lend_1155. a,e1155. {address},{e1155}")
         txn = e1155.faucet({"from": address})
         e1155.setApprovalForAll(self.contract.address, True, {"from": address})
@@ -292,7 +318,7 @@ class StateMachine:
             nft_address=e1155.address,
             token_id=txn.events["TransferSingle"]["id"],
             lending_id=0,
-            will_auto_renew=True
+            will_auto_renew=will_auto_renew
         )
 
         txn = self.contract.lend(
@@ -312,7 +338,7 @@ class StateMachine:
             concat_lending_id(lending.nft_address, lending.token_id, lending.lending_id)
         ] = lending
 
-    def rule_lend_batch_721(self, address, e721a="e721", e721b="e721"):
+    def rule_lend_batch_721(self, address, e721a="e721", e721b="e721", will_auto_renewA="will_auto_renew", will_auto_renewB="will_auto_renew"):
         print(f"rule_lend_batch_721. a,721. {address},{e721a},{e721b}")
         txna = e721a.faucet({"from": address})
         e721a.setApprovalForAll(self.contract.address, True, {"from": address})
@@ -332,7 +358,7 @@ class StateMachine:
             nft_address=e721a.address,
             token_id=txna.events["Transfer"]["tokenId"],
             lending_id=0,
-            will_auto_renew=True
+            will_auto_renew=will_auto_renewA
         )
 
         lendingb = Lending(
@@ -347,7 +373,7 @@ class StateMachine:
             nft_address=e721b.address,
             token_id=txnb.events["Transfer"]["tokenId"],
             lending_id=0,
-            will_auto_renew=True
+            will_auto_renew=will_auto_renewB
         )
 
         txn = self.contract.lend(
@@ -382,6 +408,8 @@ class StateMachine:
         e1155b="e1155",
         e1155a_lend_amount="e1155_lend_amount",
         e1155b_lend_amount="e1155_lend_amount",
+        will_auto_renewA="will_auto_renew",
+        will_auto_renewB="will_auto_renew",
     ):
         print(f"rule_lend_batch_1155. a,1155. {address},{e1155a},{e1155b}")
         txna = e1155a.faucet({"from": address})
@@ -401,7 +429,7 @@ class StateMachine:
             nft_address=e1155a.address,
             token_id=txna.events["TransferSingle"]["id"],
             lending_id=0,
-            will_auto_renew=True
+            will_auto_renew=will_auto_renewA
         )
         lendingb = Lending(
             lender_address=address,
@@ -415,7 +443,7 @@ class StateMachine:
             nft_address=e1155b.address,
             token_id=txnb.events["TransferSingle"]["id"],
             lending_id=0,
-            will_auto_renew=True
+            will_auto_renew=will_auto_renewB
         )
 
         txn = self.contract.lend(
@@ -452,6 +480,8 @@ class StateMachine:
         e1155b="e1155",
         e1155a_lend_amount="e1155_lend_amount",
         e1155b_lend_amount="e1155_lend_amount",
+        will_auto_renewA="will_auto_renew",
+        will_auto_renewB="will_auto_renew",
     ):
         txna = e1155a.faucet({"from": address})
         e1155a.setApprovalForAll(self.contract.address, True, {"from": address})
@@ -474,7 +504,7 @@ class StateMachine:
             nft_address=e1155a.address,
             token_id=txna.events["TransferSingle"]["id"],
             lending_id=0,
-            will_auto_renew=True
+            will_auto_renew=will_auto_renewA
         )
         lendingb = Lending(
             lender_address=address,
@@ -488,7 +518,7 @@ class StateMachine:
             nft_address=e1155b.address,
             token_id=txnb.events["TransferSingle"]["id"],
             lending_id=0,
-            will_auto_renew=True
+            will_auto_renew=will_auto_renewB
         )
         lendingc = Lending(
             lender_address=address,
@@ -502,7 +532,7 @@ class StateMachine:
             nft_address=e721a.address,
             token_id=txnc.events["Transfer"]["tokenId"],
             lending_id=0,
-            will_auto_renew=True
+            will_auto_renew=will_auto_renewA
         )
         lendingd = Lending(
             lender_address=address,
@@ -516,7 +546,7 @@ class StateMachine:
             nft_address=e721b.address,
             token_id=txnd.events["Transfer"]["tokenId"],
             lending_id=0,
-            will_auto_renew=True
+            will_auto_renew=will_auto_renewB
         )
 
         txn = self.contract.lend(
@@ -597,7 +627,7 @@ class StateMachine:
         ] = lendingd
 
     def rule_stop_lend_721(self):
-        first = find_first(NFTStandard.E721.value, self.lendings)
+        first = find_first_lending(NFTStandard.E721.value, self.lendings)
         if first == "":
             return
         print(f"rule_stop_lend_721.a,{first}")
@@ -623,7 +653,7 @@ class StateMachine:
             del self.lendings[first]
 
     def rule_stop_lend_1155(self):
-        first = find_first(NFTStandard.E1155.value, self.lendings)
+        first = find_first_lending(NFTStandard.E1155.value, self.lendings)
         if first == "":
             return
         print(f"rule_stop_lend_1155.a,{first}")
@@ -649,7 +679,7 @@ class StateMachine:
             del self.lendings[first]
 
     def rule_stop_lend_batch_721(self):
-        first = find_first(NFTStandard.E721.value, self.lendings)
+        first = find_first_lending(NFTStandard.E721.value, self.lendings)
         if first == "":
             return
         lendinga = self.lendings[first]
@@ -684,7 +714,7 @@ class StateMachine:
             del self.lendings[second]
 
     def rule_stop_lend_batch_1155(self):
-        first = find_first(NFTStandard.E1155.value, self.lendings)
+        first = find_first_lending(NFTStandard.E1155.value, self.lendings)
         if first == "":
             return
         lendinga = self.lendings[first]
@@ -719,7 +749,7 @@ class StateMachine:
             del self.lendings[second]
 
     def rule_stop_lend_batch_721_1155(self):
-        first_ = find_first(NFTStandard.E1155.value, self.lendings)
+        first_ = find_first_lending(NFTStandard.E1155.value, self.lendings)
         if first_ == "":
             return
         lendinga = self.lendings[first_]
@@ -812,7 +842,7 @@ class StateMachine:
 
     def rule_rent_721(self, address):
         rent_amount = 1
-        first = find_first(
+        first = find_first_lending(
             NFTStandard.E721.value,
             self.lendings,
             lender_blacklist=[address],
@@ -854,7 +884,7 @@ class StateMachine:
 
     def rule_rent_1155(self, address):
         rent_amount = 1
-        first = find_first(
+        first = find_first_lending(
             NFTStandard.E1155.value,
             self.lendings,
             lender_blacklist=[address],
@@ -896,7 +926,7 @@ class StateMachine:
 
     def rule_rent_batch_721(self, address):
         rent_amount = 1
-        first = find_first(
+        first = find_first_lending(
             NFTStandard.E721.value,
             self.lendings,
             lender_blacklist=[address],
@@ -904,7 +934,7 @@ class StateMachine:
         )
         if first == "":
             return
-        second = find_first(
+        second = find_first_lending(
             NFTStandard.E721.value,
             self.lendings,
             lender_blacklist=[address],
@@ -971,7 +1001,7 @@ class StateMachine:
 
     def rule_rent_batch_1155(self, address):
         rent_amount = 1
-        first = find_first(
+        first = find_first_lending(
             NFTStandard.E1155.value,
             self.lendings,
             lender_blacklist=[address],
@@ -979,7 +1009,7 @@ class StateMachine:
         )
         if first == "":
             return
-        second = find_first(
+        second = find_first_lending(
             NFTStandard.E1155.value,
             self.lendings,
             lender_blacklist=[address],
@@ -1046,7 +1076,7 @@ class StateMachine:
 
     def rule_rent_batch_721_1155(self, address):
         rent_amount = 1
-        first = find_first(
+        first = find_first_lending(
             NFTStandard.E721.value,
             self.lendings,
             lender_blacklist=[address],
@@ -1054,7 +1084,7 @@ class StateMachine:
         )
         if first == "":
             return
-        second = find_first(
+        second = find_first_lending(
             NFTStandard.E721.value,
             self.lendings,
             lender_blacklist=[address],
@@ -1063,7 +1093,7 @@ class StateMachine:
         )
         if second == "":
             return
-        first_ = find_first(
+        first_ = find_first_lending(
             NFTStandard.E1155.value,
             self.lendings,
             lender_blacklist=[address],
@@ -1071,7 +1101,7 @@ class StateMachine:
         )
         if first_ == "":
             return
-        second_ = find_first(
+        second_ = find_first_lending(
             NFTStandard.E1155.value,
             self.lendings,
             lender_blacklist=[address],
@@ -1210,20 +1240,165 @@ class StateMachine:
             )
         ] = rentingd
 
+
+    def apply_stop_lend(self, renting: Renting):
+            lending_id = concat_lending_id(renting.nft_address, renting.token_id, renting.lending_id)
+            lending: Lending = self.lendings[lending_id]
+            if lending.will_auto_renew:
+                self.lendings[lending_id].available_amount += renting.rent_amount
+            else:
+                if lending.lend_amount == renting.rent_amount:
+                    del self.lendings[lending_id]
+                else:
+                    self.lendings[lending_id].lend_amount -= renting.rent_amount
+
+            del self.rentings[concat_renting_id(renting.nft_address, renting.token_id, renting.renting_id)]
+
     def rule_stop_rent_721(self):
-        ...
+        first = find_first_renting(NFTStandard.E721.value, self.rentings)
+
+        if first == "":
+            return
+
+        renting: Renting = self.rentings[first]
+        print(f"rule_stop_rent_721. a,e721. {renting.nft_address},{renting.renter_address},{renting.rent_amount}")
+
+        txn = self.contract.stopRent(
+            [renting.nft_standard],
+            [renting.nft_address],
+            [renting.token_id],
+            [renting.lending_id],
+            [renting.renting_id],
+            {"from": renting.renter_address},
+        )
+
+        if txn.events["StopRent"][0]: self.apply_stop_lend(renting)
 
     def rule_stop_rent_1155(self):
-        ...
+        first = find_first_renting(NFTStandard.E1155.value, self.rentings)
+
+        if first == "":
+            return
+
+        renting: Renting = self.rentings[first]
+        print(f"rule_stop_rent_1155. a,e1155. {renting.nft_address},{renting.renter_address},{renting.rent_amount}")
+
+        txn = self.contract.stopRent(
+            [renting.nft_standard],
+            [renting.nft_address],
+            [renting.token_id],
+            [renting.lending_id],
+            [renting.renting_id],
+            {"from": renting.renter_address},
+        )
+
+        if txn.events["StopRent"][0]: self.apply_stop_lend(renting)
 
     def rule_stop_rent_batch_721(self):
-        ...
+        first = find_first_renting(NFTStandard.E721.value, self.rentings)
+
+        if first == "":
+            return
+
+
+        rentingA: Renting = self.rentings[first]
+
+        second = find_first_renting(
+            NFTStandard.E721.value, 
+            self.rentings, 
+            renter_whitelist=[rentingA.renter_address], 
+            id_blacklist=[rentingA.renting_id]
+        )
+
+        if second == "":
+            return
+        
+        rentingB: Renting = self.rentings[second]
+
+        print(f"rule_stop_rent_batch_721. a,e721. {first},{second}")
+
+        txn = self.contract.stopRent(
+            [rentingA.nft_standard, rentingB.nft_standard],
+            [rentingA.nft_address, rentingB.nft_address],
+            [rentingA.token_id, rentingB.token_id],
+            [rentingA.lending_id, rentingB.lending_id],
+            [rentingA.renting_id, rentingB.renting_id],
+            {"from": rentingA.renter_address},
+        )
+
+        if txn.events["StopRent"][0]: self.apply_stop_lend(rentingA)
+        if txn.events["StopRent"][1]: self.apply_stop_lend(rentingB)
+
 
     def rule_stop_rent_batch_1155(self):
-        ...
+        first = find_first_renting(NFTStandard.E1155.value, self.rentings)
+
+        if first == "":
+            return
+
+        rentingA: Renting = self.rentings[first]
+
+        second = find_first_renting(
+            NFTStandard.E1155.value, 
+            self.rentings, 
+            renter_whitelist=[rentingA.renter_address], 
+            id_blacklist=[rentingA.renting_id]
+        )
+
+        if second == "":
+            return
+        
+        rentingB: Renting = self.rentings[second]
+
+        print(f"rule_stop_rent_batch_1155. a,e1155. {first},{second}")
+
+        txn = self.contract.stopRent(
+            [rentingA.nft_standard, rentingB.nft_standard],
+            [rentingA.nft_address, rentingB.nft_address],
+            [rentingA.token_id, rentingB.token_id],
+            [rentingA.lending_id, rentingB.lending_id],
+            [rentingA.renting_id, rentingB.renting_id],
+            {"from": rentingA.renter_address},
+        )
+
+        if txn.events["StopRent"][0]: self.apply_stop_lend(rentingA)
+        if txn.events["StopRent"][1]: self.apply_stop_lend(rentingB)
 
     def rule_stop_rent_batch_721_1155(self):
-        ...
+        first = find_first_renting(NFTStandard.E721.value, self.rentings)
+
+        if first == "":
+            return
+
+        
+        rentingA: Renting = self.rentings[first]
+
+        second = find_first_renting(
+            NFTStandard.E1155.value, 
+            self.rentings, 
+            renter_whitelist=[rentingA.renter_address], 
+            id_blacklist=[rentingA.renting_id]
+        )
+
+        if second == "":
+            return
+        
+        rentingB: Renting = self.rentings[second]
+
+        print(f"rule_stop_rent_batch_721_1155. a,e721 b,e1155. {first},{second}")
+
+        txn = self.contract.stopRent(
+            [rentingA.nft_standard, rentingB.nft_standard],
+            [rentingA.nft_address, rentingB.nft_address],
+            [rentingA.token_id, rentingB.token_id],
+            [rentingA.lending_id, rentingB.lending_id],
+            [rentingA.renting_id, rentingB.renting_id],
+            {"from": rentingA.renter_address},
+        )
+
+        if txn.events["StopRent"][0]: self.apply_stop_lend(rentingA)
+        if txn.events["StopRent"][1]: self.apply_stop_lend(rentingB)
+
 
     def invariant_correct_lending(self):
         for _id, lending in self.lendings.items():
