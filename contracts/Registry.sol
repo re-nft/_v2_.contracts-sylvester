@@ -56,11 +56,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         _;
     }
 
-    constructor(
-        address newResolver,
-        address payable newBeneficiary,
-        address newAdmin
-    ) {
+    constructor(address newResolver, address payable newBeneficiary, address newAdmin) {
         ensureIsNotZeroAddr(newResolver);
         ensureIsNotZeroAddr(newBeneficiary);
         ensureIsNotZeroAddr(newAdmin);
@@ -100,16 +96,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256[] memory tokenID,
         uint256[] memory _lendingID
     ) external override notPaused {
-        bundleCall(
-            handleStopLend,
-            createActionCallData(
-                nftStandard,
-                nftAddress,
-                tokenID,
-                _lendingID,
-                new uint256[](0)
-            )
-        );
+        bundleCall(handleStopLend, createActionCallData(nftStandard, nftAddress, tokenID, _lendingID, new uint256[](0)));
     }
 
     function rent(
@@ -121,15 +108,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256[] memory rentAmount
     ) external payable override notPaused {
         bundleCall(
-            handleRent,
-            createRentCallData(
-                nftStandard,
-                nftAddress,
-                tokenID,
-                _lendingID,
-                rentDuration,
-                rentAmount
-            )
+            handleRent, createRentCallData(nftStandard, nftAddress, tokenID, _lendingID, rentDuration, rentAmount)
         );
     }
 
@@ -140,16 +119,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256[] memory _lendingID,
         uint256[] memory _rentingID
     ) external override notPaused {
-        bundleCall(
-            handleStopRent,
-            createActionCallData(
-                nftStandard,
-                nftAddress,
-                tokenID,
-                _lendingID,
-                _rentingID
-            )
-        );
+        bundleCall(handleStopRent, createActionCallData(nftStandard, nftAddress, tokenID, _lendingID, _rentingID));
     }
 
     function claimRent(
@@ -159,16 +129,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256[] memory _lendingID,
         uint256[] memory _rentingID
     ) external override notPaused {
-        bundleCall(
-            handleClaimRent,
-            createActionCallData(
-                nftStandard,
-                nftAddress,
-                tokenID,
-                _lendingID,
-                _rentingID
-            )
-        );
+        bundleCall(handleClaimRent, createActionCallData(nftStandard, nftAddress, tokenID, _lendingID, _rentingID));
     }
 
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
@@ -177,13 +138,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     function handleLend(IRegistry.CallData memory cd) private {
         for (uint256 i = cd.left; i < cd.right; i++) {
             ensureIsLendable(cd, i);
-            bytes32 identifier = keccak256(
-                abi.encodePacked(
-                    cd.nftAddress[cd.left],
-                    cd.tokenID[i],
-                    lendingID
-                )
-            );
+            bytes32 identifier = keccak256(abi.encodePacked(cd.nftAddress[cd.left], cd.tokenID[i], lendingID));
             IRegistry.Lending storage lending = lendings[identifier];
             ensureIsNull(lending);
             ensureTokenNotSentinel(uint8(cd.paymentToken[i]));
@@ -191,7 +146,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
 
             uint16 _lendAmount = uint16(cd.lendAmount[i]);
 
-            if(is721) require(_lendAmount == 1, "ReNFT::lendAmount should be equal to 1");
+            if (is721) require(_lendAmount == 1, "ReNFT::lendAmount should be equal to 1");
 
             lendings[identifier] = IRegistry.Lending({
                 nftStandard: cd.nftStandard[i],
@@ -214,7 +169,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 _lendAmount,
                 cd.paymentToken[i],
                 cd.willAutoRenew[i]
-            );
+                );
             lendingID++;
         }
         safeTransfer(
@@ -229,24 +184,13 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     function handleStopLend(IRegistry.CallData memory cd) private {
         uint256[] memory lentAmounts = new uint256[](cd.right - cd.left);
         for (uint256 i = cd.left; i < cd.right; i++) {
-            bytes32 lendingIdentifier = keccak256(
-                abi.encodePacked(
-                    cd.nftAddress[cd.left],
-                    cd.tokenID[i],
-                    cd.lendingID[i]
-                )
-            );
+            bytes32 lendingIdentifier =
+                keccak256(abi.encodePacked(cd.nftAddress[cd.left], cd.tokenID[i], cd.lendingID[i]));
             Lending storage lending = lendings[lendingIdentifier];
             ensureIsNotNull(lending);
             ensureIsStoppable(lending, msg.sender);
-            require(
-                cd.nftStandard[i] == lending.nftStandard,
-                "ReNFT::invalid nft standard"
-            );
-            require(
-                lending.lendAmount == lending.availableAmount,
-                "ReNFT::actively rented"
-            );
+            require(cd.nftStandard[i] == lending.nftStandard, "ReNFT::invalid nft standard");
+            require(lending.lendAmount == lending.availableAmount, "ReNFT::actively rented");
             lentAmounts[i - cd.left] = lending.lendAmount;
             emit IRegistry.StopLend(cd.lendingID[i], uint32(block.timestamp), lending.lendAmount);
             delete lendings[lendingIdentifier];
@@ -262,47 +206,24 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
 
     function handleRent(IRegistry.CallData memory cd) private {
         for (uint256 i = cd.left; i < cd.right; i++) {
-            bytes32 lendingIdentifier = keccak256(
-                abi.encodePacked(
-                    cd.nftAddress[cd.left],
-                    cd.tokenID[i],
-                    cd.lendingID[i]
-                )
-            );
-            bytes32 rentingIdentifier = keccak256(
-                abi.encodePacked(
-                    cd.nftAddress[cd.left],
-                    cd.tokenID[i],
-                    rentingID
-                )
-            );
+            bytes32 lendingIdentifier =
+                keccak256(abi.encodePacked(cd.nftAddress[cd.left], cd.tokenID[i], cd.lendingID[i]));
+            bytes32 rentingIdentifier = keccak256(abi.encodePacked(cd.nftAddress[cd.left], cd.tokenID[i], rentingID));
             IRegistry.Lending storage lending = lendings[lendingIdentifier];
             IRegistry.Renting storage renting = rentings[rentingIdentifier];
             ensureIsNotNull(lending);
             ensureIsNull(renting);
             ensureIsRentable(lending, cd, i, msg.sender);
-            require(
-                cd.nftStandard[i] == lending.nftStandard,
-                "ReNFT::invalid nft standard"
-            );
-            require(
-                cd.rentAmount[i] <= lending.availableAmount,
-                "ReNFT::invalid rent amount"
-            );
+            require(cd.nftStandard[i] == lending.nftStandard, "ReNFT::invalid nft standard");
+            require(cd.rentAmount[i] <= lending.availableAmount, "ReNFT::invalid rent amount");
             uint8 paymentTokenIx = uint8(lending.paymentToken);
             address paymentToken = resolver.getPaymentToken(paymentTokenIx);
             uint256 decimals = ERC20(paymentToken).decimals();
             {
-                uint256 scale = 10**decimals;
-                uint256 rentPrice = cd.rentAmount[i] *
-                    cd.rentDuration[i] *
-                    unpackPrice(lending.dailyRentPrice, scale);
+                uint256 scale = 10 ** decimals;
+                uint256 rentPrice = cd.rentAmount[i] * cd.rentDuration[i] * unpackPrice(lending.dailyRentPrice, scale);
                 require(rentPrice > 0, "ReNFT::rent price is zero");
-                ERC20(paymentToken).safeTransferFrom(
-                    msg.sender,
-                    address(this),
-                    rentPrice
-                );
+                ERC20(paymentToken).safeTransferFrom(msg.sender, address(this), rentPrice);
             }
             rentings[rentingIdentifier] = IRegistry.Renting({
                 renterAddress: payable(msg.sender),
@@ -310,54 +231,33 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 rentDuration: cd.rentDuration[i],
                 rentedAt: uint32(block.timestamp)
             });
-            lendings[lendingIdentifier].availableAmount -= uint16(
-                cd.rentAmount[i]
-            );
+            lendings[lendingIdentifier].availableAmount -= uint16(cd.rentAmount[i]);
             emit IRegistry.Rent(
-                msg.sender,
-                cd.lendingID[i],
-                rentingID,
-                uint16(cd.rentAmount[i]),
-                cd.rentDuration[i],
-                renting.rentedAt
-            );
+                msg.sender, cd.lendingID[i], rentingID, uint16(cd.rentAmount[i]), cd.rentDuration[i], renting.rentedAt
+                );
             rentingID++;
         }
     }
 
     function handleStopRent(IRegistry.CallData memory cd) private {
         for (uint256 i = cd.left; i < cd.right; i++) {
-            bytes32 lendingIdentifier = keccak256(
-                abi.encodePacked(
-                    cd.nftAddress[cd.left],
-                    cd.tokenID[i],
-                    cd.lendingID[i]
-                )
-            );
-            bytes32 rentingIdentifier = keccak256(
-                abi.encodePacked(
-                    cd.nftAddress[cd.left],
-                    cd.tokenID[i],
-                    cd.rentingID[i]
-                )
-            );
+            bytes32 lendingIdentifier =
+                keccak256(abi.encodePacked(cd.nftAddress[cd.left], cd.tokenID[i], cd.lendingID[i]));
+            bytes32 rentingIdentifier =
+                keccak256(abi.encodePacked(cd.nftAddress[cd.left], cd.tokenID[i], cd.rentingID[i]));
             IRegistry.Lending storage lending = lendings[lendingIdentifier];
             IRegistry.Renting storage renting = rentings[rentingIdentifier];
             ensureIsNotNull(lending);
             ensureIsNotNull(renting);
             ensureIsReturnable(renting, msg.sender, block.timestamp);
-            require(
-                cd.nftStandard[i] == lending.nftStandard,
-                "ReNFT::invalid nft standard"
-            );
-            require(
-                renting.rentAmount <= lending.lendAmount,
-                "ReNFT::critical error"
-            );
+            require(cd.nftStandard[i] == lending.nftStandard, "ReNFT::invalid nft standard");
+            require(renting.rentAmount <= lending.lendAmount, "ReNFT::critical error");
             uint256 secondsSinceRentStart = block.timestamp - renting.rentedAt;
             distributePayments(lending, renting, secondsSinceRentStart);
 
-            handleWillAutoRenew(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], cd.lendingID[i]);
+            handleWillAutoRenew(
+                lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], cd.lendingID[i]
+            );
 
             emit IRegistry.StopRent(cd.rentingID[i], uint32(block.timestamp));
             delete rentings[rentingIdentifier];
@@ -366,31 +266,20 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
 
     function handleClaimRent(CallData memory cd) private {
         for (uint256 i = cd.left; i < cd.right; i++) {
-            bytes32 lendingIdentifier = keccak256(
-                abi.encodePacked(
-                    cd.nftAddress[cd.left],
-                    cd.tokenID[i],
-                    cd.lendingID[i]
-                )
-            );
-            bytes32 rentingIdentifier = keccak256(
-                abi.encodePacked(
-                    cd.nftAddress[cd.left],
-                    cd.tokenID[i],
-                    cd.rentingID[i]
-                )
-            );
+            bytes32 lendingIdentifier =
+                keccak256(abi.encodePacked(cd.nftAddress[cd.left], cd.tokenID[i], cd.lendingID[i]));
+            bytes32 rentingIdentifier =
+                keccak256(abi.encodePacked(cd.nftAddress[cd.left], cd.tokenID[i], cd.rentingID[i]));
             IRegistry.Lending storage lending = lendings[lendingIdentifier];
             IRegistry.Renting storage renting = rentings[rentingIdentifier];
             ensureIsNotNull(lending);
             ensureIsNotNull(renting);
             ensureIsClaimable(renting, block.timestamp);
             distributeClaimPayment(lending, renting);
-            handleWillAutoRenew(lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], cd.lendingID[i]);
-            emit IRegistry.RentClaimed(
-                cd.rentingID[i],
-                uint32(block.timestamp)
+            handleWillAutoRenew(
+                lending, renting, cd.nftAddress[cd.left], cd.nftStandard[cd.left], cd.tokenID[i], cd.lendingID[i]
             );
+            emit IRegistry.RentClaimed(cd.rentingID[i], uint32(block.timestamp));
             delete rentings[rentingIdentifier];
         }
     }
@@ -398,7 +287,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
-    
     function handleWillAutoRenew(
         IRegistry.Lending storage lending,
         IRegistry.Renting storage renting,
@@ -407,48 +295,34 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256 tokenID,
         uint256 lendingID
     ) private {
-        if(lending.willAutoRenew == false){
+        if (lending.willAutoRenew == false) {
             // No automatic renewal, stop the lending completely!
-            
+
             // We must be careful here, because the lending might be for an ERC1155 token, which means
             // that the renting.rentAmount is might not be the same as the lending.lendAmount. In this case, we
             // must NOT delete the lending, but only decrement the lending.lendAmount by the renting.rentAmount.
             // Notice: this is only possible for ERC1155 tokens!
-            if(lending.lendAmount > renting.rentAmount){
+            if (lending.lendAmount > renting.rentAmount) {
                 // update lending lendAmount to reflect NOT renewing the lending
                 // Do not update lending.availableAmount, because the assets will not be lent out again
                 lending.lendAmount -= renting.rentAmount;
-                
+
                 // return the assets to the lender
                 IERC1155(nftAddress).safeTransferFrom(
-                    address(this),
-                    lending.lenderAddress,
-                    tokenID,
-                    uint256(renting.rentAmount),
-                    ""
+                    address(this), lending.lenderAddress, tokenID, uint256(renting.rentAmount), ""
                 );
             }
-
             // If the lending is for an ERC721 token, then the renting.rentAmount is always the same as the
             // lending.lendAmount, and we can delete the lending. If the lending is for an ERC1155 token and
             // the renting.rentAmount is the same as the lending.lendAmount, then we can also delete the
             // lending.
-            else if(lending.lendAmount == renting.rentAmount){
-                
+            else if (lending.lendAmount == renting.rentAmount) {
                 // return the assets to the lender
                 if (nftStandard == IRegistry.NFTStandard.E721) {
-                    IERC721(nftAddress).transferFrom(
-                        address(this),
-                        lending.lenderAddress,
-                        tokenID
-                    );
+                    IERC721(nftAddress).transferFrom(address(this), lending.lenderAddress, tokenID);
                 } else {
                     IERC1155(nftAddress).safeTransferFrom(
-                        address(this),
-                        lending.lenderAddress,
-                        tokenID,
-                        uint256(renting.rentAmount),
-                        ""
+                        address(this), lending.lenderAddress, tokenID, uint256(renting.rentAmount), ""
                     );
                 }
 
@@ -456,22 +330,19 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             }
 
             // StopLend event but only the amount that was not renewed
-            emit IRegistry.StopLend(lendingID, uint32(block.timestamp), renting.rentAmount); 
+            emit IRegistry.StopLend(lendingID, uint32(block.timestamp), renting.rentAmount);
         } else {
             // automatic renewal, make the assets available to be lent out again
             lending.availableAmount += renting.rentAmount;
         }
     }
-    
-    function bundleCall(
-        function(IRegistry.CallData memory) handler,
-        IRegistry.CallData memory cd
-    ) private {
+
+    function bundleCall(function(IRegistry.CallData memory) handler, IRegistry.CallData memory cd) private {
         require(cd.nftAddress.length > 0, "ReNFT::no nfts");
         while (cd.right != cd.nftAddress.length) {
             if (
-                (cd.nftAddress[cd.left] == cd.nftAddress[cd.right]) &&
-                (cd.nftStandard[cd.right] == IRegistry.NFTStandard.E1155)
+                (cd.nftAddress[cd.left] == cd.nftAddress[cd.right])
+                    && (cd.nftStandard[cd.right] == IRegistry.NFTStandard.E1155)
             ) {
                 cd.right++;
             } else {
@@ -483,10 +354,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         handler(cd);
     }
 
-    function takeFee(uint256 rentAmt, IResolver.PaymentToken paymentToken)
-        private
-        returns (uint256 fee)
-    {
+    function takeFee(uint256 rentAmt, IResolver.PaymentToken paymentToken) private returns (uint256 fee) {
         fee = rentAmt * rentFee;
         fee /= 10000;
         uint8 paymentTokenIx = uint8(paymentToken);
@@ -502,12 +370,10 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint8 paymentTokenIx = uint8(lending.paymentToken);
         address pmtToken = resolver.getPaymentToken(paymentTokenIx);
         uint256 decimals = ERC20(pmtToken).decimals();
-        uint256 scale = 10**decimals;
-        uint256 rentPrice = renting.rentAmount *
-            unpackPrice(lending.dailyRentPrice, scale);
+        uint256 scale = 10 ** decimals;
+        uint256 rentPrice = renting.rentAmount * unpackPrice(lending.dailyRentPrice, scale);
         uint256 totalRenterPmt = rentPrice * renting.rentDuration;
-        uint256 sendLenderAmt = (secondsSinceRentStart * rentPrice) /
-            SECONDS_IN_DAY;
+        uint256 sendLenderAmt = (secondsSinceRentStart * rentPrice) / SECONDS_IN_DAY;
         require(totalRenterPmt > 0, "ReNFT::total renter payment is zero");
         require(sendLenderAmt > 0, "ReNFT::lender payment is zero");
         uint256 sendRenterAmt = totalRenterPmt - sendLenderAmt;
@@ -521,23 +387,16 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         }
     }
 
-    function distributeClaimPayment(
-        IRegistry.Lending memory lending,
-        IRegistry.Renting memory renting
-    ) private {
+    function distributeClaimPayment(IRegistry.Lending memory lending, IRegistry.Renting memory renting) private {
         uint8 paymentTokenIx = uint8(lending.paymentToken);
         ERC20 paymentToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
         uint256 decimals = ERC20(paymentToken).decimals();
-        uint256 scale = 10**decimals;
-        uint256 rentPrice = renting.rentAmount *
-            unpackPrice(lending.dailyRentPrice, scale);
+        uint256 scale = 10 ** decimals;
+        uint256 rentPrice = renting.rentAmount * unpackPrice(lending.dailyRentPrice, scale);
         uint256 finalAmt = rentPrice * renting.rentDuration;
         uint256 takenFee = 0;
         if (rentFee != 0) {
-            takenFee = takeFee(
-                finalAmt,
-                IResolver.PaymentToken(paymentTokenIx)
-            );
+            takenFee = takeFee(finalAmt, IResolver.PaymentToken(paymentTokenIx));
         }
         paymentToken.safeTransfer(lending.lenderAddress, finalAmt - takenFee);
     }
@@ -550,45 +409,21 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256[] memory lendAmount
     ) private {
         if (cd.nftStandard[cd.left] == IRegistry.NFTStandard.E721) {
-            IERC721(cd.nftAddress[cd.left]).transferFrom(
-                from,
-                to,
-                cd.tokenID[cd.left]
-            );
+            IERC721(cd.nftAddress[cd.left]).transferFrom(from, to, cd.tokenID[cd.left]);
         } else {
-            IERC1155(cd.nftAddress[cd.left]).safeBatchTransferFrom(
-                from,
-                to,
-                tokenID,
-                lendAmount,
-                ""
-            );
+            IERC1155(cd.nftAddress[cd.left]).safeBatchTransferFrom(from, to, tokenID, lendAmount, "");
         }
     }
 
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
     // `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'   `._.'
 
-    function getLending(
-        address nftAddress,
-        uint256 tokenID,
-        uint256 _lendingID
-    )
+    function getLending(address nftAddress, uint256 tokenID, uint256 _lendingID)
         external
         view
-        returns (
-            uint8,
-            address,
-            uint8,
-            bytes4,
-            uint16,
-            uint16,
-            uint8
-        )
+        returns (uint8, address, uint8, bytes4, uint16, uint16, uint8)
     {
-        bytes32 identifier = keccak256(
-            abi.encodePacked(nftAddress, tokenID, _lendingID)
-        );
+        bytes32 identifier = keccak256(abi.encodePacked(nftAddress, tokenID, _lendingID));
         IRegistry.Lending storage lending = lendings[identifier];
         return (
             uint8(lending.nftStandard),
@@ -601,30 +436,14 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         );
     }
 
-    function getRenting(
-        address nftAddress,
-        uint256 tokenID,
-        uint256 _rentingID
-    )
+    function getRenting(address nftAddress, uint256 tokenID, uint256 _rentingID)
         external
         view
-        returns (
-            address,
-            uint16,
-            uint8,
-            uint32
-        )
+        returns (address, uint16, uint8, uint32)
     {
-        bytes32 identifier = keccak256(
-            abi.encodePacked(nftAddress, tokenID, _rentingID)
-        );
+        bytes32 identifier = keccak256(abi.encodePacked(nftAddress, tokenID, _rentingID));
         IRegistry.Renting storage renting = rentings[identifier];
-        return (
-            renting.renterAddress,
-            renting.rentAmount,
-            renting.rentDuration,
-            renting.rentedAt
-        );
+        return (renting.renterAddress, renting.rentAmount, renting.rentDuration, renting.rentedAt);
     }
 
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.
@@ -709,11 +528,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         });
     }
 
-    function unpackPrice(bytes4 price, uint256 scale)
-        private
-        pure
-        returns (uint256)
-    {
+    function unpackPrice(bytes4 price, uint256 scale) private pure returns (uint256) {
         ensureIsUnpackablePrice(price, scale);
         uint16 whole = uint16(bytes2(price));
         uint16 decimal = uint16(bytes2(price << 16));
@@ -730,12 +545,11 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         return fullPrice;
     }
 
-    function sliceArr(
-        uint256[] memory arr,
-        uint256 fromIx,
-        uint256 toIx,
-        uint256 arrOffset
-    ) private pure returns (uint256[] memory r) {
+    function sliceArr(uint256[] memory arr, uint256 fromIx, uint256 toIx, uint256 arrOffset)
+        private
+        pure
+        returns (uint256[] memory r)
+    {
         r = new uint256[](toIx - fromIx);
         for (uint256 i = fromIx; i < toIx; i++) {
             r[i - fromIx] = arr[i - arrOffset];
@@ -785,39 +599,21 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         require(uint32(cd.dailyRentPrice[i]) > 0, "ReNFT::rent price is zero");
     }
 
-    function ensureIsRentable(
-        Lending memory lending,
-        CallData memory cd,
-        uint256 i,
-        address msgSender
-    ) private pure {
+    function ensureIsRentable(Lending memory lending, CallData memory cd, uint256 i, address msgSender) private pure {
         require(msgSender != lending.lenderAddress, "ReNFT::cant rent own nft");
         require(cd.rentDuration[i] <= type(uint8).max, "ReNFT::not uint8");
         require(cd.rentDuration[i] > 0, "ReNFT::duration is zero");
         require(cd.rentAmount[i] <= type(uint16).max, "ReNFT::not uint16");
         require(cd.rentAmount[i] > 0, "ReNFT::rentAmount is zero");
-        require(
-            cd.rentDuration[i] <= lending.maxRentDuration,
-            "ReNFT::rent duration exceeds allowed max"
-        );
+        require(cd.rentDuration[i] <= lending.maxRentDuration, "ReNFT::rent duration exceeds allowed max");
     }
 
-    function ensureIsReturnable(
-        Renting memory renting,
-        address msgSender,
-        uint256 blockTimestamp
-    ) private pure {
+    function ensureIsReturnable(Renting memory renting, address msgSender, uint256 blockTimestamp) private pure {
         require(renting.renterAddress == msgSender, "ReNFT::not renter");
-        require(
-            !isPastReturnDate(renting, blockTimestamp),
-            "ReNFT::past return date"
-        );
+        require(!isPastReturnDate(renting, blockTimestamp), "ReNFT::past return date");
     }
 
-    function ensureIsStoppable(Lending memory lending, address msgSender)
-        private
-        pure
-    {
+    function ensureIsStoppable(Lending memory lending, address msgSender) private pure {
         require(lending.lenderAddress == msgSender, "ReNFT::not lender");
     }
 
@@ -830,24 +626,13 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         require(paymentIx > 0, "ReNFT::token is sentinel");
     }
 
-    function ensureIsClaimable(
-        IRegistry.Renting memory renting,
-        uint256 blockTimestamp
-    ) private pure {
-        require(
-            isPastReturnDate(renting, blockTimestamp),
-            "ReNFT::return date not passed"
-        );
+    function ensureIsClaimable(IRegistry.Renting memory renting, uint256 blockTimestamp) private pure {
+        require(isPastReturnDate(renting, blockTimestamp), "ReNFT::return date not passed");
     }
 
-    function isPastReturnDate(Renting memory renting, uint256 nowTime)
-        private
-        pure
-        returns (bool)
-    {
+    function isPastReturnDate(Renting memory renting, uint256 nowTime) private pure returns (bool) {
         require(nowTime > renting.rentedAt, "ReNFT::now before rented");
-        return
-            nowTime - renting.rentedAt > renting.rentDuration * SECONDS_IN_DAY;
+        return nowTime - renting.rentedAt > renting.rentDuration * SECONDS_IN_DAY;
     }
 
     //      .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.     .-.

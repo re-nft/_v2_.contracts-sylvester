@@ -31,21 +31,13 @@ contract Resolver is IResolver {
         admin = _admin;
     }
 
-    function getPaymentToken(uint8 _pt)
-        external
-        view
-        override
-        returns (address)
-    {
+    function getPaymentToken(uint8 _pt) external view override returns (address) {
         return addresses[_pt];
     }
 
     function setPaymentToken(uint8 _pt, address _v) external override {
         require(_pt != 0, "ReNFT::cant set sentinel");
-        require(
-            addresses[_pt] == address(0),
-            "ReNFT::cannot reset the address"
-        );
+        require(addresses[_pt] == address(0), "ReNFT::cannot reset the address");
         require(msg.sender == admin, "ReNFT::only admin");
         addresses[_pt] = _v;
     }
