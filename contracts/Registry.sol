@@ -436,7 +436,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             else if(lending.lendAmount == renting.rentAmount){
                 
                 // return the assets to the lender
-                    if (nftStandard == IRegistry.NFTStandard.E721) {
+                if (nftStandard == IRegistry.NFTStandard.E721) {
                     IERC721(nftAddress).transferFrom(
                         address(this),
                         lending.lenderAddress,
