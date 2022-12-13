@@ -127,7 +127,7 @@ interface IRegistry {
         uint256[] memory lendingID
     ) external;
 
-    // // creates the renting structs and adds them to the enumerable set
+    // creates the renting structs and adds them to the enumerable set
     function rent(
         IRegistry.NFTStandard[] memory nftStandard,
         address[] memory nftAddress,
