@@ -74,7 +74,16 @@ interface IRegistry {
         bool[] willAutoRenew;
     }
 
-    // 160, 168, 200, 216, 232, 240, 248, 256
+    // fits into a single storage slot
+    // nftStandard       2
+    // lenderAddress   162
+    // maxRentDuration 170
+    // dailyRentPrice  202
+    // lendAmount      218
+    // availableAmount 234
+    // paymentToken    242
+    // willAutoRenew   250
+    // leaves a spare byte
     struct Lending {
         NFTStandard nftStandard;
         address payable lenderAddress;
@@ -86,7 +95,12 @@ interface IRegistry {
         bool willAutoRenew;
     }
 
-    // 180, 212
+    // fits into a single storage slot
+    // renterAddress 160
+    // rentDuration  168
+    // rentedAt      216
+    // rentAmount    232
+    // leaves 3 spare bytes
     struct Renting {
         address payable renterAddress;
         uint8 rentDuration;
