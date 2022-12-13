@@ -352,7 +352,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         handler(cd);
     }
 
-    function takeFee(ERC20 token, uint256 rentAmt) private returns (uint256 fee) {
+    function takeFee(uint256 rentAmt, ERC20 token) private returns (uint256 fee) {
         fee = rentAmt * rentFee;
         fee /= 10000;
         token.safeTransfer(beneficiary, fee);
@@ -374,7 +374,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         require(sendLenderAmt > 0, "ReNFT::lender payment is zero");
         uint256 sendRenterAmt = totalRenterPmt - sendLenderAmt;
         if (rentFee != 0) {
-            uint256 takenFee = takeFee(paymentToken, sendLenderAmt);
+            uint256 takenFee = takeFee(sendLenderAmt, paymentToken);
             sendLenderAmt -= takenFee;
         }
         paymentToken.safeTransfer(lending.lenderAddress, sendLenderAmt);
@@ -392,7 +392,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256 finalAmt = rentPrice * renting.rentDuration;
         uint256 takenFee = 0;
         if (rentFee != 0) {
-            takenFee = takeFee(paymentToken, finalAmt);
+            takenFee = takeFee(finalAmt, paymentToken);
         }
         paymentToken.safeTransfer(lending.lenderAddress, finalAmt - takenFee);
     }
