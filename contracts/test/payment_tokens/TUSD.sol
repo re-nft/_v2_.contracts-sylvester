@@ -11,6 +11,6 @@ contract TUSD is ERC20 {
     }
 
     function faucet() public {
-        _mint(msg.sender, 1000 * (10**decimals()));
+        _mint(msg.sender, 1000 * (10 ** decimals()));
     }
 }
