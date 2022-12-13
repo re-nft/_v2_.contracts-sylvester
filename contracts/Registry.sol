@@ -352,12 +352,10 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         handler(cd);
     }
 
-    function takeFee(uint256 rentAmt, uint8 paymentToken) private returns (uint256 fee) {
+    function takeFee(ERC20 token, uint256 rentAmt) private returns (uint256 fee) {
         fee = rentAmt * rentFee;
         fee /= 10000;
-        uint8 paymentTokenIx = uint8(paymentToken);
-        ERC20 pmtToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
-        pmtToken.safeTransfer(beneficiary, fee);
+        token.safeTransfer(beneficiary, fee);
     }
 
     function distributePayments(
@@ -366,8 +364,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256 secondsSinceRentStart
     ) private {
         uint8 paymentTokenIx = uint8(lending.paymentToken);
-        address pmtToken = resolver.getPaymentToken(paymentTokenIx);
-        uint256 decimals = ERC20(pmtToken).decimals();
+        ERC20 paymentToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
+        uint256 decimals = paymentToken.decimals();
         uint256 scale = 10 ** decimals;
         uint256 rentPrice = renting.rentAmount * unpackPrice(lending.dailyRentPrice, scale);
         uint256 totalRenterPmt = rentPrice * renting.rentDuration;
@@ -376,25 +374,25 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         require(sendLenderAmt > 0, "ReNFT::lender payment is zero");
         uint256 sendRenterAmt = totalRenterPmt - sendLenderAmt;
         if (rentFee != 0) {
-            uint256 takenFee = takeFee(sendLenderAmt, lending.paymentToken);
+            uint256 takenFee = takeFee(paymentToken, sendLenderAmt);
             sendLenderAmt -= takenFee;
         }
-        ERC20(pmtToken).safeTransfer(lending.lenderAddress, sendLenderAmt);
+        paymentToken.safeTransfer(lending.lenderAddress, sendLenderAmt);
         if (sendRenterAmt > 0) {
-            ERC20(pmtToken).safeTransfer(renting.renterAddress, sendRenterAmt);
+            paymentToken.safeTransfer(renting.renterAddress, sendRenterAmt);
         }
     }
 
     function distributeClaimPayment(IRegistry.Lending memory lending, IRegistry.Renting memory renting) private {
         uint8 paymentTokenIx = uint8(lending.paymentToken);
         ERC20 paymentToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
-        uint256 decimals = ERC20(paymentToken).decimals();
+        uint256 decimals = paymentToken.decimals();
         uint256 scale = 10 ** decimals;
         uint256 rentPrice = renting.rentAmount * unpackPrice(lending.dailyRentPrice, scale);
         uint256 finalAmt = rentPrice * renting.rentDuration;
         uint256 takenFee = 0;
         if (rentFee != 0) {
-            takenFee = takeFee(finalAmt, paymentTokenIx);
+            takenFee = takeFee(paymentToken, finalAmt);
         }
         paymentToken.safeTransfer(lending.lenderAddress, finalAmt - takenFee);
     }
