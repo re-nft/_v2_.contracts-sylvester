@@ -214,13 +214,13 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             require(cd.nftStandard[i] == lending.nftStandard, "ReNFT::invalid nft standard");
             require(cd.rentAmount[i] <= lending.availableAmount, "ReNFT::invalid rent amount");
             uint8 paymentTokenIx = uint8(lending.paymentToken);
-            address paymentToken = resolver.getPaymentToken(paymentTokenIx);
-            uint256 decimals = ERC20(paymentToken).decimals();
+            ERC20 paymentToken = ERC20(resolver.getPaymentToken(paymentTokenIx));
+            uint256 decimals = paymentToken.decimals();
             {
                 uint256 scale = 10 ** decimals;
                 uint256 rentPrice = cd.rentAmount[i] * cd.rentDuration[i] * unpackPrice(lending.dailyRentPrice, scale);
                 require(rentPrice > 0, "ReNFT::rent price is zero");
-                ERC20(paymentToken).safeTransferFrom(msg.sender, address(this), rentPrice);
+                paymentToken.safeTransferFrom(msg.sender, address(this), rentPrice);
             }
             rentings[rentingIdentifier] = IRegistry.Renting({
                 renterAddress: payable(msg.sender),
