@@ -134,3 +134,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# we use Dockerfile and generate poetry.lock inside of the container
+poetry.lock
+# we use Dockerfile to manage python versions
+.python-version
+
+build/contracts/dependencies/

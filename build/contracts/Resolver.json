@@ -50,25 +50,25 @@
     }
   ],
   "allSourcePaths": {
-    "24": "contracts/Resolver.sol",
-    "26": "contracts/interfaces/IResolver.sol"
+    "16": "contracts/Resolver.sol",
+    "18": "contracts/interfaces/IResolver.sol"
   },
   "ast": {
     "absolutePath": "contracts/Resolver.sol",
     "exportedSymbols": {
       "IResolver": [
-        2812
+        2987
       ],
       "Resolver": [
-        2562
+        2734
       ]
     },
-    "id": 2563,
+    "id": 2735,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2487,
+        "id": 2659,
         "literals": [
           "solidity",
           "=",
@@ -76,17 +76,17 @@
           ".7"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:23:24"
+        "src": "32:23:16"
       },
       {
         "absolutePath": "contracts/interfaces/IResolver.sol",
         "file": "./interfaces/IResolver.sol",
-        "id": 2488,
+        "id": 2660,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 2563,
-        "sourceUnit": 2813,
-        "src": "57:36:24",
+        "scope": 2735,
+        "sourceUnit": 2988,
+        "src": "57:36:16",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -95,38 +95,38 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 2489,
+              "id": 2661,
               "name": "IResolver",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 2812,
-              "src": "1394:9:24"
+              "referencedDeclaration": 2987,
+              "src": "1394:9:16"
             },
-            "id": 2490,
+            "id": 2662,
             "nodeType": "InheritanceSpecifier",
-            "src": "1394:9:24"
+            "src": "1394:9:16"
           }
         ],
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 2562,
+        "id": 2734,
         "linearizedBaseContracts": [
-          2562,
-          2812
+          2734,
+          2987
         ],
         "name": "Resolver",
-        "nameLocation": "1382:8:24",
+        "nameLocation": "1382:8:16",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 2492,
+            "id": 2664,
             "mutability": "mutable",
             "name": "admin",
-            "nameLocation": "1426:5:24",
+            "nameLocation": "1426:5:16",
             "nodeType": "VariableDeclaration",
-            "scope": 2562,
-            "src": "1410:21:24",
+            "scope": 2734,
+            "src": "1410:21:16",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -134,10 +134,10 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 2491,
+              "id": 2663,
               "name": "address",
               "nodeType": "ElementaryTypeName",
-              "src": "1410:7:24",
+              "src": "1410:7:16",
               "stateMutability": "nonpayable",
               "typeDescriptions": {
                 "typeIdentifier": "t_address",
@@ -148,13 +148,13 @@
           },
           {
             "constant": false,
-            "id": 2496,
+            "id": 2668,
             "mutability": "mutable",
             "name": "addresses",
-            "nameLocation": "1471:9:24",
+            "nameLocation": "1471:9:16",
             "nodeType": "VariableDeclaration",
-            "scope": 2562,
-            "src": "1437:43:24",
+            "scope": 2734,
+            "src": "1437:43:16",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -162,28 +162,28 @@
               "typeString": "mapping(uint8 => address)"
             },
             "typeName": {
-              "id": 2495,
+              "id": 2667,
               "keyType": {
-                "id": 2493,
+                "id": 2665,
                 "name": "uint8",
                 "nodeType": "ElementaryTypeName",
-                "src": "1445:5:24",
+                "src": "1445:5:16",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint8",
                   "typeString": "uint8"
                 }
               },
               "nodeType": "Mapping",
-              "src": "1437:25:24",
+              "src": "1437:25:16",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_uint8_$_t_address_$",
                 "typeString": "mapping(uint8 => address)"
               },
               "valueType": {
-                "id": 2494,
+                "id": 2666,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "1454:7:24",
+                "src": "1454:7:16",
                 "stateMutability": "nonpayable",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
@@ -195,24 +195,24 @@
           },
           {
             "body": {
-              "id": 2505,
+              "id": 2677,
               "nodeType": "Block",
-              "src": "1515:31:24",
+              "src": "1515:31:16",
               "statements": [
                 {
                   "expression": {
-                    "id": 2503,
+                    "id": 2675,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 2501,
+                      "id": 2673,
                       "name": "admin",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2492,
-                      "src": "1525:5:24",
+                      "referencedDeclaration": 2664,
+                      "src": "1525:5:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -221,30 +221,30 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 2502,
+                      "id": 2674,
                       "name": "_admin",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2498,
-                      "src": "1533:6:24",
+                      "referencedDeclaration": 2670,
+                      "src": "1533:6:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "1525:14:24",
+                    "src": "1525:14:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "id": 2504,
+                  "id": 2676,
                   "nodeType": "ExpressionStatement",
-                  "src": "1525:14:24"
+                  "src": "1525:14:16"
                 }
               ]
             },
-            "id": 2506,
+            "id": 2678,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
@@ -252,18 +252,18 @@
             "nameLocation": "-1:-1:-1",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2499,
+              "id": 2671,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2498,
+                  "id": 2670,
                   "mutability": "mutable",
                   "name": "_admin",
-                  "nameLocation": "1507:6:24",
+                  "nameLocation": "1507:6:16",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2506,
-                  "src": "1499:14:24",
+                  "scope": 2678,
+                  "src": "1499:14:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -271,10 +271,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2497,
+                    "id": 2669,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1499:7:24",
+                    "src": "1499:7:16",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -284,51 +284,51 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1498:16:24"
+              "src": "1498:16:16"
             },
             "returnParameters": {
-              "id": 2500,
+              "id": 2672,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1515:0:24"
+              "src": "1515:0:16"
             },
-            "scope": 2562,
-            "src": "1487:59:24",
+            "scope": 2734,
+            "src": "1487:59:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           },
           {
             "baseFunctions": [
-              2804
+              2979
             ],
             "body": {
-              "id": 2518,
+              "id": 2690,
               "nodeType": "Block",
-              "src": "1665:38:24",
+              "src": "1629:38:16",
               "statements": [
                 {
                   "expression": {
                     "baseExpression": {
-                      "id": 2514,
+                      "id": 2686,
                       "name": "addresses",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2496,
-                      "src": "1682:9:24",
+                      "referencedDeclaration": 2668,
+                      "src": "1646:9:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_mapping$_t_uint8_$_t_address_$",
                         "typeString": "mapping(uint8 => address)"
                       }
                     },
-                    "id": 2516,
+                    "id": 2688,
                     "indexExpression": {
-                      "id": 2515,
+                      "id": 2687,
                       "name": "_pt",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2508,
-                      "src": "1692:3:24",
+                      "referencedDeclaration": 2680,
+                      "src": "1656:3:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint8",
                         "typeString": "uint8"
@@ -339,46 +339,46 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "1682:14:24",
+                    "src": "1646:14:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "functionReturnParameters": 2513,
-                  "id": 2517,
+                  "functionReturnParameters": 2685,
+                  "id": 2689,
                   "nodeType": "Return",
-                  "src": "1675:21:24"
+                  "src": "1639:21:16"
                 }
               ]
             },
             "functionSelector": "c6ee427f",
-            "id": 2519,
+            "id": 2691,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "getPaymentToken",
-            "nameLocation": "1561:15:24",
+            "nameLocation": "1561:15:16",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 2510,
+              "id": 2682,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "1626:8:24"
+              "src": "1602:8:16"
             },
             "parameters": {
-              "id": 2509,
+              "id": 2681,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2508,
+                  "id": 2680,
                   "mutability": "mutable",
                   "name": "_pt",
-                  "nameLocation": "1583:3:24",
+                  "nameLocation": "1583:3:16",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2519,
-                  "src": "1577:9:24",
+                  "scope": 2691,
+                  "src": "1577:9:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -386,10 +386,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 2507,
+                    "id": 2679,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1577:5:24",
+                    "src": "1577:5:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -398,21 +398,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1576:11:24"
+              "src": "1576:11:16"
             },
             "returnParameters": {
-              "id": 2513,
+              "id": 2685,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2512,
+                  "id": 2684,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2519,
-                  "src": "1652:7:24",
+                  "scope": 2691,
+                  "src": "1620:7:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -420,10 +420,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2511,
+                    "id": 2683,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1652:7:24",
+                    "src": "1620:7:16",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -433,22 +433,22 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1651:9:24"
+              "src": "1619:9:16"
             },
-            "scope": 2562,
-            "src": "1552:151:24",
+            "scope": 2734,
+            "src": "1552:115:16",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "baseFunctions": [
-              2811
+              2986
             ],
             "body": {
-              "id": 2560,
+              "id": 2732,
               "nodeType": "Block",
-              "src": "1775:266:24",
+              "src": "1739:232:16",
               "statements": [
                 {
                   "expression": {
@@ -458,18 +458,18 @@
                           "typeIdentifier": "t_uint8",
                           "typeString": "uint8"
                         },
-                        "id": 2530,
+                        "id": 2702,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 2528,
+                          "id": 2700,
                           "name": "_pt",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2521,
-                          "src": "1793:3:24",
+                          "referencedDeclaration": 2693,
+                          "src": "1757:3:16",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint8",
                             "typeString": "uint8"
@@ -479,21 +479,21 @@
                         "operator": "!=",
                         "rightExpression": {
                           "hexValue": "30",
-                          "id": 2529,
+                          "id": 2701,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "1800:1:24",
+                          "src": "1764:1:16",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_0_by_1",
                             "typeString": "int_const 0"
                           },
                           "value": "0"
                         },
-                        "src": "1793:8:24",
+                        "src": "1757:8:16",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -501,14 +501,14 @@
                       },
                       {
                         "hexValue": "52654e46543a3a63616e74207365742073656e74696e656c",
-                        "id": 2531,
+                        "id": 2703,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1803:26:24",
+                        "src": "1767:26:16",
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_3fd708fcff6824a7bdbc66df077cd1eb0e43c7e3ed29bb9c82bd6c8cc806a460",
                           "typeString": "literal_string \"ReNFT::cant set sentinel\""
@@ -527,7 +527,7 @@
                           "typeString": "literal_string \"ReNFT::cant set sentinel\""
                         }
                       ],
-                      "id": 2527,
+                      "id": 2699,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -535,13 +535,13 @@
                         -18
                       ],
                       "referencedDeclaration": -18,
-                      "src": "1785:7:24",
+                      "src": "1749:7:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 2532,
+                    "id": 2704,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -549,16 +549,16 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1785:45:24",
+                    "src": "1749:45:16",
                     "tryCall": false,
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2533,
+                  "id": 2705,
                   "nodeType": "ExpressionStatement",
-                  "src": "1785:45:24"
+                  "src": "1749:45:16"
                 },
                 {
                   "expression": {
@@ -568,32 +568,32 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 2542,
+                        "id": 2714,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "baseExpression": {
-                            "id": 2535,
+                            "id": 2707,
                             "name": "addresses",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2496,
-                            "src": "1861:9:24",
+                            "referencedDeclaration": 2668,
+                            "src": "1812:9:16",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_uint8_$_t_address_$",
                               "typeString": "mapping(uint8 => address)"
                             }
                           },
-                          "id": 2537,
+                          "id": 2709,
                           "indexExpression": {
-                            "id": 2536,
+                            "id": 2708,
                             "name": "_pt",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2521,
-                            "src": "1871:3:24",
+                            "referencedDeclaration": 2693,
+                            "src": "1822:3:16",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint8",
                               "typeString": "uint8"
@@ -604,7 +604,7 @@
                           "isPure": false,
                           "lValueRequested": false,
                           "nodeType": "IndexAccess",
-                          "src": "1861:14:24",
+                          "src": "1812:14:16",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -616,14 +616,14 @@
                           "arguments": [
                             {
                               "hexValue": "30",
-                              "id": 2540,
+                              "id": 2712,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
                               "kind": "number",
                               "lValueRequested": false,
                               "nodeType": "Literal",
-                              "src": "1887:1:24",
+                              "src": "1838:1:16",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_rational_0_by_1",
                                 "typeString": "int_const 0"
@@ -638,26 +638,26 @@
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 2539,
+                            "id": 2711,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "lValueRequested": false,
                             "nodeType": "ElementaryTypeNameExpression",
-                            "src": "1879:7:24",
+                            "src": "1830:7:16",
                             "typeDescriptions": {
                               "typeIdentifier": "t_type$_t_address_$",
                               "typeString": "type(address)"
                             },
                             "typeName": {
-                              "id": 2538,
+                              "id": 2710,
                               "name": "address",
                               "nodeType": "ElementaryTypeName",
-                              "src": "1879:7:24",
+                              "src": "1830:7:16",
                               "typeDescriptions": {}
                             }
                           },
-                          "id": 2541,
+                          "id": 2713,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -665,14 +665,14 @@
                           "lValueRequested": false,
                           "names": [],
                           "nodeType": "FunctionCall",
-                          "src": "1879:10:24",
+                          "src": "1830:10:16",
                           "tryCall": false,
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
                           }
                         },
-                        "src": "1861:28:24",
+                        "src": "1812:28:16",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -680,14 +680,14 @@
                       },
                       {
                         "hexValue": "52654e46543a3a63616e6e6f74207265736574207468652061646472657373",
-                        "id": 2543,
+                        "id": 2715,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1903:33:24",
+                        "src": "1842:33:16",
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_be3f57871b4f7d0e14380b0bef1e43d89cfa1161a413556c9a3d768d3de098c7",
                           "typeString": "literal_string \"ReNFT::cannot reset the address\""
@@ -706,7 +706,7 @@
                           "typeString": "literal_string \"ReNFT::cannot reset the address\""
                         }
                       ],
-                      "id": 2534,
+                      "id": 2706,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -714,13 +714,13 @@
                         -18
                       ],
                       "referencedDeclaration": -18,
-                      "src": "1840:7:24",
+                      "src": "1804:7:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 2544,
+                    "id": 2716,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -728,16 +728,16 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1840:106:24",
+                    "src": "1804:72:16",
                     "tryCall": false,
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2545,
+                  "id": 2717,
                   "nodeType": "ExpressionStatement",
-                  "src": "1840:106:24"
+                  "src": "1804:72:16"
                 },
                 {
                   "expression": {
@@ -747,32 +747,32 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 2550,
+                        "id": 2722,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "expression": {
-                            "id": 2547,
+                            "id": 2719,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": -15,
-                            "src": "1964:3:24",
+                            "src": "1894:3:16",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 2548,
+                          "id": 2720,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "memberName": "sender",
                           "nodeType": "MemberAccess",
-                          "src": "1964:10:24",
+                          "src": "1894:10:16",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -781,18 +781,18 @@
                         "nodeType": "BinaryOperation",
                         "operator": "==",
                         "rightExpression": {
-                          "id": 2549,
+                          "id": 2721,
                           "name": "admin",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2492,
-                          "src": "1978:5:24",
+                          "referencedDeclaration": 2664,
+                          "src": "1908:5:16",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
                           }
                         },
-                        "src": "1964:19:24",
+                        "src": "1894:19:16",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -800,14 +800,14 @@
                       },
                       {
                         "hexValue": "52654e46543a3a6f6e6c792061646d696e",
-                        "id": 2551,
+                        "id": 2723,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1985:19:24",
+                        "src": "1915:19:16",
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_d801d92bd97c7808af5aa53cb60b9ef4d5adcb1b41dd6ea3bb886a6c53c93aa7",
                           "typeString": "literal_string \"ReNFT::only admin\""
@@ -826,7 +826,7 @@
                           "typeString": "literal_string \"ReNFT::only admin\""
                         }
                       ],
-                      "id": 2546,
+                      "id": 2718,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -834,13 +834,13 @@
                         -18
                       ],
                       "referencedDeclaration": -18,
-                      "src": "1956:7:24",
+                      "src": "1886:7:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 2552,
+                    "id": 2724,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -848,45 +848,45 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1956:49:24",
+                    "src": "1886:49:16",
                     "tryCall": false,
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2553,
+                  "id": 2725,
                   "nodeType": "ExpressionStatement",
-                  "src": "1956:49:24"
+                  "src": "1886:49:16"
                 },
                 {
                   "expression": {
-                    "id": 2558,
+                    "id": 2730,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 2554,
+                        "id": 2726,
                         "name": "addresses",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2496,
-                        "src": "2015:9:24",
+                        "referencedDeclaration": 2668,
+                        "src": "1945:9:16",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint8_$_t_address_$",
                           "typeString": "mapping(uint8 => address)"
                         }
                       },
-                      "id": 2556,
+                      "id": 2728,
                       "indexExpression": {
-                        "id": 2555,
+                        "id": 2727,
                         "name": "_pt",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2521,
-                        "src": "2025:3:24",
+                        "referencedDeclaration": 2693,
+                        "src": "1955:3:16",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint8",
                           "typeString": "uint8"
@@ -897,7 +897,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "2015:14:24",
+                      "src": "1945:14:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -906,56 +906,56 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 2557,
+                      "id": 2729,
                       "name": "_v",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2523,
-                      "src": "2032:2:24",
+                      "referencedDeclaration": 2695,
+                      "src": "1962:2:16",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "2015:19:24",
+                    "src": "1945:19:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "id": 2559,
+                  "id": 2731,
                   "nodeType": "ExpressionStatement",
-                  "src": "2015:19:24"
+                  "src": "1945:19:16"
                 }
               ]
             },
             "functionSelector": "321c6aea",
-            "id": 2561,
+            "id": 2733,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "setPaymentToken",
-            "nameLocation": "1718:15:24",
+            "nameLocation": "1682:15:16",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 2525,
+              "id": 2697,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "1766:8:24"
+              "src": "1730:8:16"
             },
             "parameters": {
-              "id": 2524,
+              "id": 2696,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2521,
+                  "id": 2693,
                   "mutability": "mutable",
                   "name": "_pt",
-                  "nameLocation": "1740:3:24",
+                  "nameLocation": "1704:3:16",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2561,
-                  "src": "1734:9:24",
+                  "scope": 2733,
+                  "src": "1698:9:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -963,10 +963,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 2520,
+                    "id": 2692,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1734:5:24",
+                    "src": "1698:5:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -976,13 +976,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2523,
+                  "id": 2695,
                   "mutability": "mutable",
                   "name": "_v",
-                  "nameLocation": "1753:2:24",
+                  "nameLocation": "1717:2:16",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2561,
-                  "src": "1745:10:24",
+                  "scope": 2733,
+                  "src": "1709:10:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -990,10 +990,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2522,
+                    "id": 2694,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1745:7:24",
+                    "src": "1709:7:16",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1003,29 +1003,29 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1733:23:24"
+              "src": "1697:23:16"
             },
             "returnParameters": {
-              "id": 2526,
+              "id": 2698,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1775:0:24"
+              "src": "1739:0:16"
             },
-            "scope": 2562,
-            "src": "1709:332:24",
+            "scope": 2734,
+            "src": "1673:298:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2563,
-        "src": "1373:670:24",
+        "scope": 2735,
+        "src": "1373:600:16",
         "usedErrors": []
       }
     ],
-    "src": "32:3290:24"
+    "src": "32:3220:16"
   },
-  "bytecode": "608060405234801561001057600080fd5b5060405161031b38038061031b83398101604081905261002f91610054565b600080546001600160a01b0319166001600160a01b0392909216919091179055610084565b60006020828403121561006657600080fd5b81516001600160a01b038116811461007d57600080fd5b9392505050565b610288806100936000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c8063321c6aea1461003b578063c6ee427f14610050575b600080fd5b61004e61004936600461020f565b610098565b005b61007c61005e3660046101ed565b60ff166000908152600160205260409020546001600160a01b031690565b6040516001600160a01b03909116815260200160405180910390f35b60ff82166100ed5760405162461bcd60e51b815260206004820152601860248201527f52654e46543a3a63616e74207365742073656e74696e656c000000000000000060448201526064015b60405180910390fd5b60ff82166000908152600160205260409020546001600160a01b0316156101565760405162461bcd60e51b815260206004820152601f60248201527f52654e46543a3a63616e6e6f742072657365742074686520616464726573730060448201526064016100e4565b6000546001600160a01b031633146101a45760405162461bcd60e51b81526020600482015260116024820152702932a7232a1d1d37b7363c9030b236b4b760791b60448201526064016100e4565b60ff91909116600090815260016020526040902080546001600160a01b0319166001600160a01b03909216919091179055565b803560ff811681146101e857600080fd5b919050565b6000602082840312156101ff57600080fd5b610208826101d7565b9392505050565b6000806040838503121561022257600080fd5b61022b836101d7565b915060208301356001600160a01b038116811461024757600080fd5b80915050925092905056fea2646970667358221220b869729c600e5c3ec87d7d94ecb37969e141ee61b50a9def5036c5c713c296c464736f6c63430008070033",
+  "bytecode": "608060405234801561001057600080fd5b5060405161031b38038061031b83398101604081905261002f91610054565b600080546001600160a01b0319166001600160a01b0392909216919091179055610084565b60006020828403121561006657600080fd5b81516001600160a01b038116811461007d57600080fd5b9392505050565b610288806100936000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c8063321c6aea1461003b578063c6ee427f14610050575b600080fd5b61004e61004936600461020f565b610098565b005b61007c61005e3660046101ed565b60ff166000908152600160205260409020546001600160a01b031690565b6040516001600160a01b03909116815260200160405180910390f35b60ff82166100ed5760405162461bcd60e51b815260206004820152601860248201527f52654e46543a3a63616e74207365742073656e74696e656c000000000000000060448201526064015b60405180910390fd5b60ff82166000908152600160205260409020546001600160a01b0316156101565760405162461bcd60e51b815260206004820152601f60248201527f52654e46543a3a63616e6e6f742072657365742074686520616464726573730060448201526064016100e4565b6000546001600160a01b031633146101a45760405162461bcd60e51b81526020600482015260116024820152702932a7232a1d1d37b7363c9030b236b4b760791b60448201526064016100e4565b60ff91909116600090815260016020526040902080546001600160a01b0319166001600160a01b03909216919091179055565b803560ff811681146101e857600080fd5b919050565b6000602082840312156101ff57600080fd5b610208826101d7565b9392505050565b6000806040838503121561022257600080fd5b61022b836101d7565b915060208301356001600160a01b038116811461024757600080fd5b80915050925092905056fea264697066735822122053f3d4eeaccf169724d0756025d9884c8e12decce0a451b172932364e7c7298064736f6c63430008070033",
   "bytecodeSha1": "386663497f519360b7ae50d6fe2a1c37ef21d368",
   "compiler": {
     "evm_version": "istanbul",
@@ -1038,62 +1038,62 @@
   "contractName": "Resolver",
   "coverageMap": {
     "branches": {
-      "24": {
+      "16": {
         "Resolver.setPaymentToken": {
           "5": [
-            1793,
-            1801,
+            1757,
+            1765,
             true
           ],
           "6": [
-            1861,
-            1889,
+            1812,
+            1840,
             true
           ],
           "7": [
-            1964,
-            1983,
+            1894,
+            1913,
             true
           ]
         }
       },
-      "26": {}
+      "18": {}
     },
     "statements": {
-      "24": {
+      "16": {
         "Resolver.getPaymentToken": {
           "0": [
-            1675,
-            1696
+            1639,
+            1660
           ]
         },
         "Resolver.setPaymentToken": {
           "1": [
-            1785,
-            1830
+            1749,
+            1794
           ],
           "2": [
-            1840,
-            1946
+            1804,
+            1876
           ],
           "3": [
-            1956,
-            2005
+            1886,
+            1935
           ],
           "4": [
-            2015,
-            2034
+            1945,
+            1964
           ]
         }
       },
-      "26": {}
+      "18": {}
     }
   },
   "dependencies": [
     "IResolver"
   ],
-  "deployedBytecode": "608060405234801561001057600080fd5b50600436106100365760003560e01c8063321c6aea1461003b578063c6ee427f14610050575b600080fd5b61004e61004936600461020f565b610098565b005b61007c61005e3660046101ed565b60ff166000908152600160205260409020546001600160a01b031690565b6040516001600160a01b03909116815260200160405180910390f35b60ff82166100ed5760405162461bcd60e51b815260206004820152601860248201527f52654e46543a3a63616e74207365742073656e74696e656c000000000000000060448201526064015b60405180910390fd5b60ff82166000908152600160205260409020546001600160a01b0316156101565760405162461bcd60e51b815260206004820152601f60248201527f52654e46543a3a63616e6e6f742072657365742074686520616464726573730060448201526064016100e4565b6000546001600160a01b031633146101a45760405162461bcd60e51b81526020600482015260116024820152702932a7232a1d1d37b7363c9030b236b4b760791b60448201526064016100e4565b60ff91909116600090815260016020526040902080546001600160a01b0319166001600160a01b03909216919091179055565b803560ff811681146101e857600080fd5b919050565b6000602082840312156101ff57600080fd5b610208826101d7565b9392505050565b6000806040838503121561022257600080fd5b61022b836101d7565b915060208301356001600160a01b038116811461024757600080fd5b80915050925092905056fea2646970667358221220b869729c600e5c3ec87d7d94ecb37969e141ee61b50a9def5036c5c713c296c464736f6c63430008070033",
-  "deployedSourceMap": "1373:670:24:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1709:332;;;;;;:::i;:::-;;:::i;:::-;;1552:151;;;;;;:::i;:::-;1682:14;;1652:7;1682:14;;;:9;:14;;;;;;-1:-1:-1;;;;;1682:14:24;;1552:151;;;;-1:-1:-1;;;;;887:32:31;;;869:51;;857:2;842:18;1552:151:24;;;;;;;1709:332;1793:8;;;1785:45;;;;-1:-1:-1;;;1785:45:24;;1133:2:31;1785:45:24;;;1115:21:31;1172:2;1152:18;;;1145:30;1211:26;1191:18;;;1184:54;1255:18;;1785:45:24;;;;;;;;;1861:14;;;1887:1;1861:14;;;:9;:14;;;;;;-1:-1:-1;;;;;1861:14:24;:28;1840:106;;;;-1:-1:-1;;;1840:106:24;;1486:2:31;1840:106:24;;;1468:21:31;1525:2;1505:18;;;1498:30;1564:33;1544:18;;;1537:61;1615:18;;1840:106:24;1284:355:31;1840:106:24;1978:5;;-1:-1:-1;;;;;1978:5:24;1964:10;:19;1956:49;;;;-1:-1:-1;;;1956:49:24;;1846:2:31;1956:49:24;;;1828:21:31;1885:2;1865:18;;;1858:30;-1:-1:-1;;;1904:18:31;;;1897:47;1961:18;;1956:49:24;1644:341:31;1956:49:24;2015:14;;;;;;;;;:9;:14;;;;;:19;;-1:-1:-1;;;;;;2015:19:24;-1:-1:-1;;;;;2015:19:24;;;;;;;;;1709:332::o;14:156:31:-;80:20;;140:4;129:16;;119:27;;109:55;;160:1;157;150:12;109:55;14:156;;;:::o;175:182::-;232:6;285:2;273:9;264:7;260:23;256:32;253:52;;;301:1;298;291:12;253:52;324:27;341:9;324:27;:::i;:::-;314:37;175:182;-1:-1:-1;;;175:182:31:o;362:356::-;428:6;436;489:2;477:9;468:7;464:23;460:32;457:52;;;505:1;502;495:12;457:52;528:27;545:9;528:27;:::i;:::-;518:37;-1:-1:-1;605:2:31;590:18;;577:32;-1:-1:-1;;;;;638:31:31;;628:42;;618:70;;684:1;681;674:12;618:70;707:5;697:15;;;362:356;;;;;:::o",
+  "deployedBytecode": "608060405234801561001057600080fd5b50600436106100365760003560e01c8063321c6aea1461003b578063c6ee427f14610050575b600080fd5b61004e61004936600461020f565b610098565b005b61007c61005e3660046101ed565b60ff166000908152600160205260409020546001600160a01b031690565b6040516001600160a01b03909116815260200160405180910390f35b60ff82166100ed5760405162461bcd60e51b815260206004820152601860248201527f52654e46543a3a63616e74207365742073656e74696e656c000000000000000060448201526064015b60405180910390fd5b60ff82166000908152600160205260409020546001600160a01b0316156101565760405162461bcd60e51b815260206004820152601f60248201527f52654e46543a3a63616e6e6f742072657365742074686520616464726573730060448201526064016100e4565b6000546001600160a01b031633146101a45760405162461bcd60e51b81526020600482015260116024820152702932a7232a1d1d37b7363c9030b236b4b760791b60448201526064016100e4565b60ff91909116600090815260016020526040902080546001600160a01b0319166001600160a01b03909216919091179055565b803560ff811681146101e857600080fd5b919050565b6000602082840312156101ff57600080fd5b610208826101d7565b9392505050565b6000806040838503121561022257600080fd5b61022b836101d7565b915060208301356001600160a01b038116811461024757600080fd5b80915050925092905056fea264697066735822122053f3d4eeaccf169724d0756025d9884c8e12decce0a451b172932364e7c7298064736f6c63430008070033",
+  "deployedSourceMap": "1373:600:16:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1673:298;;;;;;:::i;:::-;;:::i;:::-;;1552:115;;;;;;:::i;:::-;1646:14;;1620:7;1646:14;;;:9;:14;;;;;;-1:-1:-1;;;;;1646:14:16;;1552:115;;;;-1:-1:-1;;;;;887:32:21;;;869:51;;857:2;842:18;1552:115:16;;;;;;;1673:298;1757:8;;;1749:45;;;;-1:-1:-1;;;1749:45:16;;1133:2:21;1749:45:16;;;1115:21:21;1172:2;1152:18;;;1145:30;1211:26;1191:18;;;1184:54;1255:18;;1749:45:16;;;;;;;;;1812:14;;;1838:1;1812:14;;;:9;:14;;;;;;-1:-1:-1;;;;;1812:14:16;:28;1804:72;;;;-1:-1:-1;;;1804:72:16;;1486:2:21;1804:72:16;;;1468:21:21;1525:2;1505:18;;;1498:30;1564:33;1544:18;;;1537:61;1615:18;;1804:72:16;1284:355:21;1804:72:16;1908:5;;-1:-1:-1;;;;;1908:5:16;1894:10;:19;1886:49;;;;-1:-1:-1;;;1886:49:16;;1846:2:21;1886:49:16;;;1828:21:21;1885:2;1865:18;;;1858:30;-1:-1:-1;;;1904:18:21;;;1897:47;1961:18;;1886:49:16;1644:341:21;1886:49:16;1945:14;;;;;;;;;:9;:14;;;;;:19;;-1:-1:-1;;;;;;1945:19:16;-1:-1:-1;;;;;1945:19:16;;;;;;;;;1673:298::o;14:156:21:-;80:20;;140:4;129:16;;119:27;;109:55;;160:1;157;150:12;109:55;14:156;;;:::o;175:182::-;232:6;285:2;273:9;264:7;260:23;256:32;253:52;;;301:1;298;291:12;253:52;324:27;341:9;324:27;:::i;:::-;314:37;175:182;-1:-1:-1;;;175:182:21:o;362:356::-;428:6;436;489:2;477:9;468:7;464:23;460:32;457:52;;;505:1;502;495:12;457:52;528:27;545:9;528:27;:::i;:::-;518:37;-1:-1:-1;605:2:21;590:18;;577:32;-1:-1:-1;;;;;638:31:21;;628:42;;618:70;;684:1;681;674:12;618:70;707:5;697:15;;;362:356;;;;;:::o",
   "language": "Solidity",
   "natspec": {
     "kind": "dev",
@@ -1102,519 +1102,519 @@
   },
   "offset": [
     1373,
-    2043
+    1973
   ],
-  "opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE CALLVALUE DUP1 ISZERO PUSH2 0x10 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST POP PUSH1 0x4 CALLDATASIZE LT PUSH2 0x36 JUMPI PUSH1 0x0 CALLDATALOAD PUSH1 0xE0 SHR DUP1 PUSH4 0x321C6AEA EQ PUSH2 0x3B JUMPI DUP1 PUSH4 0xC6EE427F EQ PUSH2 0x50 JUMPI JUMPDEST PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x4E PUSH2 0x49 CALLDATASIZE PUSH1 0x4 PUSH2 0x20F JUMP JUMPDEST PUSH2 0x98 JUMP JUMPDEST STOP JUMPDEST PUSH2 0x7C PUSH2 0x5E CALLDATASIZE PUSH1 0x4 PUSH2 0x1ED JUMP JUMPDEST PUSH1 0xFF AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND SWAP1 JUMP JUMPDEST PUSH1 0x40 MLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB SWAP1 SWAP2 AND DUP2 MSTORE PUSH1 0x20 ADD PUSH1 0x40 MLOAD DUP1 SWAP2 SUB SWAP1 RETURN JUMPDEST PUSH1 0xFF DUP3 AND PUSH2 0xED JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x18 PUSH1 0x24 DUP3 ADD MSTORE PUSH32 0x52654E46543A3A63616E74207365742073656E74696E656C0000000000000000 PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD JUMPDEST PUSH1 0x40 MLOAD DUP1 SWAP2 SUB SWAP1 REVERT JUMPDEST PUSH1 0xFF DUP3 AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND ISZERO PUSH2 0x156 JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x1F PUSH1 0x24 DUP3 ADD MSTORE PUSH32 0x52654E46543A3A63616E6E6F7420726573657420746865206164647265737300 PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD PUSH2 0xE4 JUMP JUMPDEST PUSH1 0x0 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND CALLER EQ PUSH2 0x1A4 JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x11 PUSH1 0x24 DUP3 ADD MSTORE PUSH17 0x2932A7232A1D1D37B7363C9030B236B4B7 PUSH1 0x79 SHL PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD PUSH2 0xE4 JUMP JUMPDEST PUSH1 0xFF SWAP2 SWAP1 SWAP2 AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 DUP1 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB NOT AND PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB SWAP1 SWAP3 AND SWAP2 SWAP1 SWAP2 OR SWAP1 SSTORE JUMP JUMPDEST DUP1 CALLDATALOAD PUSH1 0xFF DUP2 AND DUP2 EQ PUSH2 0x1E8 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST SWAP2 SWAP1 POP JUMP JUMPDEST PUSH1 0x0 PUSH1 0x20 DUP3 DUP5 SUB SLT ISZERO PUSH2 0x1FF JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x208 DUP3 PUSH2 0x1D7 JUMP JUMPDEST SWAP4 SWAP3 POP POP POP JUMP JUMPDEST PUSH1 0x0 DUP1 PUSH1 0x40 DUP4 DUP6 SUB SLT ISZERO PUSH2 0x222 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x22B DUP4 PUSH2 0x1D7 JUMP JUMPDEST SWAP2 POP PUSH1 0x20 DUP4 ADD CALLDATALOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB DUP2 AND DUP2 EQ PUSH2 0x247 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST DUP1 SWAP2 POP POP SWAP3 POP SWAP3 SWAP1 POP JUMP INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 0xB8 PUSH10 0x729C600E5C3EC87D7D94 0xEC 0xB3 PUSH26 0x69E141EE61B50A9DEF5036C5C713C296C464736F6C6343000807 STOP CALLER ",
+  "opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE CALLVALUE DUP1 ISZERO PUSH2 0x10 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST POP PUSH1 0x4 CALLDATASIZE LT PUSH2 0x36 JUMPI PUSH1 0x0 CALLDATALOAD PUSH1 0xE0 SHR DUP1 PUSH4 0x321C6AEA EQ PUSH2 0x3B JUMPI DUP1 PUSH4 0xC6EE427F EQ PUSH2 0x50 JUMPI JUMPDEST PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x4E PUSH2 0x49 CALLDATASIZE PUSH1 0x4 PUSH2 0x20F JUMP JUMPDEST PUSH2 0x98 JUMP JUMPDEST STOP JUMPDEST PUSH2 0x7C PUSH2 0x5E CALLDATASIZE PUSH1 0x4 PUSH2 0x1ED JUMP JUMPDEST PUSH1 0xFF AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND SWAP1 JUMP JUMPDEST PUSH1 0x40 MLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB SWAP1 SWAP2 AND DUP2 MSTORE PUSH1 0x20 ADD PUSH1 0x40 MLOAD DUP1 SWAP2 SUB SWAP1 RETURN JUMPDEST PUSH1 0xFF DUP3 AND PUSH2 0xED JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x18 PUSH1 0x24 DUP3 ADD MSTORE PUSH32 0x52654E46543A3A63616E74207365742073656E74696E656C0000000000000000 PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD JUMPDEST PUSH1 0x40 MLOAD DUP1 SWAP2 SUB SWAP1 REVERT JUMPDEST PUSH1 0xFF DUP3 AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND ISZERO PUSH2 0x156 JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x1F PUSH1 0x24 DUP3 ADD MSTORE PUSH32 0x52654E46543A3A63616E6E6F7420726573657420746865206164647265737300 PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD PUSH2 0xE4 JUMP JUMPDEST PUSH1 0x0 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB AND CALLER EQ PUSH2 0x1A4 JUMPI PUSH1 0x40 MLOAD PUSH3 0x461BCD PUSH1 0xE5 SHL DUP2 MSTORE PUSH1 0x20 PUSH1 0x4 DUP3 ADD MSTORE PUSH1 0x11 PUSH1 0x24 DUP3 ADD MSTORE PUSH17 0x2932A7232A1D1D37B7363C9030B236B4B7 PUSH1 0x79 SHL PUSH1 0x44 DUP3 ADD MSTORE PUSH1 0x64 ADD PUSH2 0xE4 JUMP JUMPDEST PUSH1 0xFF SWAP2 SWAP1 SWAP2 AND PUSH1 0x0 SWAP1 DUP2 MSTORE PUSH1 0x1 PUSH1 0x20 MSTORE PUSH1 0x40 SWAP1 KECCAK256 DUP1 SLOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB NOT AND PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB SWAP1 SWAP3 AND SWAP2 SWAP1 SWAP2 OR SWAP1 SSTORE JUMP JUMPDEST DUP1 CALLDATALOAD PUSH1 0xFF DUP2 AND DUP2 EQ PUSH2 0x1E8 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST SWAP2 SWAP1 POP JUMP JUMPDEST PUSH1 0x0 PUSH1 0x20 DUP3 DUP5 SUB SLT ISZERO PUSH2 0x1FF JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x208 DUP3 PUSH2 0x1D7 JUMP JUMPDEST SWAP4 SWAP3 POP POP POP JUMP JUMPDEST PUSH1 0x0 DUP1 PUSH1 0x40 DUP4 DUP6 SUB SLT ISZERO PUSH2 0x222 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH2 0x22B DUP4 PUSH2 0x1D7 JUMP JUMPDEST SWAP2 POP PUSH1 0x20 DUP4 ADD CALLDATALOAD PUSH1 0x1 PUSH1 0x1 PUSH1 0xA0 SHL SUB DUP2 AND DUP2 EQ PUSH2 0x247 JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST DUP1 SWAP2 POP POP SWAP3 POP SWAP3 SWAP1 POP JUMP INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 MSTORE8 RETURN 0xD4 0xEE 0xAC 0xCF AND SWAP8 0x24 0xD0 PUSH22 0x6025D9884C8E12DECCE0A451B172932364E7C7298064 PUSH20 0x6F6C634300080700330000000000000000000000 ",
   "pcMap": {
     "0": {
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x80"
     },
     "2": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x40"
     },
     "4": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "16"
     },
     "5": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "CALLVALUE",
-      "path": "24"
+      "path": "16"
     },
     "6": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "16"
     },
     "7": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "ISZERO",
-      "path": "24"
+      "path": "16"
     },
     "8": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x10"
     },
     "11": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "16"
     },
     "12": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x0"
     },
     "14": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "16"
     },
     "15": {
       "dev": "Cannot send ether to nonpayable function",
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "REVERT",
-      "path": "24"
+      "path": "16"
     },
     "16": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "17": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "POP",
-      "path": "24"
+      "path": "16"
     },
     "18": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x4"
     },
     "20": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "CALLDATASIZE",
-      "path": "24"
+      "path": "16"
     },
     "21": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "LT",
-      "path": "24"
+      "path": "16"
     },
     "22": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x36"
     },
     "25": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "16"
     },
     "26": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x0"
     },
     "28": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "CALLDATALOAD",
-      "path": "24"
+      "path": "16"
     },
     "29": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0xE0"
     },
     "31": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "SHR",
-      "path": "24"
+      "path": "16"
     },
     "32": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "16"
     },
     "33": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH4",
-      "path": "24",
+      "path": "16",
       "value": "0x321C6AEA"
     },
     "38": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "EQ",
-      "path": "24"
+      "path": "16"
     },
     "39": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x3B"
     },
     "42": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "16"
     },
     "43": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "16"
     },
     "44": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH4",
-      "path": "24",
+      "path": "16",
       "value": "0xC6EE427F"
     },
     "49": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "EQ",
-      "path": "24"
+      "path": "16"
     },
     "50": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x50"
     },
     "53": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "16"
     },
     "54": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "55": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x0"
     },
     "57": {
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "16"
     },
     "58": {
       "first_revert": true,
       "fn": null,
       "offset": [
         1373,
-        2043
+        1973
       ],
       "op": "REVERT",
-      "path": "24"
+      "path": "16"
     },
     "59": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "60": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x4E"
     },
     "63": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x49"
     },
     "66": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "CALLDATASIZE",
-      "path": "24"
+      "path": "16"
     },
     "67": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x4"
     },
     "69": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x20F"
     },
     "72": {
       "fn": "Resolver.setPaymentToken",
       "jump": "i",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "JUMP",
-      "path": "24"
+      "path": "16"
     },
     "73": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "74": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x98"
     },
     "77": {
       "fn": "Resolver.setPaymentToken",
       "jump": "i",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "JUMP",
-      "path": "24"
+      "path": "16"
     },
     "78": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "79": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "STOP",
-      "path": "24"
+      "path": "16"
     },
     "80": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "81": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x7C"
     },
     "84": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x5E"
     },
     "87": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "CALLDATASIZE",
-      "path": "24"
+      "path": "16"
     },
     "88": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x4"
     },
     "90": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x1ED"
     },
     "93": {
@@ -1622,142 +1622,142 @@
       "jump": "i",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "JUMP",
-      "path": "24"
+      "path": "16"
     },
     "94": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "95": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "statement": 0,
       "value": "0xFF"
     },
     "97": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "AND",
-      "path": "24"
+      "path": "16"
     },
     "98": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1652,
-        1659
+        1620,
+        1627
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x0"
     },
     "100": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "101": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "16"
     },
     "102": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "16"
     },
     "103": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1691
+        1646,
+        1655
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x1"
     },
     "105": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x20"
     },
     "107": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "16"
     },
     "108": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x40"
     },
     "110": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "111": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "KECCAK256",
-      "path": "24"
+      "path": "16"
     },
     "112": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "SLOAD",
-      "path": "24"
+      "path": "16"
     },
     "113": {
       "op": "PUSH1",
@@ -1780,57 +1780,57 @@
     "121": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "AND",
-      "path": "24"
+      "path": "16"
     },
     "122": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
-        1682,
-        1696
+        1646,
+        1660
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "123": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "JUMP",
-      "path": "24"
+      "path": "16"
     },
     "124": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "125": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x40"
     },
     "127": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "16"
     },
     "128": {
       "op": "PUSH1",
@@ -1876,143 +1876,143 @@
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x40"
     },
     "146": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "16"
     },
     "147": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "16"
     },
     "148": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "16"
     },
     "149": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "SUB",
-      "path": "24"
+      "path": "16"
     },
     "150": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "151": {
       "fn": "Resolver.getPaymentToken",
       "offset": [
         1552,
-        1703
+        1667
       ],
       "op": "RETURN",
-      "path": "24"
+      "path": "16"
     },
     "152": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "153": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1793,
-        1801
+        1757,
+        1765
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "statement": 1,
       "value": "0xFF"
     },
     "155": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1793,
-        1801
+        1757,
+        1765
       ],
       "op": "DUP3",
-      "path": "24"
+      "path": "16"
     },
     "156": {
       "branch": 5,
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1793,
-        1801
+        1757,
+        1765
       ],
       "op": "AND",
-      "path": "24"
+      "path": "16"
     },
     "157": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0xED"
     },
     "160": {
       "branch": 5,
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "16"
     },
     "161": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x40"
     },
     "163": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "16"
     },
     "164": {
       "op": "PUSH3",
@@ -2028,20 +2028,20 @@
     "171": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "16"
     },
     "172": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "16"
     },
     "173": {
       "op": "PUSH1",
@@ -2050,30 +2050,30 @@
     "175": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x4"
     },
     "177": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "DUP3",
-      "path": "24"
+      "path": "16"
     },
     "178": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "ADD",
-      "path": "24"
+      "path": "16"
     },
     "179": {
       "op": "MSTORE"
@@ -2122,217 +2122,217 @@
     "228": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "229": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x40"
     },
     "231": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "16"
     },
     "232": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "16"
     },
     "233": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "16"
     },
     "234": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "SUB",
-      "path": "24"
+      "path": "16"
     },
     "235": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "236": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "REVERT",
       "optimizer_revert": true,
-      "path": "24"
+      "path": "16"
     },
     "237": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1785,
-        1830
+        1749,
+        1794
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "238": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "statement": 2,
       "value": "0xFF"
     },
     "240": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "DUP3",
-      "path": "24"
+      "path": "16"
     },
     "241": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "AND",
-      "path": "24"
+      "path": "16"
     },
     "242": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1887,
-        1888
+        1838,
+        1839
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x0"
     },
     "244": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "245": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "16"
     },
     "246": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "16"
     },
     "247": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1870
+        1812,
+        1821
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x1"
     },
     "249": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x20"
     },
     "251": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "16"
     },
     "252": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x40"
     },
     "254": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "255": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "KECCAK256",
-      "path": "24"
+      "path": "16"
     },
     "256": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "SLOAD",
-      "path": "24"
+      "path": "16"
     },
     "257": {
       "op": "PUSH1",
@@ -2355,60 +2355,60 @@
     "265": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1875
+        1812,
+        1826
       ],
       "op": "AND",
-      "path": "24"
+      "path": "16"
     },
     "266": {
       "branch": 6,
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1861,
-        1889
+        1812,
+        1840
       ],
       "op": "ISZERO",
-      "path": "24"
+      "path": "16"
     },
     "267": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1840,
-        1946
+        1804,
+        1876
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x156"
     },
     "270": {
       "branch": 6,
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1840,
-        1946
+        1804,
+        1876
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "16"
     },
     "271": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1840,
-        1946
+        1804,
+        1876
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x40"
     },
     "273": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1840,
-        1946
+        1804,
+        1876
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "16"
     },
     "274": {
       "op": "PUSH3",
@@ -2424,20 +2424,20 @@
     "281": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1840,
-        1946
+        1804,
+        1876
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "16"
     },
     "282": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1840,
-        1946
+        1804,
+        1876
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "16"
     },
     "283": {
       "op": "PUSH1",
@@ -2446,30 +2446,30 @@
     "285": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1840,
-        1946
+        1804,
+        1876
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x4"
     },
     "287": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1840,
-        1946
+        1804,
+        1876
       ],
       "op": "DUP3",
-      "path": "24"
+      "path": "16"
     },
     "288": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1840,
-        1946
+        1804,
+        1876
       ],
       "op": "ADD",
-      "path": "24"
+      "path": "16"
     },
     "289": {
       "op": "MSTORE"
@@ -2518,11 +2518,11 @@
     "338": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1840,
-        1946
+        1804,
+        1876
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0xE4"
     },
     "341": {
@@ -2531,31 +2531,31 @@
     "342": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1840,
-        1946
+        1804,
+        1876
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "343": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1978,
-        1983
+        1908,
+        1913
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "statement": 3,
       "value": "0x0"
     },
     "345": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1978,
-        1983
+        1908,
+        1913
       ],
       "op": "SLOAD",
-      "path": "24"
+      "path": "16"
     },
     "346": {
       "op": "PUSH1",
@@ -2578,69 +2578,69 @@
     "354": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1978,
-        1983
+        1908,
+        1913
       ],
       "op": "AND",
-      "path": "24"
+      "path": "16"
     },
     "355": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1964,
-        1974
+        1894,
+        1904
       ],
       "op": "CALLER",
-      "path": "24"
+      "path": "16"
     },
     "356": {
       "branch": 7,
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1964,
-        1983
+        1894,
+        1913
       ],
       "op": "EQ",
-      "path": "24"
+      "path": "16"
     },
     "357": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1956,
-        2005
+        1886,
+        1935
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0x1A4"
     },
     "360": {
       "branch": 7,
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1956,
-        2005
+        1886,
+        1935
       ],
       "op": "JUMPI",
-      "path": "24"
+      "path": "16"
     },
     "361": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1956,
-        2005
+        1886,
+        1935
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x40"
     },
     "363": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1956,
-        2005
+        1886,
+        1935
       ],
       "op": "MLOAD",
-      "path": "24"
+      "path": "16"
     },
     "364": {
       "op": "PUSH3",
@@ -2656,20 +2656,20 @@
     "371": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1956,
-        2005
+        1886,
+        1935
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "16"
     },
     "372": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1956,
-        2005
+        1886,
+        1935
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "16"
     },
     "373": {
       "op": "PUSH1",
@@ -2678,30 +2678,30 @@
     "375": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1956,
-        2005
+        1886,
+        1935
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x4"
     },
     "377": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1956,
-        2005
+        1886,
+        1935
       ],
       "op": "DUP3",
-      "path": "24"
+      "path": "16"
     },
     "378": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1956,
-        2005
+        1886,
+        1935
       ],
       "op": "ADD",
-      "path": "24"
+      "path": "16"
     },
     "379": {
       "op": "MSTORE"
@@ -2757,11 +2757,11 @@
     "416": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1956,
-        2005
+        1886,
+        1935
       ],
       "op": "PUSH2",
-      "path": "24",
+      "path": "16",
       "value": "0xE4"
     },
     "419": {
@@ -2770,170 +2770,170 @@
     "420": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        1956,
-        2005
+        1886,
+        1935
       ],
       "op": "JUMPDEST",
-      "path": "24"
+      "path": "16"
     },
     "421": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "statement": 4,
       "value": "0xFF"
     },
     "423": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "16"
     },
     "424": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "425": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "16"
     },
     "426": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "AND",
-      "path": "24"
+      "path": "16"
     },
     "427": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x0"
     },
     "429": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "430": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "DUP2",
-      "path": "24"
+      "path": "16"
     },
     "431": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "16"
     },
     "432": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2024
+        1945,
+        1954
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x1"
     },
     "434": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x20"
     },
     "436": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "MSTORE",
-      "path": "24"
+      "path": "16"
     },
     "437": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "PUSH1",
-      "path": "24",
+      "path": "16",
       "value": "0x40"
     },
     "439": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "440": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2029
+        1945,
+        1959
       ],
       "op": "KECCAK256",
-      "path": "24"
+      "path": "16"
     },
     "441": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "DUP1",
-      "path": "24"
+      "path": "16"
     },
     "442": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "SLOAD",
-      "path": "24"
+      "path": "16"
     },
     "443": {
       "op": "PUSH1",
@@ -2959,11 +2959,11 @@
     "452": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "AND",
-      "path": "24"
+      "path": "16"
     },
     "453": {
       "op": "PUSH1",
@@ -2986,93 +2986,93 @@
     "461": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "462": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "SWAP3",
-      "path": "24"
+      "path": "16"
     },
     "463": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "AND",
-      "path": "24"
+      "path": "16"
     },
     "464": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "16"
     },
     "465": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "466": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "SWAP2",
-      "path": "24"
+      "path": "16"
     },
     "467": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "OR",
-      "path": "24"
+      "path": "16"
     },
     "468": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "SWAP1",
-      "path": "24"
+      "path": "16"
     },
     "469": {
       "fn": "Resolver.setPaymentToken",
       "offset": [
-        2015,
-        2034
+        1945,
+        1964
       ],
       "op": "SSTORE",
-      "path": "24"
+      "path": "16"
     },
     "470": {
       "fn": "Resolver.setPaymentToken",
       "jump": "o",
       "offset": [
-        1709,
-        2041
+        1673,
+        1971
       ],
       "op": "JUMP",
-      "path": "24"
+      "path": "16"
     },
     "471": {
       "op": "JUMPDEST"
@@ -3383,9 +3383,9 @@
       "op": "JUMP"
     }
   },
-  "sha1": "5ddc0470615f9523d9ed769898802d517942a66b",
-  "source": "// SPDX-License-Identifier: MIT\npragma solidity =0.8.7;\n\nimport \"./interfaces/IResolver.sol\";\n\n//              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@\n//              @@@,,,,,,,,,,@@@        ,@@&,,,,,,,,,,@@@\n//         @@@@@@@@,,,,,,,,,,@@@@@@@@&  ,@@&,,,,,,,,,,@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@&            .@@@**********@@@@@@@@@@@@@\n//    @@@@@@@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&       ,@@@@@@@@//////////@@@@@@@@@@@@@\n//         @@@%%%%%/////(((((@@@&       ,@@@(((((/////%%%%%@@@@@@@@\n//         @@@@@@@@//////////@@@@@@@@&  ,@@@//////////@@@@@@@@@@@@@\n//              @@@%%%%%%%%%%@@@@@@@@&  ,@@@%%%%%%%%%%@@@@@@@@@@@@@\n//              @@@@@@@@@@@@@@@@@@@@@&  ,@@@@@@@@@@@@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n\ncontract Resolver is IResolver {\n    address private admin;\n    mapping(uint8 => address) private addresses;\n\n    constructor(address _admin) {\n        admin = _admin;\n    }\n\n    function getPaymentToken(uint8 _pt)\n        external\n        view\n        override\n        returns (address)\n    {\n        return addresses[_pt];\n    }\n\n    function setPaymentToken(uint8 _pt, address _v) external override {\n        require(_pt != 0, \"ReNFT::cant set sentinel\");\n        require(\n            addresses[_pt] == address(0),\n            \"ReNFT::cannot reset the address\"\n        );\n        require(msg.sender == admin, \"ReNFT::only admin\");\n        addresses[_pt] = _v;\n    }\n}\n\n//              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@\n//              @@@,,,,,,,,,,@@@        ,@@&,,,,,,,,,,@@@\n//         @@@@@@@@,,,,,,,,,,@@@@@@@@&  ,@@&,,,,,,,,,,@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@&            .@@@**********@@@@@@@@@@@@@\n//    @@@@@@@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&       ,@@@@@@@@//////////@@@@@@@@@@@@@\n//         @@@%%%%%/////(((((@@@&       ,@@@(((((/////%%%%%@@@@@@@@\n//         @@@@@@@@//////////@@@@@@@@&  ,@@@//////////@@@@@@@@@@@@@\n//              @@@%%%%%%%%%%@@@@@@@@&  ,@@@%%%%%%%%%%@@@@@@@@@@@@@\n//              @@@@@@@@@@@@@@@@@@@@@&  ,@@@@@@@@@@@@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n",
-  "sourceMap": "1373:670:24:-:0;;;1487:59;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;1525:5;:14;;-1:-1:-1;;;;;;1525:14:24;-1:-1:-1;;;;;1525:14:24;;;;;;;;;;1373:670;;14:290:31;84:6;137:2;125:9;116:7;112:23;108:32;105:52;;;153:1;150;143:12;105:52;179:16;;-1:-1:-1;;;;;224:31:31;;214:42;;204:70;;270:1;267;260:12;204:70;293:5;14:290;-1:-1:-1;;;14:290:31:o;:::-;1373:670:24;;;;;;",
+  "sha1": "ac96a3c33ac67b06f3e170d9f57e17beb7d7ebc0",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity =0.8.7;\n\nimport \"./interfaces/IResolver.sol\";\n\n//              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@\n//              @@@,,,,,,,,,,@@@        ,@@&,,,,,,,,,,@@@\n//         @@@@@@@@,,,,,,,,,,@@@@@@@@&  ,@@&,,,,,,,,,,@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@&            .@@@**********@@@@@@@@@@@@@\n//    @@@@@@@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&       ,@@@@@@@@//////////@@@@@@@@@@@@@\n//         @@@%%%%%/////(((((@@@&       ,@@@(((((/////%%%%%@@@@@@@@\n//         @@@@@@@@//////////@@@@@@@@&  ,@@@//////////@@@@@@@@@@@@@\n//              @@@%%%%%%%%%%@@@@@@@@&  ,@@@%%%%%%%%%%@@@@@@@@@@@@@\n//              @@@@@@@@@@@@@@@@@@@@@&  ,@@@@@@@@@@@@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n\ncontract Resolver is IResolver {\n    address private admin;\n    mapping(uint8 => address) private addresses;\n\n    constructor(address _admin) {\n        admin = _admin;\n    }\n\n    function getPaymentToken(uint8 _pt) external view override returns (address) {\n        return addresses[_pt];\n    }\n\n    function setPaymentToken(uint8 _pt, address _v) external override {\n        require(_pt != 0, \"ReNFT::cant set sentinel\");\n        require(addresses[_pt] == address(0), \"ReNFT::cannot reset the address\");\n        require(msg.sender == admin, \"ReNFT::only admin\");\n        addresses[_pt] = _v;\n    }\n}\n\n//              @@@@@@@@@@@@@@@@        ,@@@@@@@@@@@@@@@@\n//              @@@,,,,,,,,,,@@@        ,@@&,,,,,,,,,,@@@\n//         @@@@@@@@,,,,,,,,,,@@@@@@@@&  ,@@&,,,,,,,,,,@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@\n//         @@@**********@@@@@@@@@@@@@&  ,@@@@@@@@**********@@@@@@@@\n//         @@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@@@@@@&       .@@@**********@@@@@@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@\n//    @@@**********@@@@@@@@@@@@@&            .@@@@@@@@**********@@@@@@@@\n//    @@@@@@@@**********@@@@@@@@&            .@@@**********@@@@@@@@@@@@@\n//    @@@@@@@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&            .@@@//////////@@@@@@@@@@@@@\n//         @@@//////////@@@@@@@@&       ,@@@@@@@@//////////@@@@@@@@@@@@@\n//         @@@%%%%%/////(((((@@@&       ,@@@(((((/////%%%%%@@@@@@@@\n//         @@@@@@@@//////////@@@@@@@@&  ,@@@//////////@@@@@@@@@@@@@\n//              @@@%%%%%%%%%%@@@@@@@@&  ,@@@%%%%%%%%%%@@@@@@@@@@@@@\n//              @@@@@@@@@@@@@@@@@@@@@&  ,@@@@@@@@@@@@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n//                   @@@@@@@@@@@@@@@@&        @@@@@@@@@@@@@@@@\n",
+  "sourceMap": "1373:600:16:-:0;;;1487:59;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;1525:5;:14;;-1:-1:-1;;;;;;1525:14:16;-1:-1:-1;;;;;1525:14:16;;;;;;;;;;1373:600;;14:290:21;84:6;137:2;125:9;116:7;112:23;108:32;105:52;;;153:1;150;143:12;105:52;179:16;;-1:-1:-1;;;;;224:31:21;;214:42;;204:70;;270:1;267;260:12;204:70;293:5;14:290;-1:-1:-1;;;14:290:21:o;:::-;1373:600:16;;;;;;",
   "sourcePath": "contracts/Resolver.sol",
   "type": "contract"
 }

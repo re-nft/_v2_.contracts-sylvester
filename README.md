@@ -28,4 +28,6 @@ Tests can also be run in isolation through docker. First build the image with `d
 
 If you would like to deploy the contracts to a testnet, you can write `brownie run <name_of_script_in_scripts_folder> --network ropsten`, for example.
 
-If you would like to verify the contract (this will show the contract code on Etherscan), you need to first get Etherscan API, and then using that env variable, start a console like so `ETHERSCAP_API=... brownie console --network ropsten`. When you are in there, get the instance of a contract `registry = Registry.at('contract_address')` and finally, `Registry.publish_source(registry)`.
+If you would like to verify the contract (this will show the contract code on Etherscan), you need to first get Etherscan API, and then using that env variable, start a console like so `ETHERSCAN_API=... brownie console --network ropsten`. When you are in there, get the instance of a contract `registry = Registry.at('contract_address')` and finally, `Registry.publish_source(registry)`.
+
+To add a brownie account, run `brownie accounts new <name-of-the-account>`.
