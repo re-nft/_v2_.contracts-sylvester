@@ -294,12 +294,12 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
         uint256 lendingID
     ) private {
         if (lending.willAutoRenew == false) {
-            // No automatic renewal, stop the lending completely!
+            // No automatic renewal, stop the lending (or a portion of it) completely!
 
             // We must be careful here, because the lending might be for an ERC1155 token, which means
-            // that the renting.rentAmount is might not be the same as the lending.lendAmount. In this case, we
+            // that the renting.rentAmount might not be the same as the lending.lendAmount. In this case, we
             // must NOT delete the lending, but only decrement the lending.lendAmount by the renting.rentAmount.
-            // Notice: this is only possible for ERC1155 tokens!
+            // Notice: this is only possible for an ERC1155 tokens!
             if (lending.lendAmount > renting.rentAmount) {
                 // update lending lendAmount to reflect NOT renewing the lending
                 // Do not update lending.availableAmount, because the assets will not be lent out again
@@ -327,7 +327,7 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 delete lendings[keccak256(abi.encodePacked(nftAddress, tokenID, lendingID))];
             }
 
-            // StopLend event but only the amount that was not renewed
+            // StopLend event but only the amount that was not renewed (or all of it)
             emit IRegistry.StopLend(lendingID, uint32(block.timestamp), renting.rentAmount);
         } else {
             // automatic renewal, make the assets available to be lent out again
