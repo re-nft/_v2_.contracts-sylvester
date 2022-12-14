@@ -1,0 +1,21 @@
+name: Test Sylvester-v1
+
+on:
+  pull_request:
+    branches:
+      - sylvester-v1
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python_version: ['3.9.6']
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./.github/actions/common/setup-build-environment
+      with:
+        python_version: ${{ matrix.python_version }}
+    - run: |
+        poetry run brownie test
+      shell: bash
