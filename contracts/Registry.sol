@@ -143,11 +143,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
             ensureIsNull(lending);
             ensureTokenNotSentinel(uint8(cd.paymentToken[i]));
             bool is721 = cd.nftStandard[i] == IRegistry.NFTStandard.E721;
-
             uint16 _lendAmount = uint16(cd.lendAmount[i]);
-
             if (is721) require(_lendAmount == 1, "ReNFT::lendAmount should be equal to 1");
-
             lendings[identifier] = IRegistry.Lending({
                 nftStandard: cd.nftStandard[i],
                 lenderAddress: payable(msg.sender),
@@ -304,7 +301,6 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                 // update lending lendAmount to reflect NOT renewing the lending
                 // Do not update lending.availableAmount, because the assets will not be lent out again
                 lending.lendAmount -= renting.rentAmount;
-
                 // return the assets to the lender
                 IERC1155(nftAddress).safeTransferFrom(
                     address(this), lending.lenderAddress, tokenID, uint256(renting.rentAmount), ""
@@ -323,10 +319,8 @@ contract Registry is IRegistry, ERC721Holder, ERC1155Receiver, ERC1155Holder {
                         address(this), lending.lenderAddress, tokenID, uint256(renting.rentAmount), ""
                     );
                 }
-
                 delete lendings[keccak256(abi.encodePacked(nftAddress, tokenID, lendingID))];
             }
-
             // StopLend event but only the amount that was not renewed (or all of it)
             emit IRegistry.StopLend(lendingID, uint32(block.timestamp), renting.rentAmount);
         } else {
