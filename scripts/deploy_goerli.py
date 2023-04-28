@@ -36,8 +36,8 @@ def main():
     Resolver.publish_source(resolver)
     Registry.publish_source(registry) 
 
-    # goerli resolver: 0x
-    # goerli registry: 0x
+    # goerli resolver: 0xf8834327e7f3f5103954e477a32dc742a6518a9c
+    # goerli registry: 0xede9a15388ccd972dffbd7c3f5504345703b63b2
 
 # this is the source code of Resolver that we used to deploy on Goerli
 # purpose of this was to be able to easily swap out different payment
